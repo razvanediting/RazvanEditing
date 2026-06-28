@@ -131,6 +131,9 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 .tab-panel{display:none}.tab-panel.active{display:block}
 
 /* ── CONTACT ── */
+.about-section{position:relative;z-index:1;padding:70px 56px;border-top:1px solid rgba(96,165,250,.1);max-width:720px;margin:0 auto;text-align:center}
+.about-section h2{font-size:clamp(24px,3.2vw,38px);font-weight:800;letter-spacing:-.02em;margin-bottom:18px;background:linear-gradient(135deg,var(--white) 40%,var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.about-section p{color:var(--gray);font-size:15px;line-height:1.85;white-space:pre-line;text-align:left}
 .contact-section{position:relative;z-index:1;padding:80px 56px;text-align:center;border-top:1px solid rgba(96,165,250,.1)}
 .contact-section::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(37,99,235,.05),transparent);pointer-events:none}
 .contact-section h2{font-size:clamp(30px,4.5vw,56px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px;background:linear-gradient(135deg,var(--white) 40%,var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -298,6 +301,12 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
   <div class="grid-long" id="grid-long"></div>
 </div>
 
+<!-- ── À PROPOS DU MONTAGE ── -->
+<section class="about-section" id="about">
+  <h2 id="about-title">Pourquoi je fais du montage</h2>
+  <p id="about-text"></p>
+</section>
+
 <!-- ── CONTACT ── -->
 <section class="contact-section" id="contact">
   <h2>Tu as un projet ?</h2>
@@ -391,7 +400,29 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
               <div class="field-row"><div class="field-label">Instagram URL</div><input class="field-input" id="cfg-insta" placeholder="https://instagram.com/toi"/></div>
               <div class="field-row"><div class="field-label">YouTube URL</div><input class="field-input" id="cfg-yt" placeholder="https://youtube.com/@toi"/></div>
               <div class="field-row"><div class="field-label">Twitch URL</div><input class="field-input" id="cfg-twitch" placeholder="https://twitch.tv/toi"/></div>
+              <div class="field-row"><div class="field-label">Discord (lien d'invitation)</div><input class="field-input" id="cfg-discord" placeholder="https://discord.gg/xxxxxxx"/></div>
             </div>
+          </div>
+
+          <!-- Formulaire de contact -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>📩 Formulaire de contact</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">
+              Pour recevoir un vrai email quand quelqu'un remplit le formulaire "Tu as un projet ?" :
+              va sur <a href="https://formspree.io" target="_blank" rel="noopener" style="color:var(--light)">formspree.io</a>,
+              crée un compte gratuit, crée un formulaire avec ton email <strong>razvanediting@gmail.com</strong>,
+              puis colle ici juste l'identifiant qui apparaît après "formspree.io/f/" dans ton URL de formulaire.
+              <br/>Tant que ce champ est vide, le bouton "Envoyer" utilise l'ancien système (mailto).
+            </p>
+            <div class="field-row"><div class="field-label">Identifiant du formulaire Formspree</div><input class="field-input" id="cfg-formspree" placeholder="Ex: xkgylacb"/></div>
+          </div>
+
+          <!-- À propos du montage -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>📝 Section "Pourquoi je monte"</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">Ce texte apparaît dans une nouvelle section, entre ton portfolio et le formulaire de contact.</p>
+            <div class="field-row"><div class="field-label">Titre</div><input class="field-input" id="cfg-about-title" placeholder="Pourquoi je fais du montage"/></div>
+            <div class="field-row"><div class="field-label">Texte</div><textarea class="field-input" id="cfg-about-text" rows="6" placeholder="Explique pourquoi tu fais du montage, ta vision, etc."></textarea></div>
           </div>
 
           <!-- Mot de passe -->
@@ -494,7 +525,10 @@ const DEF_LONG = [
 const DEF_SETTINGS = {
   nom:"Razvan",tag:"✦ Monteur vidéo disponible",sub:"Monteur spécialisé DaVinci Resolve, contenu court et long format.",
   email:"tonmail@exemple.com",
-  tiktok:"",insta:"",yt:"",twitch:"",
+  tiktok:"",insta:"",yt:"",twitch:"",discord:"",
+  formspreeId:"",
+  aboutTitle:"Pourquoi je fais du montage",
+  aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
   logo:""
 };
@@ -517,6 +551,9 @@ function applySettings(){
   document.getElementById('stat3-num').textContent = CFG.s3n;
   document.getElementById('stat3-lbl').textContent = CFG.s3l;
   document.getElementById('footer-txt').textContent = `© 2025 ${CFG.nom} — Monteur vidéo`;
+  document.getElementById('about-title').textContent = CFG.aboutTitle||'';
+  document.getElementById('about-text').textContent = CFG.aboutText||'';
+  document.getElementById('about').style.display = (CFG.aboutTitle||CFG.aboutText) ? 'block' : 'none';
   const li = document.getElementById('logo-img');
   const ls = document.getElementById('logo-svg-default');
   if(CFG.logo){ li.src=CFG.logo; li.style.display='block'; ls.style.display='none'; }
@@ -527,9 +564,10 @@ function applySettings(){
     tiktok:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.78a4.85 4.85 0 0 1-1.07-.09z"/></svg>`,
     insta:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>`,
     yt:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>`,
-    twitch:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>`
+    twitch:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>`,
+    discord:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.029zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.419-2.157 2.419zm7.974 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>`
   };
-  const links=[{k:'tiktok',l:'TikTok'},{k:'insta',l:'Instagram'},{k:'yt',l:'YouTube'},{k:'twitch',l:'Twitch'}];
+  const links=[{k:'tiktok',l:'TikTok'},{k:'insta',l:'Instagram'},{k:'yt',l:'YouTube'},{k:'twitch',l:'Twitch'},{k:'discord',l:'Discord'}];
   links.forEach(({k,l})=>{
     if(!CFG[k])return;
     const a=document.createElement('a');
@@ -707,16 +745,66 @@ document.getElementById('hero-btn').addEventListener('click',()=>{
 });
 
 /* ── Contact ── */
-document.getElementById('cf-btn').addEventListener('click',()=>{
+document.getElementById('cf-btn').addEventListener('click', async ()=>{
   const nom=document.getElementById('cf-nom').value.trim();
   const email=document.getElementById('cf-email').value.trim();
   const msg=document.getElementById('cf-msg').value.trim();
   if(!nom||!email||!msg){alert('Remplis tous les champs.');return;}
-  const s=encodeURIComponent(`Projet vidéo de ${nom}`);
-  const b=encodeURIComponent(`Bonjour,\n\nNom : ${nom}\nEmail : ${email}\n\n${msg}`);
-  window.location.href=`mailto:${CFG.email}?subject=${s}&body=${b}`;
-  showToast('Message envoyé ✓');
+
+  const btn = document.getElementById('cf-btn');
+  const formId = (CFG.formspreeId||'').trim();
+
+  if(formId){
+    btn.disabled = true; const oldTxt = btn.textContent; btn.textContent = 'Envoi...';
+    try{
+      const res = await fetch(`https://formspree.io/f/${formId}`, {
+        method:'POST',
+        headers:{ 'Accept':'application/json' },
+        body: new URLSearchParams({ name: nom, email: email, message: msg, _subject: `Projet vidéo de ${nom}` })
+      });
+      if(!res.ok) throw new Error('Erreur Formspree');
+      showContactSuccess();
+    }catch(e){
+      alert("Le message n'a pas pu être envoyé. Réessaie, ou écris directement à "+(CFG.email||''));
+    }finally{
+      btn.disabled=false; btn.textContent=oldTxt;
+    }
+  } else {
+    // Pas encore de formulaire Formspree configuré -> ancien système (mailto)
+    const s=encodeURIComponent(`Projet vidéo de ${nom}`);
+    const b=encodeURIComponent(`Bonjour,\n\nNom : ${nom}\nEmail : ${email}\n\n${msg}`);
+    window.location.href=`mailto:${CFG.email}?subject=${s}&body=${b}`;
+    showContactSuccess();
+  }
 });
+
+/* Affiche la confirmation après l'envoi, avec un lien Discord pour continuer la discussion */
+function showContactSuccess(){
+  const form = document.querySelector('.contact-form');
+  form.style.display='none';
+  let box = document.getElementById('contact-success');
+  if(!box){
+    box = document.createElement('div');
+    box.id='contact-success';
+    box.style.cssText='display:flex;flex-direction:column;align-items:center;gap:14px;padding:10px 0';
+    form.insertAdjacentElement('afterend', box);
+  }
+  box.innerHTML = `
+    <p style="color:#4ade80;font-weight:700;font-size:16px;margin:0">✓ Message envoyé !</p>
+    <p style="color:var(--gray);font-size:13px;margin:0">Je te réponds par email sous 24h.</p>
+    ${CFG.discord?`<a href="${CFG.discord}" target="_blank" rel="noopener" class="btn-primary" style="text-decoration:none">💬 Discute-en sur Discord</a>`:''}
+    <a href="#" id="contact-reset" style="color:var(--gray);font-size:12px;text-decoration:underline;margin-top:4px">← Envoyer un autre message</a>`;
+  box.style.display='flex';
+  document.getElementById('contact-reset').addEventListener('click',e=>{
+    e.preventDefault();
+    box.style.display='none';
+    form.style.display='flex';
+    document.getElementById('cf-nom').value='';
+    document.getElementById('cf-email').value='';
+    document.getElementById('cf-msg').value='';
+  });
+  showToast('Message envoyé ✓');
+}
 
 function showToast(msg){
   const t=document.getElementById('toast'); t.textContent=msg;
@@ -775,6 +863,10 @@ function loadAdminSettings(){
   document.getElementById('cfg-insta').value=CFG.insta||'';
   document.getElementById('cfg-yt').value=CFG.yt||'';
   document.getElementById('cfg-twitch').value=CFG.twitch||'';
+  document.getElementById('cfg-discord').value=CFG.discord||'';
+  document.getElementById('cfg-formspree').value=CFG.formspreeId||'';
+  document.getElementById('cfg-about-title').value=CFG.aboutTitle||'';
+  document.getElementById('cfg-about-text').value=CFG.aboutText||'';
   document.getElementById('s1-num').value=CFG.s1n||'';
   document.getElementById('s1-lbl').value=CFG.s1l||'';
   document.getElementById('s2-num').value=CFG.s2n||'';
@@ -822,6 +914,10 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.insta=document.getElementById('cfg-insta').value;
   CFG.yt=document.getElementById('cfg-yt').value;
   CFG.twitch=document.getElementById('cfg-twitch').value;
+  CFG.discord=document.getElementById('cfg-discord').value;
+  CFG.formspreeId=document.getElementById('cfg-formspree').value.trim();
+  CFG.aboutTitle=document.getElementById('cfg-about-title').value;
+  CFG.aboutText=document.getElementById('cfg-about-text').value;
   CFG.s1n=document.getElementById('s1-num').value||CFG.s1n;
   CFG.s1l=document.getElementById('s1-lbl').value||CFG.s1l;
   CFG.s2n=document.getElementById('s2-num').value||CFG.s2n;
