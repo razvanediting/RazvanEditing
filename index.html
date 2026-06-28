@@ -260,7 +260,7 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 <section class="hero">
   <div class="hero-tag" id="hero-tag">✦ Monteur vidéo disponible</div>
   <h1 class="hero-h1">
-    <span class="word word-plain" style="animation-delay:.1s">je&nbsp;monte&nbsp;des&nbsp;</span><span class="word word-grad word-italic" style="animation-delay:.3s">vidéos</span><br>
+    <span class="word word-plain" style="animation-delay:.1s">Je&nbsp;monte&nbsp;des&nbsp;</span><span class="word word-grad word-italic" style="animation-delay:.3s">vidéos</span><br>
     <span id="rotateur" style="opacity:0;transform:translateY(40px);display:inline-block">pour TikTok</span>
   </h1>
   <div class="hero-line"></div>
@@ -316,6 +316,14 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
     <input type="email" id="cf-email" placeholder="Ton email"/>
     <textarea id="cf-msg" placeholder="Décris ton projet…"></textarea>
     <button class="btn-primary" id="cf-btn">Envoyer →</button>
+  </div>
+  <div id="discord-dm-wrap" style="display:none;margin-top:28px">
+    <p style="color:var(--gray);font-size:13px;margin-bottom:14px">Tu préfères passer par Discord ?</p>
+    <a id="discord-dm-btn" href="#" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:10px;padding:14px 30px;background:linear-gradient(135deg,#5865F2,#7c3aed);color:#fff;border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 6px 24px rgba(88,101,242,.4);transition:opacity .2s,transform .15s">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="flex-shrink:0"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.029zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.419-2.157 2.419zm7.974 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>
+      M'envoyer un DM Discord
+    </a>
   </div>
   <div class="socials" id="socials"></div>
 </section>
@@ -400,7 +408,7 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
               <div class="field-row"><div class="field-label">Instagram URL</div><input class="field-input" id="cfg-insta" placeholder="https://instagram.com/toi"/></div>
               <div class="field-row"><div class="field-label">YouTube URL</div><input class="field-input" id="cfg-yt" placeholder="https://youtube.com/@toi"/></div>
               <div class="field-row"><div class="field-label">Twitch URL</div><input class="field-input" id="cfg-twitch" placeholder="https://twitch.tv/toi"/></div>
-              <div class="field-row"><div class="field-label">Discord (lien d'invitation)</div><input class="field-input" id="cfg-discord" placeholder="https://discord.gg/xxxxxxx"/></div>
+              <div class="field-row"><div class="field-label">Discord (lien DM direct)</div><input class="field-input" id="cfg-discord" placeholder="https://discord.com/users/TON_ID_DISCORD"/><div style="font-size:11px;color:var(--gray);margin-top:5px">Ton ID Discord : Paramètres → Avancé → active "Mode développeur" → clic droit sur ton profil → Copier l'identifiant. Puis colle : https://discord.com/users/CET_ID</div></div>
             </div>
           </div>
 
@@ -419,7 +427,7 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 
           <!-- À propos du montage -->
           <div class="settings-card" style="grid-column:1/-1">
-            <h4>📝 Section "Pourquoi Je monte"</h4>
+            <h4>📝 Section "Pourquoi je monte"</h4>
             <p style="font-size:12px;color:var(--gray);margin-bottom:10px">Ce texte apparaît dans une nouvelle section, entre ton portfolio et le formulaire de contact.</p>
             <div class="field-row"><div class="field-label">Titre</div><input class="field-input" id="cfg-about-title" placeholder="Pourquoi je fais du montage"/></div>
             <div class="field-row"><div class="field-label">Texte</div><textarea class="field-input" id="cfg-about-text" rows="6" placeholder="Explique pourquoi tu fais du montage, ta vision, etc."></textarea></div>
@@ -552,7 +560,12 @@ function applySettings(){
   const ls = document.getElementById('logo-svg-default');
   if(CFG.logo){ li.src=CFG.logo; li.style.display='block'; ls.style.display='none'; }
   else { li.style.display='none'; ls.style.display='block'; }
-  // socials avec icônes SVG
+  // bouton DM Discord
+  const dmWrap = document.getElementById('discord-dm-wrap');
+  const dmBtn  = document.getElementById('discord-dm-btn');
+  if(CFG.discord){ dmWrap.style.display='block'; dmBtn.href=CFG.discord; }
+  else { dmWrap.style.display='none'; }
+  // socials avec icônes SVG (Discord retiré car géré séparément)
   const sc = document.getElementById('socials'); sc.innerHTML='';
   const ICONS={
     tiktok:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.78a4.85 4.85 0 0 1-1.07-.09z"/></svg>`,
@@ -561,7 +574,7 @@ function applySettings(){
     twitch:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>`,
     discord:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.369a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.076.076 0 0 0-.04.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.029zM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.419-2.157 2.419zm7.974 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.211 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>`
   };
-  const links=[{k:'tiktok',l:'TikTok'},{k:'insta',l:'Instagram'},{k:'yt',l:'YouTube'},{k:'twitch',l:'Twitch'},{k:'discord',l:'Discord'}];
+  const links=[{k:'tiktok',l:'TikTok'},{k:'insta',l:'Instagram'},{k:'yt',l:'YouTube'},{k:'twitch',l:'Twitch'}];
   links.forEach(({k,l})=>{
     if(!CFG[k])return;
     const a=document.createElement('a');
