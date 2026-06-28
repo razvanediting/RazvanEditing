@@ -775,7 +775,10 @@ document.getElementById('cf-btn').addEventListener('click', async ()=>{
   if(!nom||!email||!msg){alert('Remplis tous les champs.');return;}
 
   const btn = document.getElementById('cf-btn');
-  const formId = (CFG.formspreeId||'').trim();
+  let formId = (CFG.formspreeId||'').trim();
+  // Accepte aussi bien "mrewkwbe" que "https://formspree.io/f/mrewkwbe"
+  const fmatch = formId.match(/([a-zA-Z0-9]+)$/);
+  if(fmatch) formId = fmatch[1];
 
   if(formId){
     btn.disabled = true; const oldTxt = btn.textContent; btn.textContent = 'Envoi...';
@@ -888,7 +891,11 @@ function loadAdminSettings(){
   document.getElementById('cfg-yt').value=CFG.yt||'';
   document.getElementById('cfg-twitch').value=CFG.twitch||'';
   document.getElementById('cfg-discord').value=CFG.discord||'';
-  document.getElementById('cfg-formspree').value=CFG.formspreeId||'';
+  // Nettoie l'ID Formspree si une URL complète a été sauvegardée
+  let cleanFormId = CFG.formspreeId||'';
+  const cleanMatch = cleanFormId.match(/([a-zA-Z0-9]+)$/);
+  if(cleanMatch) cleanFormId = cleanMatch[1];
+  document.getElementById('cfg-formspree').value=cleanFormId;
   document.getElementById('cfg-about-title').value=CFG.aboutTitle||'';
   document.getElementById('cfg-about-text').value=CFG.aboutText||'';
   document.getElementById('s1-num').value=CFG.s1n||'';
@@ -939,7 +946,10 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.yt=document.getElementById('cfg-yt').value;
   CFG.twitch=document.getElementById('cfg-twitch').value;
   CFG.discord=document.getElementById('cfg-discord').value;
-  CFG.formspreeId=document.getElementById('cfg-formspree').value.trim();
+  // Nettoie l'ID Formspree (accepte URL complète ou juste l'ID)
+  let rawFormId = document.getElementById('cfg-formspree').value.trim();
+  const saveMatch = rawFormId.match(/([a-zA-Z0-9]+)$/);
+  CFG.formspreeId = saveMatch ? saveMatch[1] : rawFormId;
   CFG.aboutTitle=document.getElementById('cfg-about-title').value;
   CFG.aboutText=document.getElementById('cfg-about-text').value;
   CFG.s1n=document.getElementById('s1-num').value||CFG.s1n;
