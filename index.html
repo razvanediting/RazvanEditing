@@ -485,27 +485,20 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 /* ═══════════════════════════════════
    MOT DE PASSE
    Le mot de passe n'est JAMAIS stocké en clair, ni dans le code,
-   ni dans localStorage : seulement son empreinte SHA-256.
+   ni dans localStorage : seulement son empreinte SHA-256 (CFG.pwdHash).
+   Cette empreinte fait partie des données publiées sur GitHub (comme
+   le reste des paramètres), donc le mot de passe que tu choisis
+   fonctionne sur N'IMPORTE QUEL navigateur/appareil une fois publié —
+   il ne se "réinitialise" plus.
    Empreinte par défaut = hash de "razvan2025".
-   ⚠️ Change ce mot de passe tout de suite via le panel admin
-   ("Changer le mot de passe admin") une fois ce fichier en ligne,
-   sinon tout le monde connaît le mot de passe par défaut.
+   ⚠️ Change ce mot de passe puis clique "Publier sur GitHub"
+   pour qu'il soit valable partout, sinon tout le monde connaît
+   le mot de passe par défaut.
 ═══════════════════════════════════ */
 async function sha256(text){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
-let ADMIN_PWD_HASH = localStorage.getItem('razvan_pwd_hash') || '6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d';
-// Migration : si un ancien mot de passe en clair existait dans ce navigateur (ancienne version du site),
-// on le convertit en empreinte une seule fois, puis on l'efface.
-(async()=>{
-  const oldPlain = localStorage.getItem('razvan_pwd');
-  if(oldPlain){
-    ADMIN_PWD_HASH = await sha256(oldPlain);
-    localStorage.setItem('razvan_pwd_hash', ADMIN_PWD_HASH);
-    localStorage.removeItem('razvan_pwd');
-  }
-})();
 
 /* ═══════════════════════════════════
    DONNÉES PAR DÉFAUT
@@ -530,7 +523,8 @@ const DEF_SETTINGS = {
   aboutTitle:"Pourquoi je fais du montage",
   aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
-  logo:""
+  logo:"",
+  pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d" /* hash de "razvan2025" */
 };
 
 function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){return d;} }
@@ -701,11 +695,27 @@ function buildGrid(videos, containerId, cardClass){
    celle que TOUT LE MONDE voit). Si ça échoue (pas encore publié, ouverture
    en local, etc.), on garde ce qui était déjà chargé depuis localStorage/défauts. */
 async function initData(){
+  // Migration : ancien mot de passe stocké uniquement dans CE navigateur
+  // (versions précédentes du site) -> on le fait remonter dans CFG.pwdHash
+  // pour qu'il soit publié et donc valable partout, pas juste ici.
+  if(!CFG.pwdHash){
+    const oldHash = localStorage.getItem('razvan_pwd_hash');
+    const oldPlain = localStorage.getItem('razvan_pwd');
+    if(oldHash) CFG.pwdHash = oldHash;
+    else if(oldPlain) CFG.pwdHash = await sha256(oldPlain);
+    if(CFG.pwdHash){
+      localStorage.setItem('razvan_cfg', JSON.stringify(CFG));
+      localStorage.removeItem('razvan_pwd_hash');
+      localStorage.removeItem('razvan_pwd');
+    }
+  }
   try{
     const res = await fetch('data.json?v=' + Date.now());
     if(res.ok){
       const d = await res.json();
-      if(d.settings) CFG = Object.assign({}, DEF_SETTINGS, d.settings);
+      // On garde CFG (local, pas encore publié) comme base par-dessus les défauts,
+      // et seuls les champs présents dans data.json (déjà publiés) viennent l'écraser.
+      if(d.settings) CFG = Object.assign({}, DEF_SETTINGS, CFG, d.settings);
       if(Array.isArray(d.short)) vShort = d.short;
       if(Array.isArray(d.long))  vLong  = d.long;
     }
@@ -714,7 +724,7 @@ async function initData(){
   buildGrid(vShort,'grid-short','card-tiktok');
   buildGrid(vLong,'grid-long','card-long');
 }
-initData();
+const dataReadyPromise = initData();
 
 /* ── Tabs ── */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -831,9 +841,10 @@ document.getElementById('admin-close-btn').addEventListener('click',closeAdmin);
 document.getElementById('login-btn').addEventListener('click',tryLogin);
 document.getElementById('admin-pwd').addEventListener('keydown',e=>{ if(e.key==='Enter') tryLogin(); });
 async function tryLogin(){
+  await dataReadyPromise; // s'assure que CFG.pwdHash (publié sur GitHub) est bien chargé avant de comparer
   const entered = document.getElementById('admin-pwd').value;
   const enteredHash = await sha256(entered);
-  if(enteredHash===ADMIN_PWD_HASH){
+  if(enteredHash===CFG.pwdHash){
     document.getElementById('admin-login').style.display='none';
     document.getElementById('admin-panel').style.display='block';
     loadAdminSettings(); buildAdminList('short'); buildAdminList('long');
@@ -924,16 +935,16 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.s2l=document.getElementById('s2-lbl').value||CFG.s2l;
   CFG.s3n=document.getElementById('s3-num').value||CFG.s3n;
   CFG.s3l=document.getElementById('s3-lbl').value||CFG.s3l;
-  // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte
+  // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte,
+  // et elle vit dans CFG.pwdHash : elle sera donc publiée sur GitHub avec le reste,
+  // valable partout, et ne se "réinitialise" plus en changeant de navigateur.
   const p1=document.getElementById('new-pwd1').value;
   const p2=document.getElementById('new-pwd2').value;
   const pm=document.getElementById('pwd-msg');
   if(p1||p2){
     if(p1===p2&&p1.length>=4){
-      ADMIN_PWD_HASH = await sha256(p1);
-      localStorage.setItem('razvan_pwd_hash', ADMIN_PWD_HASH);
-      localStorage.removeItem('razvan_pwd');
-      pm.style.color='#4ade80'; pm.textContent='Mot de passe changé ✓';
+      CFG.pwdHash = await sha256(p1);
+      pm.style.color='#4ade80'; pm.textContent='Mot de passe changé ✓ — clique "Publier sur GitHub" pour qu\'il soit valable partout.';
     }
     else{ pm.style.color='#f87171'; pm.textContent=p1!==p2?'Les mots de passe ne correspondent pas.':'Minimum 4 caractères.'; }
     document.getElementById('new-pwd1').value=''; document.getElementById('new-pwd2').value='';
