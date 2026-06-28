@@ -98,20 +98,23 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 @media(max-width:700px){.grid-long{grid-template-columns:1fr;padding:0 20px 60px}}
 
 /* ── CARD BASE ── */
-.card{position:relative;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--white);display:block;background:var(--mid);border:1px solid rgba(96,165,250,.1);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;cursor:pointer;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s,box-shadow .3s}
-.card.visible{opacity:1;transform:translateY(0)}
-.card.visible:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 24px 60px rgba(37,99,235,.3),0 0 0 1px rgba(96,165,250,.3)}
-.card img,.card video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.card-wrap{display:flex;flex-direction:column;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s;text-decoration:none;color:var(--white);}
+.card-wrap.visible{opacity:1;transform:translateY(0)}
+.card{position:relative;border-radius:var(--radius);overflow:hidden;background:var(--mid);border:1px solid rgba(96,165,250,.1);cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;display:block;}
+.card-wrap.visible .card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 24px 60px rgba(37,99,235,.3),0 0 0 1px rgba(96,165,250,.3)}
+.card img,.card video,.card iframe{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s;border:none;}
 .card:hover img,.card:hover video{transform:scale(1.04)}
 .card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(4,13,31,.85) 0%,rgba(4,13,31,.2) 50%,transparent 100%);pointer-events:none}
 .card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);z-index:3;box-shadow:inset 0 0 0 1.5px rgba(96,165,250,0);transition:box-shadow .3s;pointer-events:none}
-.card.visible:hover::before{box-shadow:inset 0 0 0 1.5px rgba(96,165,250,.5)}
+.card-wrap.visible .card:hover::before{box-shadow:inset 0 0 0 1.5px rgba(96,165,250,.5)}
+
+/* description sous la card */
+.card-desc{font-size:13px;color:var(--gray);line-height:1.6;padding:12px 4px 4px;display:none;}
+.card-desc.has-text{display:block;}
 
 /* tiktok cards = 9:16 avec bords arrondis */
-.card-tiktok{border-radius:var(--radius)!important}
-.grid-tiktok .card{border-radius:var(--radius)!important;border:1px solid rgba(96,165,250,.1)!important}
-.grid-tiktok .card::before{border-radius:var(--radius)!important}
-.grid-tiktok .card.visible:hover{transform:scale(1.03);z-index:2;box-shadow:0 0 0 2px rgba(96,165,250,.6)}
+.card-tiktok{border-radius:var(--radius)!important;aspect-ratio:9/16;width:100%}
+.card-wrap.visible .card-tiktok:hover{transform:scale(1.03);box-shadow:0 0 0 2px rgba(96,165,250,.6)}
 /* long cards = 16:9 mais plus petit */
 .card-long{aspect-ratio:16/9;max-height:220px}
 
@@ -401,10 +404,23 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
             <p id="pwd-msg" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
           </div>
 
+          <!-- Publication GitHub -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>🚀 Publication en ligne (GitHub)</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">
+              Le bouton "Sauvegarder" garde tes changements seulement dans ce navigateur.
+              Pour que tout le monde voie les changements sur <strong>razvanediting.github.io</strong>, clique sur "Publier sur GitHub" : ça envoie tes données directement dans ton repo.
+              <br/>Crée un <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--light)">token GitHub (fine-grained)</a> limité au repo <strong>RazvanEditing</strong>, permission "Contents : Read and write" uniquement. Le token reste seulement dans ce navigateur, il n'est jamais écrit dans le code du site.
+            </p>
+            <div class="field-row"><div class="field-label">Token GitHub</div><input class="field-input" type="password" id="gh-token" placeholder="github_pat_..."/></div>
+            <p id="publish-msg" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
+          </div>
+
         </div>
 
         <div class="admin-actions">
           <button class="save-btn" id="save-settings-btn">💾 Sauvegarder les paramètres</button>
+          <button class="save-btn" id="publish-btn" style="background:linear-gradient(135deg,#16a34a,#22c55e)">🚀 Publier sur GitHub</button>
           <button class="logout-btn" id="logout-btn">Déconnexion</button>
         </div>
       </div>
@@ -436,9 +452,29 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 
 <script>
 /* ═══════════════════════════════════
-   MOT DE PASSE — change "razvan2025"
+   MOT DE PASSE
+   Le mot de passe n'est JAMAIS stocké en clair, ni dans le code,
+   ni dans localStorage : seulement son empreinte SHA-256.
+   Empreinte par défaut = hash de "razvan2025".
+   ⚠️ Change ce mot de passe tout de suite via le panel admin
+   ("Changer le mot de passe admin") une fois ce fichier en ligne,
+   sinon tout le monde connaît le mot de passe par défaut.
 ═══════════════════════════════════ */
-let ADMIN_PWD = localStorage.getItem('razvan_pwd') || 'razvan2025';
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+let ADMIN_PWD_HASH = localStorage.getItem('razvan_pwd_hash') || '6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d';
+// Migration : si un ancien mot de passe en clair existait dans ce navigateur (ancienne version du site),
+// on le convertit en empreinte une seule fois, puis on l'efface.
+(async()=>{
+  const oldPlain = localStorage.getItem('razvan_pwd');
+  if(oldPlain){
+    ADMIN_PWD_HASH = await sha256(oldPlain);
+    localStorage.setItem('razvan_pwd_hash', ADMIN_PWD_HASH);
+    localStorage.removeItem('razvan_pwd');
+  }
+})();
 
 /* ═══════════════════════════════════
    DONNÉES PAR DÉFAUT
@@ -504,38 +540,143 @@ function applySettings(){
     sc.appendChild(a);
   });
 }
-applySettings();
+
+/* ── Détection du type de média ── */
+function getMediaType(url){
+  if(!url) return 'none';
+  if(/tiktok\.com\/@[^/]+\/video\/(\d+)/i.test(url)) return 'tiktok';
+  if(/youtu\.be\/|youtube\.com\/(watch\?v=|shorts\/|embed\/)/i.test(url)) return 'youtube';
+  if(/streamable\.com\/([a-z0-9]+)/i.test(url)) return 'streamable';
+  if(/drive\.google\.com\/file\/d\//i.test(url)) return 'gdrive';
+  if(/\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url)) return 'mp4';
+  return 'image';
+}
+
+function getStreamableId(url){
+  const m = url.match(/streamable\.com\/([a-z0-9]+)/i);
+  return m ? m[1] : null;
+}
+
+function getTikTokId(url){
+  const m = url.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/i);
+  return m ? m[1] : null;
+}
+
+function getYouTubeId(url){
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/))([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function getGDriveId(url){
+  const m = url.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  return m ? m[1] : null;
+}
+
+/* HTML pour la grille (plein la card) */
+function getCardMediaHTML(url, titre){
+  const type = getMediaType(url);
+  if(type === 'tiktok'){
+    const id = getTikTokId(url);
+    return `<iframe src="https://www.tiktok.com/embed/v2/${id}" style="width:100%;height:100%;border:none;display:block;" allowfullscreen allow="autoplay"></iframe>`;
+  }
+  if(type === 'youtube'){
+    const id = getYouTubeId(url);
+    return `<iframe src="https://www.youtube.com/embed/${id}?autoplay=0&rel=0" style="width:100%;height:100%;border:none;display:block;" allowfullscreen></iframe>`;
+  }
+  if(type === 'streamable'){
+    const id = getStreamableId(url);
+    return `<iframe src="https://streamable.com/e/${id}?autoplay=1&muted=1&loop=1" style="width:100%;height:100%;border:none;display:block;" allowfullscreen allow="autoplay"></iframe>`;
+  }
+  if(type === 'gdrive'){
+    const id = getGDriveId(url);
+    return `<iframe src="https://drive.google.com/file/d/${id}/preview" style="width:100%;height:100%;border:none;display:block;" allowfullscreen allow="autoplay"></iframe>`;
+  }
+  if(type === 'mp4'){
+    return `<video src="${url}" autoplay muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`;
+  }
+  return `<img src="${url}" alt="${titre||''}" loading="lazy"/>`;
+}
+
+/* HTML pour l'aperçu admin (miniature) */
+function getPreviewHTML(url){
+  const type = getMediaType(url);
+  if(type === 'tiktok'){
+    const id = getTikTokId(url);
+    return `<div style="position:relative;padding-top:177%;border-radius:10px;overflow:hidden"><iframe src="https://www.tiktok.com/embed/v2/${id}" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
+  }
+  if(type === 'youtube'){
+    const id = getYouTubeId(url);
+    return `<div style="position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden"><iframe src="https://www.youtube.com/embed/${id}?rel=0" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allowfullscreen></iframe></div>`;
+  }
+  if(type === 'streamable'){
+    const id = getStreamableId(url);
+    return `<div style="position:relative;padding-top:177%;border-radius:10px;overflow:hidden"><iframe src="https://streamable.com/e/${id}?autoplay=1&muted=1&loop=1" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
+  }
+  if(type === 'gdrive'){
+    const id = getGDriveId(url);
+    return `<div style="position:relative;padding-top:177%;border-radius:10px;overflow:hidden"><iframe src="https://drive.google.com/file/d/${id}/preview" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allowfullscreen allow="autoplay"></iframe></div>`;
+  }
+  if(type === 'mp4'){
+    return `<video src="${url}" muted autoplay loop playsinline style="width:100%;display:block;border-radius:10px;max-height:300px;object-fit:cover"></video>`;
+  }
+  if(type === 'image'){
+    return `<img src="${url}" style="width:100%;display:block;border-radius:10px" onerror="this.parentElement.style.display='none'"/>`;
+  }
+  return '';
+}
 
 /* ── Build grids ── */
 function buildGrid(videos, containerId, cardClass){
   const g = document.getElementById(containerId); g.innerHTML='';
   videos.forEach(v=>{
-    const a=document.createElement('a');
-    a.className=`card ${cardClass}`;
-    a.href=v.lien||'#';
-    if(v.lien&&v.lien!='#') a.target='_blank';
-    // Detect if media is a video (mp4, webm, ogg, mov...)
-    const isVideo = v.image && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(v.image);
-    const mediaHTML = isVideo
-      ? `<video src="${v.image}" autoplay muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
-      : `<img src="${v.image}" alt="${v.titre}" loading="lazy"/>`;
+    const wrap = document.createElement('div');
+    wrap.className = `card-wrap`;
+
+    const a = document.createElement('a');
+    a.className = `card ${cardClass}`;
+    a.href = v.lien||'#';
+    if(v.lien && v.lien!='#') a.target='_blank';
     a.innerHTML=`
-      ${mediaHTML}
+      ${getCardMediaHTML(v.image, v.titre)}
       ${v.label?`<div class="card-label">${v.label}</div>`:''}
       ${v.duration?`<div class="duration-badge">${v.duration}</div>`:''}
       <div class="card-meta">
         <span class="card-views">${v.views}</span>
         ${v.badge?`<span class="badge">${v.badge}</span>`:''}
       </div>`;
-    g.appendChild(a);
+
+    const desc = document.createElement('p');
+    desc.className = 'card-desc' + (v.desc ? ' has-text' : '');
+    desc.textContent = v.desc || '';
+
+    wrap.appendChild(a);
+    wrap.appendChild(desc);
+    g.appendChild(wrap);
   });
   const obs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
   },{threshold:0,rootMargin:'0px 0px -10px 0px'});
-  g.querySelectorAll('.card').forEach((c,i)=>{ c.style.transitionDelay=(i%5)*0.05+'s'; obs.observe(c); });
+  g.querySelectorAll('.card-wrap').forEach((c,i)=>{ c.style.transitionDelay=(i%3)*0.07+'s'; obs.observe(c); });
 }
-buildGrid(vShort,'grid-short','card-tiktok');
-buildGrid(vLong,'grid-long','card-long');
+/* ── Chargement des données publiées sur GitHub (data.json) ──
+   Au chargement, on essaie d'abord data.json (la version publiée sur GitHub,
+   celle que TOUT LE MONDE voit). Si ça échoue (pas encore publié, ouverture
+   en local, etc.), on garde ce qui était déjà chargé depuis localStorage/défauts. */
+async function initData(){
+  try{
+    const res = await fetch('data.json?v=' + Date.now());
+    if(res.ok){
+      const d = await res.json();
+      if(d.settings) CFG = Object.assign({}, DEF_SETTINGS, d.settings);
+      if(Array.isArray(d.short)) vShort = d.short;
+      if(Array.isArray(d.long))  vLong  = d.long;
+    }
+  }catch(e){ /* pas grave, on reste sur localStorage/défauts */ }
+  applySettings();
+  buildGrid(vShort,'grid-short','card-tiktok');
+  buildGrid(vLong,'grid-long','card-long');
+}
+initData();
 
 /* ── Tabs ── */
 document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -601,8 +742,10 @@ document.getElementById('admin-close-btn').addEventListener('click',closeAdmin);
 /* Login */
 document.getElementById('login-btn').addEventListener('click',tryLogin);
 document.getElementById('admin-pwd').addEventListener('keydown',e=>{ if(e.key==='Enter') tryLogin(); });
-function tryLogin(){
-  if(document.getElementById('admin-pwd').value===ADMIN_PWD){
+async function tryLogin(){
+  const entered = document.getElementById('admin-pwd').value;
+  const enteredHash = await sha256(entered);
+  if(enteredHash===ADMIN_PWD_HASH){
     document.getElementById('admin-login').style.display='none';
     document.getElementById('admin-panel').style.display='block';
     loadAdminSettings(); buildAdminList('short'); buildAdminList('long');
@@ -642,6 +785,8 @@ function loadAdminSettings(){
   const prev=document.getElementById('logo-admin-preview');
   if(CFG.logo){ prev.src=CFG.logo; prev.style.display='block'; }
   else prev.style.display='none';
+  // token GitHub (gardé seulement dans ce navigateur)
+  document.getElementById('gh-token').value = localStorage.getItem('razvan_gh_token') || '';
 }
 
 /* ── Logo upload ── */
@@ -668,7 +813,7 @@ document.getElementById('remove-logo-btn').addEventListener('click',()=>{
 });
 
 /* ── Save settings ── */
-document.getElementById('save-settings-btn').addEventListener('click',()=>{
+document.getElementById('save-settings-btn').addEventListener('click', async ()=>{
   CFG.nom=document.getElementById('cfg-nom').value||CFG.nom;
   CFG.tag=document.getElementById('cfg-tag').value||CFG.tag;
   CFG.sub=document.getElementById('cfg-sub').value||CFG.sub;
@@ -683,12 +828,17 @@ document.getElementById('save-settings-btn').addEventListener('click',()=>{
   CFG.s2l=document.getElementById('s2-lbl').value||CFG.s2l;
   CFG.s3n=document.getElementById('s3-num').value||CFG.s3n;
   CFG.s3l=document.getElementById('s3-lbl').value||CFG.s3l;
-  // password change
+  // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte
   const p1=document.getElementById('new-pwd1').value;
   const p2=document.getElementById('new-pwd2').value;
   const pm=document.getElementById('pwd-msg');
   if(p1||p2){
-    if(p1===p2&&p1.length>=4){ ADMIN_PWD=p1; localStorage.setItem('razvan_pwd',p1); pm.style.color='#4ade80'; pm.textContent='Mot de passe changé ✓'; }
+    if(p1===p2&&p1.length>=4){
+      ADMIN_PWD_HASH = await sha256(p1);
+      localStorage.setItem('razvan_pwd_hash', ADMIN_PWD_HASH);
+      localStorage.removeItem('razvan_pwd');
+      pm.style.color='#4ade80'; pm.textContent='Mot de passe changé ✓';
+    }
     else{ pm.style.color='#f87171'; pm.textContent=p1!==p2?'Les mots de passe ne correspondent pas.':'Minimum 4 caractères.'; }
     document.getElementById('new-pwd1').value=''; document.getElementById('new-pwd2').value='';
   } else pm.textContent='';
@@ -696,6 +846,64 @@ document.getElementById('save-settings-btn').addEventListener('click',()=>{
   applySettings();
   showToast('Paramètres sauvegardés ✓');
 });
+
+/* ── Publier directement sur GitHub (écrit data.json dans le repo) ──
+   Nécessite un token GitHub (fine-grained, permission "Contents: Read and write"
+   sur le repo RazvanEditing uniquement). Le token n'est JAMAIS écrit dans le
+   code du site : il reste seulement dans le localStorage de CE navigateur. */
+const GH_OWNER='razvanediting', GH_REPO='RazvanEditing', GH_BRANCH='main', GH_PATH='data.json';
+
+async function publishToGitHub(){
+  const tokenInput = document.getElementById('gh-token');
+  const msg = document.getElementById('publish-msg');
+  const btn = document.getElementById('publish-btn');
+  const token = tokenInput.value.trim();
+
+  if(!token){ msg.style.color='#f87171'; msg.textContent='Colle ton token GitHub d’abord ⤴'; return; }
+  localStorage.setItem('razvan_gh_token', token); // pratique : reste dans ce navigateur seulement
+
+  btn.disabled = true; const oldTxt = btn.textContent; btn.textContent = '⏳ Publication...';
+  msg.style.color = 'var(--gray)'; msg.textContent = 'Connexion à GitHub...';
+
+  try{
+    const payload = JSON.stringify({ settings: CFG, short: vShort, long: vLong }, null, 2);
+    const contentB64 = btoa(unescape(encodeURIComponent(payload)));
+
+    // 1) Récupérer le sha actuel de data.json (s'il existe déjà)
+    let sha = null;
+    const getRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`,{
+      headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json' }
+    });
+    if(getRes.ok){ sha = (await getRes.json()).sha; }
+    else if(getRes.status!==404){ throw new Error('Lecture impossible (code '+getRes.status+'). Vérifie le token/les droits.'); }
+
+    // 2) Écrire/créer le fichier directement dans le repo
+    const putRes = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`,{
+      method:'PUT',
+      headers:{ Authorization:`Bearer ${token}`, Accept:'application/vnd.github+json', 'Content-Type':'application/json' },
+      body: JSON.stringify({
+        message: 'Mise à jour du contenu via le panel admin',
+        content: contentB64,
+        branch: GH_BRANCH,
+        ...(sha?{sha}:{})
+      })
+    });
+    if(!putRes.ok){
+      const err = await putRes.json().catch(()=>({}));
+      throw new Error(err.message || ('Erreur GitHub (code '+putRes.status+')'));
+    }
+
+    msg.style.color = '#4ade80';
+    msg.textContent = '✅ Publié ! Le site sera à jour dans 30-60 secondes (recharge la page après).';
+    showToast('🚀 Publié sur GitHub ✓');
+  }catch(err){
+    msg.style.color = '#f87171';
+    msg.textContent = '❌ ' + err.message;
+  }finally{
+    btn.disabled = false; btn.textContent = oldTxt;
+  }
+}
+document.getElementById('publish-btn').addEventListener('click', publishToGitHub);
 
 /* ── Build admin video list ── */
 function buildAdminList(type){
@@ -712,12 +920,13 @@ function buildAdminList(type){
       </div>
       <div class="field-grid">
         <div class="field-full">
-          <div class="field-label">Miniature ou Vidéo — URL ou fichier uploadé (.jpg, .png, .mp4…)</div>
-          <input class="field-input" data-f="image" data-idx="${i}" data-type="${type}" value="${v.image||''}" placeholder="https://... ou upload ci-dessous" style="margin-bottom:6px"/>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <label style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1.5px solid rgba(96,165,250,.3);background:rgba(37,99,235,.1);color:var(--light);font-size:12px;font-weight:600;cursor:pointer" for="img-upload-${type}-${i}">📁 Uploader image ou vidéo</label>
-            <input type="file" id="img-upload-${type}-${i}" accept="image/*,video/mp4,video/webm,video/ogg,video/quicktime" style="display:none" data-idx="${i}" data-type="${type}"/>
-            ${v.image&&!v.image.startsWith('http')?`<span style="font-size:11px;color:#4ade80">✓ Fichier uploadé</span>`:''}
+          <div class="field-label">URL de la vidéo ou image</div>
+          <input class="field-input img-url-input" data-f="image" data-idx="${i}" data-type="${type}" value="${v.image||''}" placeholder="https://tiktok.com/@... ou youtube.com/... ou video.mp4" style="margin-bottom:10px"/>
+          <div class="media-preview" id="preview-${type}-${i}" style="margin-top:8px;border-radius:10px;overflow:hidden;background:rgba(0,0,0,.3);border:1px solid rgba(96,165,250,.15);display:${v.image?'block':'none'};max-width:260px">
+            ${v.image ? getPreviewHTML(v.image) : ''}
+          </div>
+          <div id="preview-type-${type}-${i}" style="margin-top:6px;font-size:11px;color:var(--light);display:${v.image?'block':'none'}">
+            ${v.image ? ({tiktok:'📱 TikTok détecté',youtube:'▶️ YouTube détecté',streamable:'🎬 Streamable détecté',gdrive:'☁️ Google Drive détecté',mp4:'🎬 Vidéo MP4 détectée',image:'🖼️ Image détectée',none:''}[getMediaType(v.image)]||'') : ''}
           </div>
         </div>
         <div><div class="field-label">Texte sur la vidéo</div><input class="field-input" data-f="label" data-idx="${i}" data-type="${type}" value="${v.label||''}" placeholder="Ex: mis partout"/></div>
@@ -735,21 +944,24 @@ function buildAdminList(type){
       (t==='short'?vShort:vLong)[idx][f]=e.target.value;
     });
   });
-  // Image upload handlers
-  list.querySelectorAll('input[type="file"]').forEach(fileInput=>{
-    fileInput.addEventListener('change',e=>{
-      const file=e.target.files[0]; if(!file) return;
+  list.querySelectorAll('.img-url-input').forEach(inp=>{
+    inp.addEventListener('input',e=>{
       const idx=+e.target.dataset.idx, t=e.target.dataset.type;
-      const reader=new FileReader();
-      reader.onload=ev=>{
-        const b64=ev.target.result;
-        (t==='short'?vShort:vLong)[idx].image=b64;
-        // Update URL input field too
-        const urlInput=list.querySelector(`.field-input[data-f="image"][data-idx="${idx}"][data-type="${t}"]`);
-        if(urlInput) urlInput.value='(image uploadée)';
-        showToast('Image chargée ✓ — pense à sauvegarder');
-      };
-      reader.readAsDataURL(file);
+      const url = e.target.value.trim();
+      (t==='short'?vShort:vLong)[idx].image = url;
+      const previewBox = document.getElementById(`preview-${t}-${idx}`);
+      const typeLabel  = document.getElementById(`preview-type-${t}-${idx}`);
+      if(!previewBox) return;
+      if(!url){
+        previewBox.style.display='none'; previewBox.innerHTML='';
+        if(typeLabel){ typeLabel.style.display='none'; typeLabel.textContent=''; }
+        return;
+      }
+      const type = getMediaType(url);
+      const labels = {tiktok:'📱 TikTok détecté',youtube:'▶️ YouTube détecté',streamable:'🎬 Streamable détecté',gdrive:'☁️ Google Drive détecté',mp4:'🎬 Vidéo MP4 détectée',image:'🖼️ Image détectée',none:''};
+      previewBox.style.display='block';
+      previewBox.innerHTML = getPreviewHTML(url);
+      if(typeLabel){ typeLabel.style.display='block'; typeLabel.textContent = labels[type]||''; }
     });
   });
   list.querySelectorAll('.video-item-del').forEach(btn=>{
