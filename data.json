@@ -18,7 +18,8 @@
     "discord": "",
     "formspreeId": "<!DOCTYPE html> <html lang=\"fr\"> <head> <meta charset=\"UTF-8\"/> <meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"/> <title>Razvan — Monteur vidéo</title> <link href=\"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Playfair+Display:ital@1&display=swap\" rel=\"stylesheet\"/> <style> *,*::before,*::after{box-sizing:border-box;margin:0;padding:0} :root{   --deep:#040d1f;   --mid:#0a1a3a;   --bright:#1a3a7a;   --glow:#2563eb;   --light:#60a5fa;   --pale:#bfdbfe;   --violet:#7c3aed;   --white:#ffffff;   --gray:#94a3b8;   --radius:16px;   --gap:18px; } html{scroll-behavior:smooth} body{background:var(--deep);color:var(--white);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden} body::before{content:'';position:fixed;inset:0;background-image:url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3",
     "aboutTitle": "",
-    "aboutText": ""
+    "aboutText": "",
+    "pwdHash": "694c618a2564e84d9ad3249fa263ffe515d785728336e382d1754ac5ce4e0a5a"
   },
   "short": [
     {
