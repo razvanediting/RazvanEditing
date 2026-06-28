@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Razvan — Monteur vidéo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:#040d1f;
+  --mid:#0a1a3a;
+  --bright:#1a3a7a;
+  --glow:#2563eb;
+  --light:#60a5fa;
+  --pale:#bfdbfe;
+  --violet:#7c3aed;
+  --white:#ffffff;
+  --gray:#94a3b8;
+  --radius:16px;
+  --gap:18px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--deep);color:var(--white);font-family:'Space Grotesk',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+
+/* orbs */
+.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.32;animation:drift 14s ease-in-out infinite}
+.orb1{width:700px;height:700px;background:radial-gradient(circle,#1d4ed8,transparent);top:-250px;left:-150px}
+.orb2{width:550px;height:550px;background:radial-gradient(circle,#6d28d9,transparent);bottom:-150px;right:-120px;animation-delay:-5s}
+.orb3{width:450px;height:450px;background:radial-gradient(circle,#0369a1,transparent);top:45%;left:48%;transform:translateX(-50%);animation-delay:-10s}
+@keyframes drift{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.04)}}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 56px;background:rgba(4,13,31,.72);backdrop-filter:blur(22px);border-bottom:1px solid rgba(96,165,250,.1)}
+.logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer}
+#logo-img{width:40px;height:40px;object-fit:contain;display:none;border-radius:8px}
+.logo-svg-default{width:40px;height:40px;flex-shrink:0}
+.logo-name{font-size:18px;font-weight:800;letter-spacing:.02em;background:linear-gradient(135deg,var(--white) 40%,var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{font-size:13px;color:var(--gray);text-decoration:none;transition:color .2s;font-weight:500;padding:6px 14px;border-radius:20px}
+.nav-links a:hover,.nav-links a.active{color:var(--white);background:rgba(96,165,250,.1)}
+
+/* ── TABS ── */
+.tabs-bar{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:32px 56px 0}
+.tab-btn{
+  font-size:13px;font-weight:700;letter-spacing:.04em;
+  padding:10px 28px;border-radius:30px;border:1.5px solid rgba(96,165,250,.2);
+  background:rgba(96,165,250,.05);color:var(--gray);cursor:pointer;
+  transition:all .25s;font-family:'Space Grotesk',sans-serif;
+}
+.tab-btn:hover{color:var(--white);border-color:rgba(96,165,250,.4)}
+.tab-btn.active{background:linear-gradient(135deg,rgba(37,99,235,.35),rgba(124,58,237,.25));border-color:rgba(96,165,250,.5);color:var(--white);box-shadow:0 0 20px rgba(37,99,235,.2)}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:110px 24px 90px;min-height:90vh}
+.hero-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--light);background:rgba(37,99,235,.15);border:1px solid rgba(96,165,250,.3);border-radius:20px;padding:6px 18px;margin-bottom:32px;animation:fadeDown .8s ease both}
+.hero-h1{font-size:clamp(48px,8.5vw,105px);font-weight:800;line-height:1.02;letter-spacing:-.03em;margin-bottom:12px}
+.word{display:inline-block;opacity:0;transform:translateY(40px);animation:wordUp .7s ease forwards}
+.word-plain{color:var(--white)}
+.word-grad{background:linear-gradient(135deg,var(--light) 0%,#a78bfa 50%,var(--light) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:wordUp .7s ease forwards,shimmer 4s linear infinite 1s}
+.word-italic{font-family:'Playfair Display',serif;font-style:italic}
+@keyframes wordUp{to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:0% center}100%{background-position:200% center}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+#rotateur{display:block;background:linear-gradient(90deg,var(--light),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;transition:opacity .3s,transform .3s;min-height:1.05em}
+.hero-tools{display:flex;align-items:center;gap:10px;margin:20px 0;flex-wrap:wrap;justify-content:center;animation:fadeDown 1s .7s ease both}
+.tool-badge{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--gray);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:5px 14px}
+.tool-badge span{font-size:15px}
+.hero-sub{color:var(--gray);font-size:15px;max-width:400px;line-height:1.7;margin:18px auto 38px;animation:fadeDown 1s .9s ease both}
+.hero-line{width:60px;height:2px;margin:0 auto 24px;background:linear-gradient(90deg,var(--glow),var(--violet));border-radius:2px;animation:fadeDown 1s .65s ease both}
+.hero-form{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1.5px solid rgba(96,165,250,.2);border-radius:50px;padding:8px 8px 8px 24px;max-width:440px;width:100%;backdrop-filter:blur(10px);box-shadow:0 0 40px rgba(37,99,235,.15);animation:fadeDown 1s 1.1s ease both}
+.hero-form input{flex:1;border:none;outline:none;background:transparent;font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--white)}
+.hero-form input::placeholder{color:rgba(148,163,184,.6)}
+.hero-form button{width:40px;height:40px;border:none;border-radius:50%;background:linear-gradient(135deg,var(--glow),var(--violet));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .15s,box-shadow .2s;box-shadow:0 4px 16px rgba(37,99,235,.4)}
+.hero-form button:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,99,235,.6)}
+.hero-form button svg{width:16px;height:16px}
+.stats-bar{display:flex;gap:48px;margin-top:60px;flex-wrap:wrap;justify-content:center;animation:fadeDown 1s 1.3s ease both}
+.stat{text-align:center}
+.stat-num{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--white),var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:11px;color:var(--gray);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+
+/* ── SECTION HEADER ── */
+.sec-head{position:relative;z-index:1;padding:40px 56px 28px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.sec-head h2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--light);white-space:nowrap}
+.sec-head-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(96,165,250,.3),transparent)}
+
+/* ── GRILLE TIKTOK (9:16) ── */
+.grid-tiktok{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);padding:0 56px 80px;max-width:1300px;margin:0 auto}
+.card-tiktok{aspect-ratio:9/16;width:100%}
+@media(max-width:700px){.grid-tiktok{grid-template-columns:repeat(2,1fr);padding:0 20px 60px;max-width:600px}}
+@media(max-width:430px){.grid-tiktok{grid-template-columns:1fr;padding:0 16px 50px;max-width:280px}}
+
+/* ── GRILLE LONGUES VIDÉOS (16:9) ── */
+.grid-long{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);padding:0 56px 80px;max-width:1400px;margin:0 auto}
+@media(max-width:1000px){.grid-long{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.grid-long{grid-template-columns:1fr;padding:0 20px 60px}}
+
+/* ── CARD BASE ── */
+.card{position:relative;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:var(--white);display:block;background:var(--mid);border:1px solid rgba(96,165,250,.1);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;cursor:pointer;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s,box-shadow .3s}
+.card.visible{opacity:1;transform:translateY(0)}
+.card.visible:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 24px 60px rgba(37,99,235,.3),0 0 0 1px rgba(96,165,250,.3)}
+.card img,.card video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.card:hover img,.card:hover video{transform:scale(1.04)}
+.card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(4,13,31,.85) 0%,rgba(4,13,31,.2) 50%,transparent 100%);pointer-events:none}
+.card::before{content:'';position:absolute;inset:0;border-radius:var(--radius);z-index:3;box-shadow:inset 0 0 0 1.5px rgba(96,165,250,0);transition:box-shadow .3s;pointer-events:none}
+.card.visible:hover::before{box-shadow:inset 0 0 0 1.5px rgba(96,165,250,.5)}
+
+/* tiktok cards = 9:16 avec bords arrondis */
+.card-tiktok{border-radius:var(--radius)!important}
+.grid-tiktok .card{border-radius:var(--radius)!important;border:1px solid rgba(96,165,250,.1)!important}
+.grid-tiktok .card::before{border-radius:var(--radius)!important}
+.grid-tiktok .card.visible:hover{transform:scale(1.03);z-index:2;box-shadow:0 0 0 2px rgba(96,165,250,.6)}
+/* long cards = 16:9 mais plus petit */
+.card-long{aspect-ratio:16/9;max-height:220px}
+
+.card-label{position:absolute;bottom:56px;left:16px;right:16px;z-index:2;font-size:clamp(15px,2.2vw,20px);font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,.5);line-height:1.2}
+.card-long .card-label{bottom:46px;font-size:14px}
+.card-meta{position:absolute;bottom:14px;left:16px;right:16px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card-views{font-size:12px;color:rgba(255,255,255,.65);font-weight:600}
+.badge{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:linear-gradient(135deg,rgba(37,99,235,.6),rgba(124,58,237,.6));backdrop-filter:blur(8px);border:1px solid rgba(96,165,250,.35);color:#fff;border-radius:20px;padding:3px 10px}
+
+/* duration badge for long videos */
+.duration-badge{position:absolute;top:12px;right:12px;z-index:3;font-size:11px;font-weight:700;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);color:#fff;border-radius:6px;padding:3px 8px}
+
+/* ── TAB PANELS ── */
+.tab-panel{display:none}.tab-panel.active{display:block}
+
+/* ── CONTACT ── */
+.contact-section{position:relative;z-index:1;padding:80px 56px;text-align:center;border-top:1px solid rgba(96,165,250,.1)}
+.contact-section::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(37,99,235,.05),transparent);pointer-events:none}
+.contact-section h2{font-size:clamp(30px,4.5vw,56px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px;background:linear-gradient(135deg,var(--white) 40%,var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.contact-section p{color:var(--gray);font-size:15px;margin-bottom:36px;max-width:360px;margin-left:auto;margin-right:auto}
+.contact-form{display:flex;flex-direction:column;gap:14px;width:100%;max-width:480px;margin:0 auto}
+.contact-form input,.contact-form textarea{width:100%;padding:14px 18px;border-radius:12px;border:1.5px solid rgba(96,165,250,.2);background:rgba(255,255,255,.04);font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--white);outline:none;resize:vertical;transition:border-color .2s,box-shadow .2s}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--glow);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(148,163,184,.5)}
+.contact-form textarea{min-height:120px}
+.btn-primary{padding:14px 32px;background:linear-gradient(135deg,var(--glow),var(--violet));color:#fff;border:none;border-radius:12px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s,box-shadow .2s;align-self:flex-end;box-shadow:0 6px 24px rgba(37,99,235,.4)}
+.btn-primary:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,99,235,.5)}
+.socials{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;justify-content:center}
+.social-link{font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gray);text-decoration:none;border:2px solid rgba(96,165,250,.2);border-radius:30px;padding:12px 28px;transition:color .2s,border-color .2s,background .2s}
+.social-link:hover{color:var(--white);border-color:var(--light);background:rgba(37,99,235,.15)}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(96,165,250,.08);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--gray);flex-wrap:wrap;gap:10px}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--glow),var(--violet));color:#fff;font-size:14px;font-weight:600;padding:12px 28px;border-radius:40px;opacity:0;transition:opacity .3s,transform .3s;z-index:9999;pointer-events:none;box-shadow:0 8px 32px rgba(37,99,235,.5)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ═══════════════════════════════
+   ADMIN OVERLAY
+═══════════════════════════════ */
+#admin-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(4,13,31,.96);backdrop-filter:blur(18px);overflow-y:auto}
+#admin-overlay.open{display:block}
+.admin-wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid rgba(96,165,250,.2)}
+.admin-header h2{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--white),var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.admin-close{width:36px;height:36px;border-radius:50%;border:1.5px solid rgba(96,165,250,.3);background:transparent;color:var(--gray);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.admin-close:hover{color:var(--white);border-color:var(--white)}
+
+/* Login */
+#admin-login{display:flex;flex-direction:column;gap:16px;max-width:340px;margin:80px auto}
+#admin-login h3{font-size:18px;font-weight:700;text-align:center;color:var(--white)}
+#admin-login p{font-size:13px;color:var(--gray);text-align:center}
+.admin-input{width:100%;padding:13px 18px;border-radius:10px;border:1.5px solid rgba(96,165,250,.2);background:rgba(255,255,255,.05);font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--white);outline:none}
+.admin-input:focus{border-color:var(--glow);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+.admin-input::placeholder{color:rgba(148,163,184,.5)}
+.admin-btn{padding:13px;border-radius:10px;background:linear-gradient(135deg,var(--glow),var(--violet));color:#fff;border:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s}
+.admin-btn:hover{opacity:.88}
+#login-error{color:#f87171;font-size:13px;text-align:center;display:none}
+
+/* Admin Tabs */
+#admin-panel{display:none}
+.admin-tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+.admin-tab-btn{padding:8px 22px;border-radius:20px;border:1.5px solid rgba(96,165,250,.2);background:transparent;color:var(--gray);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.admin-tab-btn.active{background:rgba(37,99,235,.25);border-color:rgba(96,165,250,.5);color:var(--white)}
+.admin-sub{display:none}.admin-sub.active{display:block}
+
+/* Settings section */
+.settings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
+@media(max-width:600px){.settings-grid{grid-template-columns:1fr}}
+.settings-card{background:rgba(255,255,255,.04);border:1.5px solid rgba(96,165,250,.12);border-radius:14px;padding:20px}
+.settings-card h4{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--light);margin-bottom:16px}
+.field-row{margin-bottom:14px}
+.field-label{font-size:11px;color:var(--gray);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.field-input{width:100%;padding:10px 14px;border-radius:8px;border:1.5px solid rgba(96,165,250,.15);background:rgba(255,255,255,.04);font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--white);outline:none}
+.field-input:focus{border-color:var(--glow)}
+.field-input::placeholder{color:rgba(148,163,184,.4)}
+
+/* logo upload */
+.logo-preview-wrap{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.logo-preview-box{width:56px;height:56px;border-radius:10px;border:1.5px solid rgba(96,165,250,.2);background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.logo-preview-box img{width:100%;height:100%;object-fit:contain}
+.upload-btn-label{display:inline-block;padding:9px 18px;border-radius:8px;border:1.5px solid rgba(96,165,250,.3);background:rgba(37,99,235,.1);color:var(--light);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.upload-btn-label:hover{background:rgba(37,99,235,.25);border-color:var(--light)}
+#logo-file-input{display:none}
+.remove-logo-btn{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif}
+.remove-logo-btn:hover{background:rgba(248,113,113,.25)}
+
+/* video items */
+.video-item{background:rgba(255,255,255,.04);border:1.5px solid rgba(96,165,250,.12);border-radius:14px;padding:20px;margin-bottom:14px}
+.video-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.video-item-num{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--light)}
+.video-item-del{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.video-item-del:hover{background:rgba(248,113,113,.3)}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-full{grid-column:1/-1}
+
+/* admin actions */
+.admin-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;align-items:center}
+.admin-actions button{padding:11px 22px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.add-vid-btn{background:rgba(37,99,235,.18);border:1.5px solid rgba(96,165,250,.3);color:var(--light)}
+.add-vid-btn:hover{background:rgba(37,99,235,.3)}
+.save-btn{background:linear-gradient(135deg,var(--glow),var(--violet));border:none;color:#fff;box-shadow:0 6px 20px rgba(37,99,235,.4)}
+.save-btn:hover{opacity:.9;transform:translateY(-1px)}
+.logout-btn{background:transparent;border:1.5px solid rgba(148,163,184,.2);color:var(--gray);margin-left:auto}
+.logout-btn:hover{color:var(--white);border-color:var(--white)}
+
+@media(max-width:600px){nav{padding:14px 18px}.sec-head,.tabs-bar{padding-left:18px;padding-right:18px}.grid-long,.contact-section,footer{padding-left:16px;padding-right:16px}footer{flex-direction:column;text-align:center}.tabs-bar{padding:20px 12px 0;gap:6px}.tab-btn{font-size:12px;padding:8px 14px}}
+</style>
+</head>
+<body>
+
+<div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="logo-wrap" id="logo-wrap">
+    <!-- Logo SVG par défaut -->
+    <svg class="logo-svg-default" id="logo-svg-default" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
+        <linearGradient id="lg2" x1="0" y1="40" x2="40" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2563eb"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient>
+      </defs>
+      <rect width="40" height="40" rx="10" fill="url(#lg2)" opacity=".2"/>
+      <path d="M10 8 h8 a7 7 0 0 1 0 14 h-8 Z" stroke="url(#lg1)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M18 22 L28 34" stroke="url(#lg1)" stroke-width="2.2" stroke-linecap="round"/>
+      <circle cx="32" cy="10" r="3" fill="url(#lg1)"/>
+    </svg>
+    <!-- Logo image uploadé -->
+    <img id="logo-img" src="" alt="Logo"/>
+    <span class="logo-name" id="nav-name">Razvan</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#portfolio" class="nav-link-item active">Portfolio</a></li>
+    <li><a href="#contact" class="nav-link-item">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-tag" id="hero-tag">✦ Monteur vidéo disponible</div>
+  <h1 class="hero-h1">
+    <span class="word word-plain" style="animation-delay:.1s">je&nbsp;monte&nbsp;des&nbsp;</span><span class="word word-grad word-italic" style="animation-delay:.3s">vidéos</span><br>
+    <span id="rotateur" style="opacity:0;transform:translateY(40px);display:inline-block">pour TikTok</span>
+  </h1>
+  <div class="hero-line"></div>
+  <div class="hero-tools">
+    <div class="tool-badge"><span>🎬</span> DaVinci Resolve</div>
+    <div class="tool-badge"><span>⚡</span> Contenu court</div>
+    <div class="tool-badge"><span>🎯</span> Motion design</div>
+  </div>
+  <p class="hero-sub" id="hero-sub">Monteur spécialisé DaVinci Resolve, contenu court et long format. Basé en France.</p>
+  <div class="hero-form">
+    <input type="text" id="hero-input" placeholder="Décris ton projet…"/>
+    <button id="hero-btn" aria-label="Envoyer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+    </button>
+  </div>
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat"><div class="stat-num" id="stat1-num">50M+</div><div class="stat-label" id="stat1-lbl">Vues totales</div></div>
+    <div class="stat"><div class="stat-num" id="stat2-num">120+</div><div class="stat-label" id="stat2-lbl">Projets livrés</div></div>
+    <div class="stat"><div class="stat-num" id="stat3-num">3 ans</div><div class="stat-label" id="stat3-lbl">D'expérience</div></div>
+  </div>
+</section>
+
+<!-- ── TABS ── -->
+<div class="tabs-bar" id="portfolio">
+  <button class="tab-btn active" data-tab="short">📱 Vidéos courtes</button>
+  <button class="tab-btn" data-tab="long">🎥 Longues vidéos</button>
+</div>
+
+<!-- ── PANEL COURTES ── -->
+<div class="tab-panel active" id="panel-short">
+  <div class="sec-head"><h2>TikTok · Reels · Shorts</h2><div class="sec-head-line"></div></div>
+  <div class="grid-tiktok" id="grid-short"></div>
+</div>
+
+<!-- ── PANEL LONGUES ── -->
+<div class="tab-panel" id="panel-long">
+  <div class="sec-head"><h2>Long format · YouTube</h2><div class="sec-head-line"></div></div>
+  <div class="grid-long" id="grid-long"></div>
+</div>
+
+<!-- ── CONTACT ── -->
+<section class="contact-section" id="contact">
+  <h2>Tu as un projet ?</h2>
+  <p>Envoie-moi une description et je te réponds sous 24h.</p>
+  <div class="contact-form">
+    <input type="text" id="cf-nom" placeholder="Ton prénom"/>
+    <input type="email" id="cf-email" placeholder="Ton email"/>
+    <textarea id="cf-msg" placeholder="Décris ton projet…"></textarea>
+    <button class="btn-primary" id="cf-btn">Envoyer →</button>
+  </div>
+  <div class="socials" id="socials"></div>
+</section>
+
+<footer>
+  <span id="footer-txt">© 2025 Razvan — Monteur vidéo</span>
+</footer>
+
+<div id="toast">Sauvegardé ✓</div>
+
+<!-- ═══════════════════════════════════
+     ADMIN OVERLAY — INVISIBLE depuis le site
+     Accès : tape "razvan" au clavier n'importe où
+═══════════════════════════════════ -->
+<div id="admin-overlay">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <h2>⚙ Panel Admin</h2>
+      <button class="admin-close" id="admin-close-btn">✕</button>
+    </div>
+
+    <!-- Login -->
+    <div id="admin-login">
+      <h3>🔐 Connexion</h3>
+      <p>Accès réservé</p>
+      <input class="admin-input" type="password" id="admin-pwd" placeholder="Mot de passe"/>
+      <div id="login-error">❌ Mot de passe incorrect</div>
+      <button class="admin-btn" id="login-btn">Entrer</button>
+    </div>
+
+    <!-- Panel -->
+    <div id="admin-panel">
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-atab="settings">⚙ Paramètres</button>
+        <button class="admin-tab-btn" data-atab="short">📱 Vidéos courtes</button>
+        <button class="admin-tab-btn" data-atab="long">🎥 Longues vidéos</button>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="admin-sub active" id="asub-settings">
+        <div class="settings-grid">
+
+          <!-- Logo -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>Logo</h4>
+            <div class="logo-preview-wrap">
+              <div class="logo-preview-box"><img id="logo-admin-preview" src="" alt=""/></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label class="upload-btn-label" for="logo-file-input">📁 Choisir une image</label>
+                <input type="file" id="logo-file-input" accept="image/*"/>
+                <button class="remove-logo-btn" id="remove-logo-btn">Supprimer le logo</button>
+              </div>
+            </div>
+            <p style="font-size:12px;color:var(--gray)">Formats : PNG, JPG, SVG, WEBP. Le logo remplace l'icône "R" dans la nav.</p>
+          </div>
+
+          <!-- Stats -->
+          <div class="settings-card">
+            <h4>Statistiques affichées</h4>
+            <div class="field-row"><div class="field-label">Chiffre 1 (ex: 50M+)</div><input class="field-input" id="s1-num" placeholder="50M+"/></div>
+            <div class="field-row"><div class="field-label">Label 1</div><input class="field-input" id="s1-lbl" placeholder="Vues totales"/></div>
+            <div class="field-row"><div class="field-label">Chiffre 2 (ex: 120+)</div><input class="field-input" id="s2-num" placeholder="120+"/></div>
+            <div class="field-row"><div class="field-label">Label 2</div><input class="field-input" id="s2-lbl" placeholder="Projets livrés"/></div>
+            <div class="field-row"><div class="field-label">Chiffre 3 (ex: 3 ans)</div><input class="field-input" id="s3-num" placeholder="3 ans"/></div>
+            <div class="field-row"><div class="field-label">Label 3</div><input class="field-input" id="s3-lbl" placeholder="D'expérience"/></div>
+          </div>
+
+          <!-- Infos générales -->
+          <div class="settings-card">
+            <h4>Infos générales</h4>
+            <div class="field-row"><div class="field-label">Nom affiché</div><input class="field-input" id="cfg-nom" placeholder="Razvan"/></div>
+            <div class="field-row"><div class="field-label">Badge hero (petit texte)</div><input class="field-input" id="cfg-tag" placeholder="✦ Monteur vidéo disponible"/></div>
+            <div class="field-row"><div class="field-label">Sous-titre hero</div><input class="field-input" id="cfg-sub" placeholder="Monteur spécialisé DaVinci..."/></div>
+            <div class="field-row"><div class="field-label">Email contact</div><input class="field-input" id="cfg-email" placeholder="tonmail@exemple.com"/></div>
+          </div>
+
+          <!-- Réseaux -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>Réseaux sociaux (laisser vide pour masquer)</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field-row"><div class="field-label">TikTok URL</div><input class="field-input" id="cfg-tiktok" placeholder="https://tiktok.com/@toi"/></div>
+              <div class="field-row"><div class="field-label">Instagram URL</div><input class="field-input" id="cfg-insta" placeholder="https://instagram.com/toi"/></div>
+              <div class="field-row"><div class="field-label">YouTube URL</div><input class="field-input" id="cfg-yt" placeholder="https://youtube.com/@toi"/></div>
+              <div class="field-row"><div class="field-label">Twitch URL</div><input class="field-input" id="cfg-twitch" placeholder="https://twitch.tv/toi"/></div>
+            </div>
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>Changer le mot de passe admin</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field-row"><div class="field-label">Nouveau mot de passe</div><input class="field-input" type="password" id="new-pwd1" placeholder="Nouveau mot de passe"/></div>
+              <div class="field-row"><div class="field-label">Confirmer</div><input class="field-input" type="password" id="new-pwd2" placeholder="Répète le mot de passe"/></div>
+            </div>
+            <p id="pwd-msg" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
+          </div>
+
+        </div>
+
+        <div class="admin-actions">
+          <button class="save-btn" id="save-settings-btn">💾 Sauvegarder les paramètres</button>
+          <button class="logout-btn" id="logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <!-- VIDÉOS COURTES -->
+      <div class="admin-sub" id="asub-short">
+        <p style="color:var(--gray);font-size:13px;margin-bottom:20px">Format 9:16 — TikTok, Reels, Shorts</p>
+        <div id="vlist-short"></div>
+        <div class="admin-actions">
+          <button class="add-vid-btn" data-type="short">+ Ajouter une vidéo</button>
+          <button class="save-btn" data-savetype="short">💾 Sauvegarder</button>
+        </div>
+      </div>
+
+      <!-- LONGUES VIDÉOS -->
+      <div class="admin-sub" id="asub-long">
+        <p style="color:var(--gray);font-size:13px;margin-bottom:20px">Format 16:9 — YouTube, documentaires</p>
+        <div id="vlist-long"></div>
+        <div class="admin-actions">
+          <button class="add-vid-btn" data-type="long">+ Ajouter une vidéo</button>
+          <button class="save-btn" data-savetype="long">💾 Sauvegarder</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-panel -->
+  </div><!-- /admin-wrap -->
+</div><!-- /admin-overlay -->
+
+
+<script>
+/* ═══════════════════════════════════
+   MOT DE PASSE — change "razvan2025"
+═══════════════════════════════════ */
+let ADMIN_PWD = localStorage.getItem('razvan_pwd') || 'razvan2025';
+
+/* ═══════════════════════════════════
+   DONNÉES PAR DÉFAUT
+═══════════════════════════════════ */
+const DEF_SHORT = [
+  {image:"https://placehold.co/540x960/0a1a3a/60a5fa?text=TikTok+1",label:"mis partout",badge:"TikTok",titre:"Valorant Fragmovie",views:"1,2M vues",lien:"#"},
+  {image:"https://placehold.co/540x960/0d1e40/a78bfa?text=TikTok+2",label:"les gens",badge:"Reels",titre:"Minecraft Viral",views:"840K vues",lien:"#"},
+  {image:"https://placehold.co/540x960/091530/7c3aed?text=TikTok+3",label:"ce qui fait",badge:"TikTok",titre:"Réaction Edit",views:"620K vues",lien:"#"},
+  {image:"https://placehold.co/540x960/0a1a3a/60a5fa?text=TikTok+4",label:"",badge:"Shorts",titre:"Brand Reveal",views:"280K vues",lien:"#"},
+  {image:"https://placehold.co/540x960/0d1e40/a78bfa?text=TikTok+5",label:"MOUHA",badge:"TikTok",titre:"Portrait Streamer",views:"410K vues",lien:"#"},
+  {image:"https://placehold.co/540x960/091530/7c3aed?text=TikTok+6",label:"que t'as",badge:"Reels",titre:"Lifestyle Edit",views:"190K vues",lien:"#"},
+];
+const DEF_LONG = [
+  {image:"https://placehold.co/1280x720/0a1a3a/60a5fa?text=Long+Video+1",label:"Documentaire Gaming",badge:"YouTube",titre:"Session Valorant complète",views:"42K vues",lien:"#",duration:"18:32"},
+  {image:"https://placehold.co/1280x720/0d1e40/a78bfa?text=Long+Video+2",label:"",badge:"YouTube",titre:"Vlog Tournoi ESport",views:"18K vues",lien:"#",duration:"24:10"},
+];
+const DEF_SETTINGS = {
+  nom:"Razvan",tag:"✦ Monteur vidéo disponible",sub:"Monteur spécialisé DaVinci Resolve, contenu court et long format.",
+  email:"tonmail@exemple.com",
+  tiktok:"",insta:"",yt:"",twitch:"",
+  s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
+  logo:""
+};
+
+function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){return d;} }
+
+let vShort = load('razvan_short', DEF_SHORT);
+let vLong  = load('razvan_long',  DEF_LONG);
+let CFG    = load('razvan_cfg',   DEF_SETTINGS);
+
+/* ── Apply settings to page ── */
+function applySettings(){
+  document.getElementById('nav-name').textContent = CFG.nom;
+  document.getElementById('hero-tag').textContent = CFG.tag;
+  document.getElementById('hero-sub').textContent = CFG.sub;
+  document.getElementById('stat1-num').textContent = CFG.s1n;
+  document.getElementById('stat1-lbl').textContent = CFG.s1l;
+  document.getElementById('stat2-num').textContent = CFG.s2n;
+  document.getElementById('stat2-lbl').textContent = CFG.s2l;
+  document.getElementById('stat3-num').textContent = CFG.s3n;
+  document.getElementById('stat3-lbl').textContent = CFG.s3l;
+  document.getElementById('footer-txt').textContent = `© 2025 ${CFG.nom} — Monteur vidéo`;
+  const li = document.getElementById('logo-img');
+  const ls = document.getElementById('logo-svg-default');
+  if(CFG.logo){ li.src=CFG.logo; li.style.display='block'; ls.style.display='none'; }
+  else { li.style.display='none'; ls.style.display='block'; }
+  // socials avec icônes SVG
+  const sc = document.getElementById('socials'); sc.innerHTML='';
+  const ICONS={
+    tiktok:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.78a4.85 4.85 0 0 1-1.07-.09z"/></svg>`,
+    insta:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>`,
+    yt:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>`,
+    twitch:`<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="flex-shrink:0"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>`
+  };
+  const links=[{k:'tiktok',l:'TikTok'},{k:'insta',l:'Instagram'},{k:'yt',l:'YouTube'},{k:'twitch',l:'Twitch'}];
+  links.forEach(({k,l})=>{
+    if(!CFG[k])return;
+    const a=document.createElement('a');
+    a.className='social-link';
+    a.href=CFG[k]; a.target='_blank'; a.rel='noopener';
+    a.style.cssText='display:flex;align-items:center;gap:10px;font-size:15px;padding:12px 28px';
+    a.innerHTML=(ICONS[k]||'')+l;
+    sc.appendChild(a);
+  });
+}
+applySettings();
+
+/* ── Build grids ── */
+function buildGrid(videos, containerId, cardClass){
+  const g = document.getElementById(containerId); g.innerHTML='';
+  videos.forEach(v=>{
+    const a=document.createElement('a');
+    a.className=`card ${cardClass}`;
+    a.href=v.lien||'#';
+    if(v.lien&&v.lien!='#') a.target='_blank';
+    // Detect if media is a video (mp4, webm, ogg, mov...)
+    const isVideo = v.image && /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(v.image);
+    const mediaHTML = isVideo
+      ? `<video src="${v.image}" autoplay muted loop playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;display:block;"></video>`
+      : `<img src="${v.image}" alt="${v.titre}" loading="lazy"/>`;
+    a.innerHTML=`
+      ${mediaHTML}
+      ${v.label?`<div class="card-label">${v.label}</div>`:''}
+      ${v.duration?`<div class="duration-badge">${v.duration}</div>`:''}
+      <div class="card-meta">
+        <span class="card-views">${v.views}</span>
+        ${v.badge?`<span class="badge">${v.badge}</span>`:''}
+      </div>`;
+    g.appendChild(a);
+  });
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:0,rootMargin:'0px 0px -10px 0px'});
+  g.querySelectorAll('.card').forEach((c,i)=>{ c.style.transitionDelay=(i%5)*0.05+'s'; obs.observe(c); });
+}
+buildGrid(vShort,'grid-short','card-tiktok');
+buildGrid(vLong,'grid-long','card-long');
+
+/* ── Tabs ── */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-'+tab).classList.add('active');
+    if(tab==='short') buildGrid(vShort,'grid-short','card-tiktok');
+    else buildGrid(vLong,'grid-long','card-long');
+  });
+});
+const ROTS=["pour TikTok","pour les Reels","pour YouTube Shorts","pour ta marque","avec DaVinci Resolve"];
+let ri=0;
+const rot=document.getElementById('rotateur');
+setTimeout(()=>{ rot.style.transition='opacity .5s,transform .5s'; rot.style.opacity='1'; rot.style.transform='translateY(0)'; },500);
+setInterval(()=>{
+  rot.style.opacity='0'; rot.style.transform='translateY(14px)'; rot.style.transition='opacity .3s,transform .3s';
+  setTimeout(()=>{ ri=(ri+1)%ROTS.length; rot.textContent=ROTS[ri]; rot.style.transition='opacity .4s,transform .4s'; rot.style.opacity='1'; rot.style.transform='translateY(0)'; },320);
+},2800);
+
+/* ── Hero form ── */
+document.getElementById('hero-btn').addEventListener('click',()=>{
+  const t=document.getElementById('hero-input').value.trim();
+  if(t) document.getElementById('cf-msg').value=t;
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+});
+
+/* ── Contact ── */
+document.getElementById('cf-btn').addEventListener('click',()=>{
+  const nom=document.getElementById('cf-nom').value.trim();
+  const email=document.getElementById('cf-email').value.trim();
+  const msg=document.getElementById('cf-msg').value.trim();
+  if(!nom||!email||!msg){alert('Remplis tous les champs.');return;}
+  const s=encodeURIComponent(`Projet vidéo de ${nom}`);
+  const b=encodeURIComponent(`Bonjour,\n\nNom : ${nom}\nEmail : ${email}\n\n${msg}`);
+  window.location.href=`mailto:${CFG.email}?subject=${s}&body=${b}`;
+  showToast('Message envoyé ✓');
+});
+
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+/* ════════════════════════════════════════
+   ADMIN — accès caché : tape "razvan" au clavier
+════════════════════════════════════════ */
+let keySeq='';
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('admin-overlay').classList.contains('open')) return;
+  keySeq+=(e.key||'').toLowerCase();
+  if(keySeq.length>6) keySeq=keySeq.slice(-6);
+  if(keySeq.includes('razvan')){ keySeq=''; openAdmin(); }
+});
+
+function openAdmin(){ document.getElementById('admin-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeAdmin(){ document.getElementById('admin-overlay').classList.remove('open'); document.body.style.overflow=''; }
+
+document.getElementById('admin-close-btn').addEventListener('click',closeAdmin);
+
+/* Login */
+document.getElementById('login-btn').addEventListener('click',tryLogin);
+document.getElementById('admin-pwd').addEventListener('keydown',e=>{ if(e.key==='Enter') tryLogin(); });
+function tryLogin(){
+  if(document.getElementById('admin-pwd').value===ADMIN_PWD){
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    loadAdminSettings(); buildAdminList('short'); buildAdminList('long');
+  } else {
+    document.getElementById('login-error').style.display='block';
+    document.getElementById('admin-pwd').value='';
+  }
+}
+
+/* Admin sub-tabs */
+document.querySelectorAll('.admin-tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.admin-tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.admin-sub').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('asub-'+btn.dataset.atab).classList.add('active');
+  });
+});
+
+/* ── Load settings into admin fields ── */
+function loadAdminSettings(){
+  document.getElementById('cfg-nom').value=CFG.nom||'';
+  document.getElementById('cfg-tag').value=CFG.tag||'';
+  document.getElementById('cfg-sub').value=CFG.sub||'';
+  document.getElementById('cfg-email').value=CFG.email||'';
+  document.getElementById('cfg-tiktok').value=CFG.tiktok||'';
+  document.getElementById('cfg-insta').value=CFG.insta||'';
+  document.getElementById('cfg-yt').value=CFG.yt||'';
+  document.getElementById('cfg-twitch').value=CFG.twitch||'';
+  document.getElementById('s1-num').value=CFG.s1n||'';
+  document.getElementById('s1-lbl').value=CFG.s1l||'';
+  document.getElementById('s2-num').value=CFG.s2n||'';
+  document.getElementById('s2-lbl').value=CFG.s2l||'';
+  document.getElementById('s3-num').value=CFG.s3n||'';
+  document.getElementById('s3-lbl').value=CFG.s3l||'';
+  // logo preview
+  const prev=document.getElementById('logo-admin-preview');
+  if(CFG.logo){ prev.src=CFG.logo; prev.style.display='block'; }
+  else prev.style.display='none';
+}
+
+/* ── Logo upload ── */
+document.getElementById('logo-file-input').addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    CFG.logo=ev.target.result;
+    const prev=document.getElementById('logo-admin-preview');
+    prev.src=CFG.logo; prev.style.display='block';
+    // apply live
+    document.getElementById('logo-img').src=CFG.logo;
+    document.getElementById('logo-img').style.display='block';
+    document.getElementById('logo-svg-default').style.display='none';
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('remove-logo-btn').addEventListener('click',()=>{
+  CFG.logo='';
+  document.getElementById('logo-admin-preview').style.display='none';
+  document.getElementById('logo-img').style.display='none';
+  document.getElementById('logo-svg-default').style.display='block';
+  document.getElementById('logo-file-input').value='';
+});
+
+/* ── Save settings ── */
+document.getElementById('save-settings-btn').addEventListener('click',()=>{
+  CFG.nom=document.getElementById('cfg-nom').value||CFG.nom;
+  CFG.tag=document.getElementById('cfg-tag').value||CFG.tag;
+  CFG.sub=document.getElementById('cfg-sub').value||CFG.sub;
+  CFG.email=document.getElementById('cfg-email').value||CFG.email;
+  CFG.tiktok=document.getElementById('cfg-tiktok').value;
+  CFG.insta=document.getElementById('cfg-insta').value;
+  CFG.yt=document.getElementById('cfg-yt').value;
+  CFG.twitch=document.getElementById('cfg-twitch').value;
+  CFG.s1n=document.getElementById('s1-num').value||CFG.s1n;
+  CFG.s1l=document.getElementById('s1-lbl').value||CFG.s1l;
+  CFG.s2n=document.getElementById('s2-num').value||CFG.s2n;
+  CFG.s2l=document.getElementById('s2-lbl').value||CFG.s2l;
+  CFG.s3n=document.getElementById('s3-num').value||CFG.s3n;
+  CFG.s3l=document.getElementById('s3-lbl').value||CFG.s3l;
+  // password change
+  const p1=document.getElementById('new-pwd1').value;
+  const p2=document.getElementById('new-pwd2').value;
+  const pm=document.getElementById('pwd-msg');
+  if(p1||p2){
+    if(p1===p2&&p1.length>=4){ ADMIN_PWD=p1; localStorage.setItem('razvan_pwd',p1); pm.style.color='#4ade80'; pm.textContent='Mot de passe changé ✓'; }
+    else{ pm.style.color='#f87171'; pm.textContent=p1!==p2?'Les mots de passe ne correspondent pas.':'Minimum 4 caractères.'; }
+    document.getElementById('new-pwd1').value=''; document.getElementById('new-pwd2').value='';
+  } else pm.textContent='';
+  localStorage.setItem('razvan_cfg',JSON.stringify(CFG));
+  applySettings();
+  showToast('Paramètres sauvegardés ✓');
+});
+
+/* ── Build admin video list ── */
+function buildAdminList(type){
+  const videos = type==='short' ? vShort : vLong;
+  const list = document.getElementById('vlist-'+type);
+  list.innerHTML='';
+  const hasLong = type==='long';
+  videos.forEach((v,i)=>{
+    const div=document.createElement('div'); div.className='video-item';
+    div.innerHTML=`
+      <div class="video-item-header">
+        <span class="video-item-num">Vidéo ${i+1}</span>
+        <button class="video-item-del" data-idx="${i}" data-type="${type}">Supprimer</button>
+      </div>
+      <div class="field-grid">
+        <div class="field-full">
+          <div class="field-label">Miniature ou Vidéo — URL ou fichier uploadé (.jpg, .png, .mp4…)</div>
+          <input class="field-input" data-f="image" data-idx="${i}" data-type="${type}" value="${v.image||''}" placeholder="https://... ou upload ci-dessous" style="margin-bottom:6px"/>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <label style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1.5px solid rgba(96,165,250,.3);background:rgba(37,99,235,.1);color:var(--light);font-size:12px;font-weight:600;cursor:pointer" for="img-upload-${type}-${i}">📁 Uploader image ou vidéo</label>
+            <input type="file" id="img-upload-${type}-${i}" accept="image/*,video/mp4,video/webm,video/ogg,video/quicktime" style="display:none" data-idx="${i}" data-type="${type}"/>
+            ${v.image&&!v.image.startsWith('http')?`<span style="font-size:11px;color:#4ade80">✓ Fichier uploadé</span>`:''}
+          </div>
+        </div>
+        <div><div class="field-label">Texte sur la vidéo</div><input class="field-input" data-f="label" data-idx="${i}" data-type="${type}" value="${v.label||''}" placeholder="Ex: mis partout"/></div>
+        <div><div class="field-label">Badge</div><input class="field-input" data-f="badge" data-idx="${i}" data-type="${type}" value="${v.badge||''}" placeholder="TikTok / YouTube..."/></div>
+        <div><div class="field-label">Titre</div><input class="field-input" data-f="titre" data-idx="${i}" data-type="${type}" value="${v.titre||''}" placeholder="Nom du projet"/></div>
+        <div><div class="field-label">Vues</div><input class="field-input" data-f="views" data-idx="${i}" data-type="${type}" value="${v.views||''}" placeholder="Ex: 1,2M vues"/></div>
+        ${hasLong?`<div><div class="field-label">Durée</div><input class="field-input" data-f="duration" data-idx="${i}" data-type="${type}" value="${v.duration||''}" placeholder="Ex: 18:32"/></div>`:''}
+        <div class="field-full"><div class="field-label">Lien vidéo</div><input class="field-input" data-f="lien" data-idx="${i}" data-type="${type}" value="${v.lien||'#'}" placeholder="https://youtube.com/..."/></div>
+      </div>`;
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.field-input').forEach(inp=>{
+    inp.addEventListener('input',e=>{
+      const idx=+e.target.dataset.idx, f=e.target.dataset.f, t=e.target.dataset.type;
+      (t==='short'?vShort:vLong)[idx][f]=e.target.value;
+    });
+  });
+  // Image upload handlers
+  list.querySelectorAll('input[type="file"]').forEach(fileInput=>{
+    fileInput.addEventListener('change',e=>{
+      const file=e.target.files[0]; if(!file) return;
+      const idx=+e.target.dataset.idx, t=e.target.dataset.type;
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        const b64=ev.target.result;
+        (t==='short'?vShort:vLong)[idx].image=b64;
+        // Update URL input field too
+        const urlInput=list.querySelector(`.field-input[data-f="image"][data-idx="${idx}"][data-type="${t}"]`);
+        if(urlInput) urlInput.value='(image uploadée)';
+        showToast('Image chargée ✓ — pense à sauvegarder');
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+  list.querySelectorAll('.video-item-del').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const idx=+e.target.dataset.idx, t=e.target.dataset.type;
+      if(confirm('Supprimer ?')){ (t==='short'?vShort:vLong).splice(idx,1); buildAdminList(t); }
+    });
+  });
+}
+
+/* ── Add video buttons ── */
+document.querySelectorAll('.add-vid-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const type=btn.dataset.type;
+    const arr=type==='short'?vShort:vLong;
+    arr.push({image:"",label:"",badge:type==='short'?"TikTok":"YouTube",titre:"Nouvelle vidéo",views:"",lien:"#",duration:type==='long'?"0:00":undefined});
+    buildAdminList(type);
+    document.getElementById('vlist-'+type).lastElementChild?.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+/* ── Save video buttons ── */
+document.querySelectorAll('.save-btn[data-savetype]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const type=btn.dataset.savetype;
+    localStorage.setItem('razvan_'+type, JSON.stringify(type==='short'?vShort:vLong));
+    buildGrid(type==='short'?vShort:vLong, 'grid-'+type, type==='short'?'card-tiktok':'card-long');
+    showToast('Vidéos sauvegardées ✓');
+  });
+});
+
+/* ── Logout ── */
+document.getElementById('logout-btn').addEventListener('click',()=>{
+  document.getElementById('admin-login').style.display='flex';
+  document.getElementById('admin-panel').style.display='none';
+  document.getElementById('admin-pwd').value='';
+  document.getElementById('login-error').style.display='none';
+  closeAdmin();
+});
+</script>
+</body>
+</html>
