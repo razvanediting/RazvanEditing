@@ -57,13 +57,13 @@
   ],
   "long": [
     {
-      "image": "",
-      "label": "Bientôt",
+      "image": "https://www.youtube.com/watch?v=iuHQs71l9rw",
+      "label": "Anakin",
       "badge": "YouTube",
-      "titre": "",
-      "views": "",
-      "lien": "",
-      "duration": ""
+      "titre": "Je réagis à ma première vidéo Youtube",
+      "views": "20k+",
+      "lien": "https://www.youtube.com/watch?v=iuHQs71l9rw",
+      "duration": "19:50"
     }
   ]
 }
