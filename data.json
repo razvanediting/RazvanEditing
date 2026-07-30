@@ -58,12 +58,21 @@
   "long": [
     {
       "image": "https://www.youtube.com/watch?v=iuHQs71l9rw",
-      "label": "Anakin",
+      "label": "",
       "badge": "YouTube",
       "titre": "Je réagis à ma première vidéo Youtube",
       "views": "10K+",
       "lien": "https://www.youtube.com/watch?v=iuHQs71l9rw",
       "duration": "19:50"
+    },
+    {
+      "image": "www.youtube.com/watch?v=PCdLGmx03B4&t",
+      "label": "",
+      "badge": "YouTube",
+      "titre": "J’ai POSÉ les PIRES QUESTIONS à VERITY",
+      "views": "10k+",
+      "lien": "www.youtube.com/watch?v=PCdLGmx03B4&t",
+      "duration": "13:42"
     }
   ]
 }
