@@ -1355,6 +1355,7 @@ function buildClientsAdminList(){
       <div class="client-admin-avatar">${c.avatar?`<img src="${c.avatar}" alt=""/>`:en((c.name||'?')[0].toUpperCase())}</div>
       <div class="client-admin-fields">
         <input class="field-input" data-idx="${i}" data-f="name" value="${en(c.name||'')}" placeholder="Pseudo du client"/>
+        <input class="field-input" data-idx="${i}" data-f="link" value="${en(c.link||'')}" placeholder="Lien YouTube/TikTok (optionnel)"/>
         <div class="client-admin-actions">
           <label class="upload-btn-label" for="client-file-${i}" style="font-size:12px;padding:7px 14px">📁 Choisir une image</label>
           <input type="file" id="client-file-${i}" accept="image/*" data-idx="${i}" class="client-file-input"/>
@@ -1365,10 +1366,10 @@ function buildClientsAdminList(){
   });
   list.querySelectorAll('.client-admin-fields > .field-input').forEach(inp=>{
     inp.addEventListener('input',e=>{
-      const idx=+e.target.dataset.idx;
-      clientsArr[idx].name = e.target.value;
+      const idx=+e.target.dataset.idx, f=e.target.dataset.f;
+      clientsArr[idx][f] = e.target.value;
       const avatarBox = list.children[idx]?.querySelector('.client-admin-avatar');
-      if(avatarBox && !clientsArr[idx].avatar) avatarBox.textContent = (e.target.value||'?')[0].toUpperCase();
+      if(avatarBox && f==='name' && !clientsArr[idx].avatar) avatarBox.textContent = (e.target.value||'?')[0].toUpperCase();
     });
   });
   list.querySelectorAll('.client-file-input').forEach(inp=>{
@@ -1392,7 +1393,7 @@ function buildClientsAdminList(){
   });
 }
 document.getElementById('add-client-btn').addEventListener('click',()=>{
-  clientsArr.push({name:'',avatar:''});
+  clientsArr.push({name:'',avatar:'',link:''});
   buildClientsAdminList();
   document.getElementById('clients-admin-list').lastElementChild?.scrollIntoView({behavior:'smooth'});
 });
