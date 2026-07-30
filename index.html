@@ -153,6 +153,51 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(96,165,250,.08);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--gray);flex-wrap:wrap;gap:10px}
 
+/* ── ANIMATED COUNTER ── */
+.counter-bar{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;padding:0 56px 60px}
+.counter-item{text-align:center;flex:1;min-width:120px;max-width:200px}
+.counter-icon{font-size:24px;margin-bottom:8px}
+.counter-num{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--light),var(--warm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.counter-label{font-size:11px;color:var(--gray);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+.counter-sub{font-size:12px;color:var(--light);margin-top:2px;opacity:.7}
+
+/* ── CLIENTS ── */
+.clients-section{position:relative;z-index:1;padding:60px 56px;text-align:center;border-top:1px solid rgba(96,165,250,.1)}
+.clients-section h2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--light);margin-bottom:36px}
+.clients-grid{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center}
+.client-card{display:flex;flex-direction:column;align-items:center;gap:12px;opacity:.7;transition:opacity .3s}
+.client-card:hover{opacity:1}
+.client-avatar{width:80px;height:80px;border-radius:50%;border:2px solid rgba(96,165,250,.3);overflow:hidden;background:var(--mid)}
+.client-avatar img{width:100%;height:100%;object-fit:cover}
+.client-name{font-size:14px;font-weight:700;color:var(--white)}
+.client-role{font-size:12px;color:var(--gray)}
+
+/* ── FAQ ── */
+.faq-section{position:relative;z-index:1;padding:70px 56px;max-width:720px;margin:0 auto;text-align:center;border-top:1px solid rgba(96,165,250,.1)}
+.faq-section h2{font-size:clamp(24px,3.2vw,38px);font-weight:800;letter-spacing:-.02em;margin-bottom:36px;background:linear-gradient(135deg,var(--white) 40%,var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.faq-item{border:1.5px solid rgba(96,165,250,.12);border-radius:14px;margin-bottom:12px;overflow:hidden;background:rgba(255,255,255,.03);transition:border-color .3s}
+.faq-item.open{border-color:rgba(96,165,250,.3)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;cursor:pointer;font-size:15px;font-weight:600;color:var(--white);transition:color .2s}
+.faq-q:hover{color:var(--light)}
+.faq-arrow{font-size:18px;color:var(--gray);transition:transform .3s;flex-shrink:0;margin-left:12px}
+.faq-item.open .faq-arrow{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s ease;padding:0 24px}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 18px}
+.faq-a p{font-size:14px;color:var(--gray);line-height:1.7;text-align:left}
+
+/* ── BOOKING ── */
+.booking-section{position:relative;z-index:1;padding:70px 56px;text-align:center;border-top:1px solid rgba(96,165,250,.1)}
+.booking-section h2{font-size:clamp(24px,3.2vw,38px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px;background:linear-gradient(135deg,var(--white) 40%,var(--light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.booking-section>p{color:var(--gray);font-size:15px;margin-bottom:36px;max-width:440px;margin-left:auto;margin-right:auto}
+.booking-form{display:flex;flex-direction:column;gap:14px;width:100%;max-width:480px;margin:0 auto}
+.booking-form input,.booking-form textarea,.booking-form select{width:100%;padding:14px 18px;border-radius:12px;border:1.5px solid rgba(96,165,250,.2);background:rgba(255,255,255,.04);font-family:'Space Grotesk',sans-serif;font-size:14px;color:var(--white);outline:none;transition:border-color .2s,box-shadow .2s}
+.booking-form input:focus,.booking-form textarea:focus,.booking-form select:focus{border-color:var(--glow);box-shadow:0 0 0 3px rgba(37,99,235,.2)}
+.booking-form input::placeholder,.booking-form textarea::placeholder{color:rgba(148,163,184,.5)}
+.booking-form select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
+.booking-form select option{background:#0a1a3a;color:var(--white)}
+.booking-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:500px){.booking-row{grid-template-columns:1fr}}
+
 /* ── TOAST ── */
 #toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(80px);background:linear-gradient(135deg,var(--glow),var(--violet));color:#fff;font-size:14px;font-weight:600;padding:12px 28px;border-radius:40px;opacity:0;transition:opacity .3s,transform .3s;z-index:9999;pointer-events:none;box-shadow:0 8px 32px rgba(37,99,235,.5)}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -350,6 +395,95 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 <section class="about-section" id="about">
   <h2 id="about-title">Pourquoi je fais du montage</h2>
   <p id="about-text"></p>
+</section>
+
+<!-- ── VUES PAR PLATEFORME ── -->
+<div class="counter-bar" id="counter-bar">
+  <div class="counter-item">
+    <div class="counter-icon">🎵</div>
+    <div class="counter-num" data-target="0" id="cnt-tiktok">0</div>
+    <div class="counter-label">Vues TikTok</div>
+    <div class="counter-sub">Reels · Shorts</div>
+  </div>
+  <div class="counter-item">
+    <div class="counter-icon">▶️</div>
+    <div class="counter-num" data-target="0" id="cnt-yt-short">0</div>
+    <div class="counter-label">Vues YouTube Shorts</div>
+  </div>
+  <div class="counter-item">
+    <div class="counter-icon">📸</div>
+    <div class="counter-num" data-target="0" id="cnt-insta">0</div>
+    <div class="counter-label">Vues Instagram</div>
+    <div class="counter-sub">Reels</div>
+  </div>
+  <div class="counter-item">
+    <div class="counter-icon">🎬</div>
+    <div class="counter-num" data-target="0" id="cnt-yt-long">0</div>
+    <div class="counter-label">Vues YouTube Long</div>
+    <div class="counter-sub">Vidéos montées</div>
+  </div>
+</div>
+
+<!-- ── CLIENTS ── -->
+<section class="clients-section" id="clients">
+  <h2>Ils m'ont fait confiance</h2>
+  <div class="clients-grid">
+    <div class="client-card">
+      <div class="client-avatar">
+        <img src="https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj" alt="Anakin WTR" onerror="this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)&quot;>A</div>'"/>
+      </div>
+      <div class="client-name">Anakin WTR</div>
+      <div class="client-role">YouTube · Long format</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq-section" id="faq">
+  <h2>Questions fréquentes</h2>
+  <div id="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Quel est ton tarif pour une vidéo ?<span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p>Ça dépend du format et de la complexité. Contacte-moi avec les détails de ton projet et je te fais un devis personnalisé sous 24h.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Quels logiciels utilises-tu ?<span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p>Je monte principalement sur DaVinci Resolve. C'est un logiciel professionnel qui me permet de gérer le montage, l'étalonnage et le motion design dans un seul outil.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Combien de temps prend une vidéo ?<span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p>Pour une vidéo courte (TikTok, Reel), je livre en 24 à 48h. Pour une vidéo longue (YouTube), ça dépend de la durée et de la complexité, généralement 3 à 7 jours.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Tu fais que des vidéos courtes ?<span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p>Non, je monte aussi des vidéos longues format YouTube. Tu peux voir des exemples dans l'onglet "Longues vidéos" ci-dessus.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Comment se passe le processus ?<span class="faq-arrow">+</span></div>
+      <div class="faq-a"><p>Tu m'envoies tes rushes (via Discord, Google Drive, etc.), tu me donnes tes indications (style, durée, ambiance) et je m'occupe du reste. On fait des retours ensemble jusqu'à ce que tu sois satisfait.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RÉSERVATION ── -->
+<section class="booking-section" id="booking">
+  <h2>Réserve ta place</h2>
+  <p>Choisis une date et décris ton projet. Je te confirme ma disponibilité sous 24h.</p>
+  <div class="booking-form">
+    <input type="text" id="bk-nom" placeholder="Ton prénom"/>
+    <input type="email" id="bk-email" placeholder="Ton email"/>
+    <div class="booking-row">
+      <input type="date" id="bk-date"/>
+      <select id="bk-type">
+        <option value="" disabled selected>Type de vidéo</option>
+        <option value="tiktok">TikTok / Reel / Short</option>
+        <option value="youtube">YouTube long format</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+    <textarea id="bk-msg" placeholder="Décris ton projet…"></textarea>
+    <button class="btn-primary" id="bk-btn">Réserver →</button>
+  </div>
 </section>
 
 <!-- ── CONTACT ── -->
@@ -865,6 +999,66 @@ function showToast(msg){
   const t=document.getElementById('toast'); t.textContent=msg;
   t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
 }
+
+/* ── ANIMATED COUNTER ── */
+function animateCounters(){
+  const counters=document.querySelectorAll('.counter-num[data-target]');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(!e.isIntersecting)return;
+      const el=e.target,target=parseInt(el.dataset.target)||0;
+      if(target===0)return;
+      let current=0;
+      const step=Math.max(1,Math.floor(target/60));
+      const iv=setInterval(()=>{
+        current+=step;
+        if(current>=target){current=target;clearInterval(iv);}
+        el.textContent=current>=1000000?(current/1000000).toFixed(1)+'M':current>=1000?(current/1000).toFixed(current>=10000?0:1)+'K':current;
+      },25);
+      obs.unobserve(el);
+    });
+  },{threshold:0.3});
+  counters.forEach(c=>obs.observe(c));
+}
+animateCounters();
+
+/* ── FAQ ACCORDION ── */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement,wasOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!wasOpen)item.classList.add('open');
+  });
+});
+
+/* ── BOOKING FORM ── */
+document.getElementById('bk-btn')?.addEventListener('click',async()=>{
+  const nom=document.getElementById('bk-nom').value.trim();
+  const email=document.getElementById('bk-email').value.trim();
+  const date=document.getElementById('bk-date').value;
+  const type=document.getElementById('bk-type').value;
+  const msg=document.getElementById('bk-msg').value.trim();
+  if(!nom||!email||!date||!type){alert('Remplis tous les champs obligatoires.');return;}
+  let formId=(CFG.formspreeId||'').trim();
+  const fmatch=formId.match(/([a-zA-Z0-9]+)$/);
+  if(fmatch)formId=fmatch[1];
+  const btn=document.getElementById('bk-btn');
+  const body=`Réservation de ${nom}\nDate souhaitée : ${date}\nType de vidéo : ${type}\n\n${msg||'(pas de détails)'}`;
+  if(formId){
+    btn.disabled=true;const oldTxt=btn.textContent;btn.textContent='Envoi...';
+    try{
+      const res=await fetch(`https://formspree.io/f/${formId}`,{method:'POST',headers:{'Accept':'application/json'},body:new URLSearchParams({name:nom,email:email,message:body,_subject:`Réservation vidéo de ${nom} — ${date}`})});
+      if(!res.ok)throw new Error('Erreur');
+      showToast('Réservation envoyée !');
+      document.getElementById('bk-nom').value='';document.getElementById('bk-email').value='';document.getElementById('bk-date').value='';document.getElementById('bk-type').selectedIndex=0;document.getElementById('bk-msg').value='';
+    }catch(e){alert("Erreur d'envoi. Réessaie ou contacte-moi via Discord.");}
+    finally{btn.disabled=false;btn.textContent=oldTxt;}
+  }else{
+    const s=encodeURIComponent(`Réservation vidéo — ${date}`);
+    window.location.href=`mailto:${CFG.email}?subject=${s}&body=${encodeURIComponent(body)}`;
+    showToast('Redirection vers email...');
+  }
+});
 
 let _k='',_urlp=new URLSearchParams(location.search).has('razvan');
 document.addEventListener('keydown',e=>{
