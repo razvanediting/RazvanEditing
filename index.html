@@ -99,7 +99,7 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 @media(max-width:430px){.grid-tiktok{grid-template-columns:1fr;padding:0 16px 50px;max-width:280px}}
 
 /* ── GRILLE LONGUES VIDÉOS (16:9) ── */
-.grid-long{position:relative;z-index:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;padding:0 56px 80px;max-width:1200px;margin:0 auto;justify-items:center}
+.grid-long{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:24px;padding:0 56px 80px;max-width:1000px;margin:0 auto;justify-items:center}
 @media(max-width:700px){.grid-long{grid-template-columns:1fr;padding:0 20px 60px}}
 
 /* ── CARD BASE ── */
@@ -121,7 +121,7 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 .card-tiktok{border-radius:var(--radius)!important;aspect-ratio:9/16;width:100%}
 .card-wrap.visible .card-tiktok:hover{transform:scale(1.03);box-shadow:0 0 0 2px rgba(96,165,250,.6)}
 /* long cards = 16:9 mais plus petit */
-.card-long{aspect-ratio:16/9;width:100%;max-width:420px}
+.card-long{aspect-ratio:16/9;width:100%;max-width:460px}
 
 .card-label{position:absolute;bottom:56px;left:16px;right:16px;z-index:2;font-size:clamp(15px,2.2vw,20px);font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,.5);line-height:1.2}
 .card-long .card-label{bottom:46px;font-size:14px}
@@ -546,6 +546,15 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
             <div class="field-row"><div class="field-label">Label 3</div><input class="field-input" id="s3-lbl" placeholder="D'expérience"/></div>
           </div>
 
+          <!-- Vues par plateforme -->
+          <div class="settings-card">
+            <h4>Vues par plateforme</h4>
+            <div class="field-row"><div class="field-label">Vues TikTok (nombre)</div><input class="field-input" id="cntTiktok" type="number" placeholder="Ex: 50000"/></div>
+            <div class="field-row"><div class="field-label">Vues YouTube Shorts (nombre)</div><input class="field-input" id="cntYtShort" type="number" placeholder="Ex: 12000"/></div>
+            <div class="field-row"><div class="field-label">Vues Instagram (nombre)</div><input class="field-input" id="cntInsta" type="number" placeholder="Ex: 8000"/></div>
+            <div class="field-row"><div class="field-label">Vues YouTube Long (nombre)</div><input class="field-input" id="cntYtLong" type="number" placeholder="Ex: 25000"/></div>
+          </div>
+
           <!-- Infos générales -->
           <div class="settings-card">
             <h4>Infos générales</h4>
@@ -673,6 +682,7 @@ const DEF_SETTINGS = {
   aboutTitle:"Pourquoi je fais du montage",
   aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
+  cntTiktok:0,cntYtShort:0,cntInsta:0,cntYtLong:0,
   logo:"",
   pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d"
 };
@@ -695,6 +705,13 @@ function applySettings(){
   document.getElementById('stat3-num').textContent = CFG.s3n;
   document.getElementById('stat3-lbl').textContent = CFG.s3l;
   document.getElementById('footer-txt').textContent = `© 2025 ${CFG.nom} — Monteur vidéo`;
+  // counters
+  const cMap=[['cntTiktok','cnt-tiktok'],['cntYtShort','cnt-yt-short'],['cntInsta','cnt-insta'],['cntYtLong','cnt-yt-long']];
+  cMap.forEach(([cfgKey,elId])=>{
+    const el=document.getElementById(elId);
+    if(el){const v=parseInt(CFG[cfgKey])||0;el.dataset.target=v;el.textContent=v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(v>=10000?0:1)+'K':String(v);}
+  });
+  animateCounters();
   document.getElementById('about-title').textContent = CFG.aboutTitle||'';
   document.getElementById('about-text').textContent = CFG.aboutText||'';
   document.getElementById('about').style.display = (CFG.aboutTitle||CFG.aboutText) ? 'block' : 'none';
@@ -980,9 +997,9 @@ function showToast(msg){
 }
 
 /* ── ANIMATED COUNTER ── */
+let _cntObs=null;
 function animateCounters(){
-  const counters=document.querySelectorAll('.counter-num[data-target]');
-  const obs=new IntersectionObserver((entries)=>{
+  if(!_cntObs)_cntObs=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(!e.isIntersecting)return;
       const el=e.target,target=parseInt(el.dataset.target)||0;
@@ -992,12 +1009,12 @@ function animateCounters(){
       const iv=setInterval(()=>{
         current+=step;
         if(current>=target){current=target;clearInterval(iv);}
-        el.textContent=current>=1000000?(current/1000000).toFixed(1)+'M':current>=1000?(current/1000).toFixed(current>=10000?0:1)+'K':current;
+        el.textContent=current>=1000000?(current/1000000).toFixed(1)+'M':current>=1000?(current/1000).toFixed(current>=10000?0:1)+'K':String(current);
       },25);
-      obs.unobserve(el);
+      _cntObs.unobserve(el);
     });
   },{threshold:0.3});
-  counters.forEach(c=>obs.observe(c));
+  document.querySelectorAll('.counter-num[data-target]').forEach(c=>{c._animated=false;_cntObs.observe(c);});
 }
 animateCounters();
 
@@ -1076,6 +1093,10 @@ function loadAdminSettings(){
   document.getElementById('s2-lbl').value=CFG.s2l||'';
   document.getElementById('s3-num').value=CFG.s3n||'';
   document.getElementById('s3-lbl').value=CFG.s3l||'';
+  document.getElementById('cntTiktok').value=CFG.cntTiktok||'';
+  document.getElementById('cntYtShort').value=CFG.cntYtShort||'';
+  document.getElementById('cntInsta').value=CFG.cntInsta||'';
+  document.getElementById('cntYtLong').value=CFG.cntYtLong||'';
   // logo preview
   const prev=document.getElementById('logo-admin-preview');
   if(CFG.logo){ prev.src=CFG.logo; prev.style.display='block'; }
@@ -1130,6 +1151,10 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.s2l=document.getElementById('s2-lbl').value||CFG.s2l;
   CFG.s3n=document.getElementById('s3-num').value||CFG.s3n;
   CFG.s3l=document.getElementById('s3-lbl').value||CFG.s3l;
+  CFG.cntTiktok=parseInt(document.getElementById('cntTiktok').value)||0;
+  CFG.cntYtShort=parseInt(document.getElementById('cntYtShort').value)||0;
+  CFG.cntInsta=parseInt(document.getElementById('cntInsta').value)||0;
+  CFG.cntYtLong=parseInt(document.getElementById('cntYtLong').value)||0;
   // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte,
   // et elle vit dans CFG.pwdHash : elle sera donc publiée sur GitHub avec le reste,
   // valable partout, et ne se "réinitialise" plus en changeant de navigateur.
