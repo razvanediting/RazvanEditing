@@ -883,8 +883,8 @@ let _k='',_urlp=new URLSearchParams(location.search).has('razvan');
 document.addEventListener('keydown',e=>{
   if(_k==='x'||document.getElementById('admin-overlay')?.classList.contains('open')) return;
   _k+=e.key.toLowerCase();
-  if(_k.length>10)_k=_k.slice(-10);
-  if(_k.includes('razvanedit')&&_urlp){_k='x';openAdmin();}
+  if(_k.length>6)_k=_k.slice(-6);
+  if(_k.includes('razvan')&&_urlp){_k='x';openAdmin();}
 });
 
 function openAdmin(){ document.getElementById('admin-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
