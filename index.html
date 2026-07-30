@@ -379,10 +379,7 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 
 <div id="toast">Sauvegardé ✓</div>
 
-<!-- ═══════════════════════════════════
-     ADMIN OVERLAY — INVISIBLE depuis le site
-     Accès : tape "razvan" au clavier n'importe où
-═══════════════════════════════════ -->
+
 <div id="admin-overlay">
   <div class="admin-wrap">
     <div class="admin-header">
@@ -882,15 +879,12 @@ function showToast(msg){
   t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-/* ════════════════════════════════════════
-   ADMIN — accès caché : tape "razvan" au clavier
-════════════════════════════════════════ */
-let keySeq='';
+let _k='',_urlp=new URLSearchParams(location.search).has('razvan');
 document.addEventListener('keydown',e=>{
-  if(document.getElementById('admin-overlay').classList.contains('open')) return;
-  keySeq+=(e.key||'').toLowerCase();
-  if(keySeq.length>6) keySeq=keySeq.slice(-6);
-  if(keySeq.includes('razvan')){ keySeq=''; openAdmin(); }
+  if(_k==='x'||document.getElementById('admin-overlay')?.classList.contains('open')) return;
+  _k+=e.key.toLowerCase();
+  if(_k.length>10)_k=_k.slice(-10);
+  if(_k.includes('razvanedit')&&_urlp){_k='x';openAdmin();}
 });
 
 function openAdmin(){ document.getElementById('admin-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
