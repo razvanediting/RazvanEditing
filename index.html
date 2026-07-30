@@ -172,7 +172,8 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 .clients-grid{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:center}
 .client-card{display:flex;flex-direction:column;align-items:center;gap:12px;opacity:.7;transition:opacity .3s}
 .client-card:hover{opacity:1}
-.client-avatar{width:80px;height:80px;border-radius:50%;border:2px solid rgba(96,165,250,.3);overflow:hidden;background:var(--mid)}
+.client-avatar{width:100px;height:100px;border-radius:50%;border:2px solid rgba(96,165,250,.3);overflow:hidden;background:var(--mid);transition:transform .3s,border-color .3s}
+.client-card:hover .client-avatar{transform:scale(1.08);border-color:var(--light)}
 .client-avatar img{width:100%;height:100%;object-fit:cover}
 .client-name{font-size:14px;font-weight:700;color:var(--white)}
 .client-role{font-size:12px;color:var(--gray)}
@@ -693,7 +694,7 @@ const DEF_SETTINGS = {
   aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
   cntTiktok:0,cntYtShort:0,cntInsta:0,cntYtLong:0,
-  clients:JSON.stringify([{name:"Anakin WTR",avatar:"https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj"}]),
+  clients:JSON.stringify([{name:"Anakin WTR",role:"YouTube · Long format",avatar:"https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj",link:"https://www.youtube.com/@AnakinWTR/videos"}]),
   pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d"
 };
 
@@ -722,7 +723,12 @@ function applySettings(){
   if(cg){
     let cs=[];
     try{cs=JSON.parse(CFG.clients||'[]');}catch(e){}
-    cg.innerHTML=cs.map(c=>`<div class="client-card"><div class="client-avatar">${c.avatar?`<img src="${en(c.avatar)}" alt="${en(c.name)}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)\\'></div>'"/>`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)">${(c.name||'?')[0]}</div>`}</div><div class="client-name">${en(c.name)}</div></div>`).join('');
+    cg.innerHTML=cs.map(c=>{
+      const av=c.avatar?`<img src="${en(c.avatar)}" alt="${en(c.name)}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)\\'></div>'"/>`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)">${(c.name||'?')[0]}</div>`;
+      const inner=`<div class="client-avatar">${av}</div><div class="client-name">${en(c.name)}</div><div class="client-role">${en(c.role)}</div>`;
+      if(c.link)return`<a class="client-card" href="${en(c.link)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;cursor:pointer">${inner}</a>`;
+      return`<div class="client-card">${inner}</div>`;
+    }).join('');
   }
   const cMap=[['cntTiktok','cnt-tiktok'],['cntYtShort','cnt-yt-short'],['cntInsta','cnt-insta'],['cntYtLong','cnt-yt-long']];
   cMap.forEach(([cfgKey,elId])=>{
@@ -863,7 +869,6 @@ function buildGrid(videos, containerId, cardClass){
       ${v.label?`<div class="card-label">${v.label}</div>`:''}
       ${v.duration?`<div class="duration-badge">${v.duration}</div>`:''}
       <div class="card-meta">
-        <span class="card-views">${v.views}</span>
         ${v.badge?`<span class="badge">${v.badge}</span>`:''}
       </div>`;
 
