@@ -158,14 +158,6 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 /* ── FOOTER ── */
 footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(96,165,250,.08);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--gray);flex-wrap:wrap;gap:10px}
 
-/* ── ANIMATED COUNTER ── */
-.counter-bar{display:flex;gap:32px;margin-top:40px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;padding:0 56px 60px}
-.counter-item{text-align:center;flex:1;min-width:120px;max-width:200px}
-.counter-icon{font-size:24px;margin-bottom:8px}
-.counter-num{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--light),var(--warm));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.counter-label{font-size:11px;color:var(--gray);letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
-.counter-sub{font-size:12px;color:var(--light);margin-top:2px;opacity:.7}
-
 /* ── CLIENTS ── */
 .clients-section{position:relative;z-index:1;padding:60px 56px;text-align:center;border-top:1px solid rgba(96,165,250,.1)}
 .clients-section h2{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--light);margin-bottom:36px}
@@ -408,32 +400,6 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
   <p id="about-text"></p>
 </section>
 
-<!-- ── VUES PAR PLATEFORME ── -->
-<div class="counter-bar" id="counter-bar">
-  <div class="counter-item">
-    <div class="counter-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.27 8.27 0 0 0 4.84 1.55V6.78a4.85 4.85 0 0 1-1.07-.09z"/></svg></div>
-    <div class="counter-num" data-target="0" id="cnt-tiktok">0</div>
-    <div class="counter-label">TikTok</div>
-    <div class="counter-sub">Reels · Shorts</div>
-  </div>
-  <div class="counter-item">
-    <div class="counter-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
-    <div class="counter-num" data-target="0" id="cnt-yt-short">0</div>
-    <div class="counter-label">YouTube Shorts</div>
-  </div>
-  <div class="counter-item">
-    <div class="counter-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg></div>
-    <div class="counter-num" data-target="0" id="cnt-insta">0</div>
-    <div class="counter-label">Instagram</div>
-    <div class="counter-sub">Reels</div>
-  </div>
-  <div class="counter-item">
-    <div class="counter-icon"><svg viewBox="0 0 24 24" width="32" height="32" fill="#fff"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></div>
-    <div class="counter-num" data-target="0" id="cnt-yt-long">0</div>
-    <div class="counter-label">YouTube Long</div>
-    <div class="counter-sub">Vidéos montées</div>
-  </div>
-</div>
 
 <!-- ── CLIENTS ── -->
 <section class="clients-section" id="clients">
@@ -546,16 +512,7 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
             <div class="field-row"><div class="field-label">Chiffre 3 (ex: 3 ans)</div><input class="field-input" id="s3-num" placeholder="3 ans"/></div>
             <div class="field-row"><div class="field-label">Label 3</div><input class="field-input" id="s3-lbl" placeholder="D'expérience"/></div>
           </div>
-
-          <!-- Vues par plateforme -->
-          <div class="settings-card">
-            <h4>Vues par plateforme</h4>
-            <div class="field-row"><div class="field-label">Vues TikTok (nombre)</div><input class="field-input" id="cntTiktok" type="number" placeholder="Ex: 50000"/></div>
-            <div class="field-row"><div class="field-label">Vues YouTube Shorts (nombre)</div><input class="field-input" id="cntYtShort" type="number" placeholder="Ex: 12000"/></div>
-            <div class="field-row"><div class="field-label">Vues Instagram (nombre)</div><input class="field-input" id="cntInsta" type="number" placeholder="Ex: 8000"/></div>
-            <div class="field-row"><div class="field-label">Vues YouTube Long (nombre)</div><input class="field-input" id="cntYtLong" type="number" placeholder="Ex: 25000"/></div>
-          </div>
-
+          
           <!-- Infos générales -->
           <div class="settings-card">
             <h4>Infos générales</h4>
@@ -730,12 +687,6 @@ function applySettings(){
       return`<div class="client-card">${inner}</div>`;
     }).join('');
   }
-  const cMap=[['cntTiktok','cnt-tiktok'],['cntYtShort','cnt-yt-short'],['cntInsta','cnt-insta'],['cntYtLong','cnt-yt-long']];
-  cMap.forEach(([cfgKey,elId])=>{
-    const el=document.getElementById(elId);
-    if(el){const v=parseInt(CFG[cfgKey])||0;el.dataset.target=v;el.textContent=v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?(v/1000).toFixed(v>=10000?0:1)+'K':String(v);}
-  });
-  animateCounters();
   document.getElementById('about-title').textContent = CFG.aboutTitle||'';
   document.getElementById('about-text').textContent = CFG.aboutText||'';
   document.getElementById('about').style.display = (CFG.aboutTitle||CFG.aboutText) ? 'block' : 'none';
@@ -1116,10 +1067,6 @@ function loadAdminSettings(){
   document.getElementById('s2-lbl').value=CFG.s2l||'';
   document.getElementById('s3-num').value=CFG.s3n||'';
   document.getElementById('s3-lbl').value=CFG.s3l||'';
-  document.getElementById('cntTiktok').value=CFG.cntTiktok||'';
-  document.getElementById('cntYtShort').value=CFG.cntYtShort||'';
-  document.getElementById('cntInsta').value=CFG.cntInsta||'';
-  document.getElementById('cntYtLong').value=CFG.cntYtLong||'';
   clientsArr = (()=>{ try{ return JSON.parse(CFG.clients||'[]'); }catch(e){ return []; } })();
   buildClientsAdminList();
   // logo preview
@@ -1176,10 +1123,6 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.s2l=document.getElementById('s2-lbl').value||CFG.s2l;
   CFG.s3n=document.getElementById('s3-num').value||CFG.s3n;
   CFG.s3l=document.getElementById('s3-lbl').value||CFG.s3l;
-  CFG.cntTiktok=parseInt(document.getElementById('cntTiktok').value)||0;
-  CFG.cntYtShort=parseInt(document.getElementById('cntYtShort').value)||0;
-  CFG.cntInsta=parseInt(document.getElementById('cntInsta').value)||0;
-  CFG.cntYtLong=parseInt(document.getElementById('cntYtLong').value)||0;
   CFG.clients=JSON.stringify(clientsArr);
   // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte,
   // et elle vit dans CFG.pwdHash : elle sera donc publiée sur GitHub avec le reste,
