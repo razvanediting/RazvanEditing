@@ -1319,11 +1319,10 @@ function buildAdminList(type){
       r.onload=ev=>{
         const dataUrl=ev.target.result;
         (t==='short'?vShort:vLong)[idx].image=dataUrl;
-        const previewBox=document.getElementById(`preview-${t}-${idx}`);
-        const typeLabel=document.getElementById(`preview-type-${t}-${idx}`);
-        if(previewBox){previewBox.style.display='block';previewBox.innerHTML=`<img src="${dataUrl}" style="width:100%;display:block;border-radius:8px"/>`;}
-        if(typeLabel){typeLabel.style.display='block';typeLabel.textContent='🖼️ Image uploadée';}
-        document.querySelector(`.img-url-input[data-idx="${idx}"][data-type="${t}"]`).value='';
+        const urlInput=document.querySelector(`.img-url-input[data-idx="${idx}"][data-type="${t}"]`);
+        if(urlInput)urlInput.value='';
+        buildAdminList(t);
+        showToast('Image importée ! Clique "Sauvegarder" pour garder.');
       };
       r.readAsDataURL(file);
     });
