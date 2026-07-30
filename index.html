@@ -1258,7 +1258,11 @@ function buildAdminList(type){
       <div class="field-grid">
         <div class="field-full">
           <div class="field-label">URL de la vidéo ou image</div>
-          <input class="field-input img-url-input" data-f="image" data-idx="${i}" data-type="${type}" value="${v.image||''}" placeholder="https://tiktok.com/@... ou youtube.com/... ou video.mp4" style="margin-bottom:10px"/>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
+            <input class="field-input img-url-input" data-f="image" data-idx="${i}" data-type="${type}" value="${v.image||''}" placeholder="https://tiktok.com/@... ou youtube.com/... ou video.mp4" style="flex:1"/>
+            <label class="upload-btn-label" for="file-${type}-${i}" style="white-space:nowrap;padding:10px 14px;font-size:12px;flex-shrink:0">📁 Image</label>
+            <input type="file" id="file-${type}-${i}" accept="image/*" style="display:none" data-idx="${i}" data-type="${type}"/>
+          </div>
           <div class="media-preview" id="preview-${type}-${i}" style="margin-top:8px;border-radius:10px;overflow:hidden;background:rgba(0,0,0,.3);border:1px solid rgba(96,165,250,.15);display:${v.image?'block':'none'};max-width:260px">
             ${v.image ? getPreviewHTML(v.image) : ''}
           </div>
@@ -1305,6 +1309,23 @@ function buildAdminList(type){
     btn.addEventListener('click',e=>{
       const idx=+e.target.dataset.idx, t=e.target.dataset.type;
       if(confirm('Supprimer ?')){ (t==='short'?vShort:vLong).splice(idx,1); buildAdminList(t); }
+    });
+  });
+  list.querySelectorAll('input[type="file"][accept="image/*"]').forEach(inp=>{
+    inp.addEventListener('change',e=>{
+      const file=e.target.files[0];if(!file)return;
+      const idx=+e.target.dataset.idx,t=e.target.dataset.type;
+      const r=new FileReader();
+      r.onload=ev=>{
+        const dataUrl=ev.target.result;
+        (t==='short'?vShort:vLong)[idx].image=dataUrl;
+        const previewBox=document.getElementById(`preview-${t}-${idx}`);
+        const typeLabel=document.getElementById(`preview-type-${t}-${idx}`);
+        if(previewBox){previewBox.style.display='block';previewBox.innerHTML=`<img src="${dataUrl}" style="width:100%;display:block;border-radius:8px"/>`;}
+        if(typeLabel){typeLabel.style.display='block';typeLabel.textContent='🖼️ Image uploadée';}
+        document.querySelector(`.img-url-input[data-idx="${idx}"][data-type="${t}"]`).value='';
+      };
+      r.readAsDataURL(file);
     });
   });
 }
