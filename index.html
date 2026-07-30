@@ -532,19 +532,6 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 
 
 <script>
-/* ═══════════════════════════════════
-   MOT DE PASSE
-   Le mot de passe n'est JAMAIS stocké en clair, ni dans le code,
-   ni dans localStorage : seulement son empreinte SHA-256 (CFG.pwdHash).
-   Cette empreinte fait partie des données publiées sur GitHub (comme
-   le reste des paramètres), donc le mot de passe que tu choisis
-   fonctionne sur N'IMPORTE QUEL navigateur/appareil une fois publié —
-   il ne se "réinitialise" plus.
-   Empreinte par défaut = hash de "razvan2025".
-   ⚠️ Change ce mot de passe puis clique "Publier sur GitHub"
-   pour qu'il soit valable partout, sinon tout le monde connaît
-   le mot de passe par défaut.
-═══════════════════════════════════ */
 async function sha256(text){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
@@ -574,7 +561,7 @@ const DEF_SETTINGS = {
   aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
   logo:"",
-  pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d" /* hash de "razvan2025" */
+  pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d"
 };
 
 function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){return d;} }
