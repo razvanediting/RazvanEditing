@@ -99,8 +99,8 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 @media(max-width:430px){.grid-tiktok{grid-template-columns:1fr;padding:0 16px 50px;max-width:280px}}
 
 /* ── GRILLE LONGUES VIDÉOS (16:9) ── */
-.grid-long{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:24px;padding:0 56px 80px;max-width:1000px;margin:0 auto;justify-items:center}
-@media(max-width:700px){.grid-long{grid-template-columns:1fr;padding:0 20px 60px}}
+.grid-long{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:24px;padding:0 56px 80px;max-width:720px;margin:0 auto;justify-items:center}
+@media(max-width:700px){.grid-long{padding:0 20px 60px}}
 
 /* ── CARD BASE ── */
 .card-wrap{display:flex;flex-direction:column;opacity:0;transform:translateY(30px);transition:opacity .5s,transform .5s;text-decoration:none;color:var(--white);}
@@ -121,7 +121,7 @@ nav{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-co
 .card-tiktok{border-radius:var(--radius)!important;aspect-ratio:9/16;width:100%}
 .card-wrap.visible .card-tiktok:hover{transform:scale(1.03);box-shadow:0 0 0 2px rgba(96,165,250,.6)}
 /* long cards = 16:9 mais plus petit */
-.card-long{aspect-ratio:16/9;width:100%;max-width:460px}
+.card-long{aspect-ratio:16/9;width:100%;max-width:640px}
 
 .card-label{position:absolute;bottom:56px;left:16px;right:16px;z-index:2;font-size:clamp(15px,2.2vw,20px);font-weight:800;text-shadow:0 2px 10px rgba(0,0,0,.5);line-height:1.2}
 .card-long .card-label{bottom:46px;font-size:14px}
@@ -429,15 +429,7 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 <!-- ── CLIENTS ── -->
 <section class="clients-section" id="clients">
   <h2>Ils m'ont fait confiance</h2>
-  <div class="clients-grid">
-    <div class="client-card">
-      <div class="client-avatar">
-        <img src="https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj" alt="Anakin WTR" onerror="this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)&quot;>A</div>'"/>
-      </div>
-      <div class="client-name">Anakin WTR</div>
-      <div class="client-role">YouTube · Long format</div>
-    </div>
-  </div>
+  <div class="clients-grid" id="clients-grid"></div>
 </section>
 
 <!-- ── FAQ ── -->
@@ -597,6 +589,13 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
             <div class="field-row"><div class="field-label">Texte</div><textarea class="field-input" id="cfg-about-text" rows="6" placeholder="Explique pourquoi tu fais du montage, ta vision, etc."></textarea></div>
           </div>
 
+          <!-- Clients -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>🤝 Clients (ils m'ont fait confiance)</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">Ajoute des clients au format JSON. Exemple : [{"name":"Anakin WTR","role":"YouTube","avatar":"https://..."}]</p>
+            <div class="field-row"><div class="field-label">Liste des clients (JSON)</div><textarea class="field-input" id="cfg-clients" rows="5"></textarea></div>
+          </div>
+
           <!-- Mot de passe -->
           <div class="settings-card" style="grid-column:1/-1">
             <h4>Changer le mot de passe admin</h4>
@@ -683,11 +682,13 @@ const DEF_SETTINGS = {
   aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
   cntTiktok:0,cntYtShort:0,cntInsta:0,cntYtLong:0,
+  clients:JSON.stringify([{name:"Anakin WTR",role:"YouTube · Long format",avatar:"https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj"}]),
   logo:"",
   pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d"
 };
 
 function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){return d;} }
+function en(s){const d=document.createElement('div');d.appendChild(document.createTextNode(s||''));return d.innerHTML;}
 
 let vShort = load('razvan_short', DEF_SHORT);
 let vLong  = load('razvan_long',  DEF_LONG);
@@ -705,7 +706,13 @@ function applySettings(){
   document.getElementById('stat3-num').textContent = CFG.s3n;
   document.getElementById('stat3-lbl').textContent = CFG.s3l;
   document.getElementById('footer-txt').textContent = `© 2025 ${CFG.nom} — Monteur vidéo`;
-  // counters
+  // clients
+  const cg=document.getElementById('clients-grid');
+  if(cg){
+    let cs=[];
+    try{cs=JSON.parse(CFG.clients||'[]');}catch(e){}
+    cg.innerHTML=cs.map(c=>`<div class="client-card"><div class="client-avatar">${c.avatar?`<img src="${en(c.avatar)}" alt="${en(c.name)}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)\\'></div>'"/>`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)">${(c.name||'?')[0]}</div>`}</div><div class="client-name">${en(c.name)}</div><div class="client-role">${en(c.role)}</div></div>`).join('');
+  }
   const cMap=[['cntTiktok','cnt-tiktok'],['cntYtShort','cnt-yt-short'],['cntInsta','cnt-insta'],['cntYtLong','cnt-yt-long']];
   cMap.forEach(([cfgKey,elId])=>{
     const el=document.getElementById(elId);
@@ -1097,6 +1104,7 @@ function loadAdminSettings(){
   document.getElementById('cntYtShort').value=CFG.cntYtShort||'';
   document.getElementById('cntInsta').value=CFG.cntInsta||'';
   document.getElementById('cntYtLong').value=CFG.cntYtLong||'';
+  document.getElementById('cfg-clients').value=CFG.clients||'';
   // logo preview
   const prev=document.getElementById('logo-admin-preview');
   if(CFG.logo){ prev.src=CFG.logo; prev.style.display='block'; }
@@ -1155,6 +1163,7 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.cntYtShort=parseInt(document.getElementById('cntYtShort').value)||0;
   CFG.cntInsta=parseInt(document.getElementById('cntInsta').value)||0;
   CFG.cntYtLong=parseInt(document.getElementById('cntYtLong').value)||0;
+  CFG.clients=document.getElementById('cfg-clients').value;
   // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte,
   // et elle vit dans CFG.pwdHash : elle sera donc publiée sur GitHub avec le reste,
   // valable partout, et ne se "réinitialise" plus en changeant de navigateur.
