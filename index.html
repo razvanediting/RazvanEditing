@@ -245,6 +245,13 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
 #logo-file-input{display:none}
 .remove-logo-btn{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.3);color:#f87171;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Space Grotesk',sans-serif}
 .remove-logo-btn:hover{background:rgba(248,113,113,.25)}
+.client-admin-item{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;border:1.5px solid rgba(96,165,250,.12);background:rgba(255,255,255,.03);margin-bottom:10px}
+.client-admin-avatar{width:56px;height:56px;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.06);border:1.5px solid rgba(96,165,250,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;font-weight:800;color:var(--light)}
+.client-admin-avatar img{width:100%;height:100%;object-fit:cover}
+.client-admin-fields{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.client-admin-fields .field-input{max-width:280px}
+.client-admin-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.client-admin-actions input[type=file]{display:none}
 
 /* video items */
 .video-item{background:rgba(255,255,255,.04);border:1.5px solid rgba(96,165,250,.12);border-radius:14px;padding:20px;margin-bottom:14px}
@@ -593,8 +600,11 @@ footer{position:relative;z-index:1;padding:22px 56px;border-top:1px solid rgba(9
           <!-- Clients -->
           <div class="settings-card" style="grid-column:1/-1">
             <h4>🤝 Clients (ils m'ont fait confiance)</h4>
-            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">Ajoute des clients au format JSON. Exemple : [{"name":"Anakin WTR","role":"YouTube","avatar":"https://..."}]</p>
-            <div class="field-row"><div class="field-label">Liste des clients (JSON)</div><textarea class="field-input" id="cfg-clients" rows="5"></textarea></div>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:14px">Ajoute une photo et le pseudo de chaque personne qui te fait confiance.</p>
+            <div id="clients-admin-list"></div>
+            <div class="admin-actions" style="margin-top:6px">
+              <button class="add-vid-btn" id="add-client-btn">+ Ajouter un client</button>
+            </div>
           </div>
 
           <!-- Mot de passe -->
@@ -683,8 +693,7 @@ const DEF_SETTINGS = {
   aboutText:"Le montage, c'est avant tout une passion personnelle avant d'être un métier. J'aime raconter une histoire en quelques secondes, trouver le bon rythme, la bonne transition, le bon son au bon moment.\n\nCe que tu vois ici, ce sont des projets que je fais aussi pour moi, pour continuer à apprendre et à m'améliorer — pas juste des commandes. (Texte à modifier dans le panel admin !)",
   s1n:"50M+",s1l:"Vues totales",s2n:"120+",s2l:"Projets livrés",s3n:"3 ans",s3l:"D'expérience",
   cntTiktok:0,cntYtShort:0,cntInsta:0,cntYtLong:0,
-  clients:JSON.stringify([{name:"Anakin WTR",role:"YouTube · Long format",avatar:"https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj"}]),
-  logo:"",
+  clients:JSON.stringify([{name:"Anakin WTR",avatar:"https://yt3.googleusercontent.com/ytc/AIdro_nAnakinWTR=s176-c-k-c0x00ffffff-no-rj"}]),
   pwdHash:"6d491cbb89d15b25632a24862d9e311ccf2585b9dd372e3e027d76a3cbd9399d"
 };
 
@@ -694,6 +703,7 @@ function en(s){const d=document.createElement('div');d.appendChild(document.crea
 let vShort = load('razvan_short', DEF_SHORT);
 let vLong  = load('razvan_long',  DEF_LONG);
 let CFG    = load('razvan_cfg',   DEF_SETTINGS);
+let clientsArr = (()=>{ try{ return JSON.parse(CFG.clients||'[]'); }catch(e){ return []; } })();
 
 /* ── Apply settings to page ── */
 function applySettings(){
@@ -712,7 +722,7 @@ function applySettings(){
   if(cg){
     let cs=[];
     try{cs=JSON.parse(CFG.clients||'[]');}catch(e){}
-    cg.innerHTML=cs.map(c=>`<div class="client-card"><div class="client-avatar">${c.avatar?`<img src="${en(c.avatar)}" alt="${en(c.name)}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)\\'></div>'"/>`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)">${(c.name||'?')[0]}</div>`}</div><div class="client-name">${en(c.name)}</div><div class="client-role">${en(c.role)}</div></div>`).join('');
+    cg.innerHTML=cs.map(c=>`<div class="client-card"><div class="client-avatar">${c.avatar?`<img src="${en(c.avatar)}" alt="${en(c.name)}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)\\'></div>'"/>`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--light)">${(c.name||'?')[0]}</div>`}</div><div class="client-name">${en(c.name)}</div></div>`).join('');
   }
   const cMap=[['cntTiktok','cnt-tiktok'],['cntYtShort','cnt-yt-short'],['cntInsta','cnt-insta'],['cntYtLong','cnt-yt-long']];
   cMap.forEach(([cfgKey,elId])=>{
@@ -1105,7 +1115,8 @@ function loadAdminSettings(){
   document.getElementById('cntYtShort').value=CFG.cntYtShort||'';
   document.getElementById('cntInsta').value=CFG.cntInsta||'';
   document.getElementById('cntYtLong').value=CFG.cntYtLong||'';
-  document.getElementById('cfg-clients').value=CFG.clients||'';
+  clientsArr = (()=>{ try{ return JSON.parse(CFG.clients||'[]'); }catch(e){ return []; } })();
+  buildClientsAdminList();
   // logo preview
   const prev=document.getElementById('logo-admin-preview');
   if(CFG.logo){ prev.src=CFG.logo; prev.style.display='block'; }
@@ -1164,7 +1175,7 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
   CFG.cntYtShort=parseInt(document.getElementById('cntYtShort').value)||0;
   CFG.cntInsta=parseInt(document.getElementById('cntInsta').value)||0;
   CFG.cntYtLong=parseInt(document.getElementById('cntYtLong').value)||0;
-  CFG.clients=document.getElementById('cfg-clients').value;
+  CFG.clients=JSON.stringify(clientsArr);
   // password change — on ne stocke jamais le mot de passe en clair, seulement son empreinte,
   // et elle vit dans CFG.pwdHash : elle sera donc publiée sur GitHub avec le reste,
   // valable partout, et ne se "réinitialise" plus en changeant de navigateur.
@@ -1327,6 +1338,59 @@ function buildAdminList(type){
     });
   });
 }
+
+/* ── Build admin clients list ── */
+function buildClientsAdminList(){
+  const list = document.getElementById('clients-admin-list');
+  if(!list) return;
+  list.innerHTML='';
+  clientsArr.forEach((c,i)=>{
+    const div=document.createElement('div'); div.className='client-admin-item';
+    div.innerHTML=`
+      <div class="client-admin-avatar">${c.avatar?`<img src="${c.avatar}" alt=""/>`:en((c.name||'?')[0].toUpperCase())}</div>
+      <div class="client-admin-fields">
+        <input class="field-input" data-idx="${i}" data-f="name" value="${en(c.name||'')}" placeholder="Pseudo du client"/>
+        <div class="client-admin-actions">
+          <label class="upload-btn-label" for="client-file-${i}" style="font-size:12px;padding:7px 14px">📁 Choisir une image</label>
+          <input type="file" id="client-file-${i}" accept="image/*" data-idx="${i}" class="client-file-input"/>
+          <button class="video-item-del client-del-btn" data-idx="${i}">Supprimer</button>
+        </div>
+      </div>`;
+    list.appendChild(div);
+  });
+  list.querySelectorAll('.client-admin-fields > .field-input').forEach(inp=>{
+    inp.addEventListener('input',e=>{
+      const idx=+e.target.dataset.idx;
+      clientsArr[idx].name = e.target.value;
+      const avatarBox = list.children[idx]?.querySelector('.client-admin-avatar');
+      if(avatarBox && !clientsArr[idx].avatar) avatarBox.textContent = (e.target.value||'?')[0].toUpperCase();
+    });
+  });
+  list.querySelectorAll('.client-file-input').forEach(inp=>{
+    inp.addEventListener('change',e=>{
+      const file=e.target.files[0]; if(!file) return;
+      const idx=+e.target.dataset.idx;
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        clientsArr[idx].avatar = ev.target.result;
+        buildClientsAdminList();
+        showToast('Photo importée ! Clique "Sauvegarder les paramètres" pour garder.');
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+  list.querySelectorAll('.client-del-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const idx=+e.target.dataset.idx;
+      if(confirm('Supprimer ce client ?')){ clientsArr.splice(idx,1); buildClientsAdminList(); }
+    });
+  });
+}
+document.getElementById('add-client-btn').addEventListener('click',()=>{
+  clientsArr.push({name:'',avatar:''});
+  buildClientsAdminList();
+  document.getElementById('clients-admin-list').lastElementChild?.scrollIntoView({behavior:'smooth'});
+});
 
 /* ── Add video buttons ── */
 document.querySelectorAll('.add-vid-btn').forEach(btn=>{
