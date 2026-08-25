@@ -70,13 +70,13 @@
   ],
   "long": [
     {
-      "image": "https://www.youtube.com/watch?v=iuHQs71l9rw",
+      "image": "www.youtube.com/watch?v=sdG8x9jcKOY&t",
       "label": "",
       "badge": "YouTube",
-      "titre": "Je réagis à ma première vidéo Youtube",
-      "views": "10K+",
-      "lien": "https://www.youtube.com/watch?v=iuHQs71l9rw",
-      "duration": "19:50"
+      "titre": "L'entité de M̷̰̌͑̆į̶̯̌͑n̵̥̎̐e̶̞̟̙͂ċ̷̥̰͕͌͒r̶̯͆ã̴̡̻̩̚f̸̮̱̻̊̐t qui veut Voler Ton ÂME !",
+      "views": "1K+",
+      "lien": "www.youtube.com/watch?v=sdG8x9jcKOY&t",
+      "duration": "30:20"
     },
     {
       "image": "www.youtube.com/watch?v=PCdLGmx03B4&t",
@@ -89,12 +89,30 @@
     },
     {
       "image": "https://www.youtube.com/watch?v=po9ef_FsstE&t",
-      "label": " J'ai un STALKER ! (à l'aide)",
+      "label": "",
       "badge": "YouTube",
       "titre": "Nouvelle vidéo",
       "views": "35K+",
       "lien": "https://www.youtube.com/watch?v=po9ef_FsstE&t",
       "duration": "15:32"
+    },
+    {
+      "image": "https://www.youtube.com/watch?v=plRRBO_Scao",
+      "label": "",
+      "badge": "YouTube",
+      "titre": "Nouvelle vidéo",
+      "views": "30k+",
+      "lien": "https://www.youtube.com/watch?v=plRRBO_Scao",
+      "duration": "13:48"
+    },
+    {
+      "image": "https://www.youtube.com/watch?v=iuHQs71l9rw",
+      "label": "",
+      "badge": "YouTube",
+      "titre": "Je réagis à ma première vidéo Youtube",
+      "views": "30k+",
+      "lien": "https://www.youtube.com/watch?v=iuHQs71l9rw",
+      "duration": "19:50"
     }
   ]
 }
