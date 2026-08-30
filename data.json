@@ -122,6 +122,15 @@
       "views": "30k+",
       "lien": "https://www.youtube.com/watch?v=ffCzHat_KW8",
       "duration": "13:29"
+    },
+    {
+      "image": "https://www.youtube.com/watch?v=KS8uYyVflVU",
+      "label": "",
+      "badge": "YouTube",
+      "titre": "Nouvelle vidéo",
+      "views": "",
+      "lien": "https://www.youtube.com/watch?v=KS8uYyVflVU",
+      "duration": "14:43"
     }
   ]
 }
