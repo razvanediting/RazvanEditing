@@ -18,8 +18,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="preload" href="assets/long-5.jpg" as="image">
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=2-20261104">
+  <script src="app.js?v=2-20261104" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
@@ -109,7 +109,7 @@
     </div>
 
     <!-- Panel -->
-    <div id="admin-panel">
+    <div id="admin-panel"><p class="admin-draft-status" id="admin-draft-status" role="status" aria-live="polite"></p>
       <div class="admin-tabs">
         <button class="admin-tab-btn active" data-atab="settings"> Paramètres</button>
         <button class="admin-tab-btn" data-atab="short"> Vidéos courtes</button>
@@ -154,6 +154,8 @@
             <div class="field-row"><div class="field-label">Email contact</div><input class="field-input" id="cfg-email" placeholder="tonmail@exemple.com"/></div>
           </div>
 
+          <div class="settings-card" style="grid-column:1/-1"><h4>Accueil de la version 2</h4><div class="field-row"><label class="field-label" for="cfg-v2-title">Titre de l’accueil — version 2</label><input class="field-input" id="cfg-v2-title" placeholder="Tes vidéos,"></div>
+            <div class="field-row"><label class="field-label" for="cfg-v2-highlight">Texte dans l’encart — version 2</label><input class="field-input" id="cfg-v2-highlight" placeholder="au bon rythme"></div></div>
           <!-- Réseaux -->
           <div class="settings-card" style="grid-column:1/-1">
             <h4>Réseaux sociaux (laisser vide pour masquer)</h4>
@@ -216,7 +218,7 @@
               <br/>Crée un <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--light)">token GitHub (fine-grained)</a> limité au repo <strong>RazvanEditing</strong>, permission "Contents : Read and write" uniquement. Le token reste seulement dans cet onglet, il n'est jamais écrit dans le code du site.
             </p>
             <div class="field-row"><div class="field-label">Token GitHub</div><input class="field-input" type="password" id="gh-token" placeholder="github_pat_..."/></div>
-            <p id="publish-msg" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
+            <p id="publish-msg" role="status" aria-live="polite" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
           </div>
 
         </div>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b2e4f">
+  <title>Razvan Editing — Version 2 · Montage vidéo</title>
+  <meta name="description" content="Montage vidéo sur DaVinci Resolve pour YouTube, TikTok et Reels. Découvre les réalisations de Razvan Editing et échangeons sur ton prochain projet.">
+  <link rel="canonical" href="https://razvanediting.github.io/RazvanEditing/v2/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Razvan Editing — Montage vidéo">
+  <meta property="og:description" content="Tes formats courts et tes vidéos YouTube, montés sur DaVinci Resolve. Découvre mes réalisations.">
+  <meta property="og:url" content="https://razvanediting.github.io/RazvanEditing/v2/">
+  <meta property="og:image" content="https://razvanediting.github.io/RazvanEditing/assets/long-5.jpg">
+  <link rel="icon" href="../favicon.ico">
+  <link rel="preload" href="../assets/fonts/satoshi-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../style.css?v=2-20261104">
+  <link rel="stylesheet" href="style-v2.css?v=2-20261104">
+  <script src="../app.js?v=2-20261104" defer></script>
+</head>
+<body data-version="2">
+<a class="skip-link" href="#contenu">Aller au contenu</a>
+<nav class="site-nav" aria-label="Navigation principale">
+  <div class="container nav-inner">
+    <a class="logo-wrap" id="logo-wrap" href="#contenu" aria-label="Razvan Editing, accueil">
+      <img id="logo-img" src="../assets/logo.jpg" alt="" width="40" height="40" style="display:block">
+      <svg class="logo-svg-default" id="logo-svg-default" viewBox="0 0 40 40" fill="none" aria-hidden="true" style="display:none"><path d="M11 30V10h11a6 6 0 0 1 0 12H11m10 0 9 8" stroke="currentColor" stroke-width="2"/></svg>
+      <span class="logo-name" id="nav-name">Razvan Editing</span>
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav-links">Menu <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#portfolio">Réalisations</a></li>
+      <li><a href="#about">À propos</a></li>
+      <li><a href="#faq">Questions</a></li>
+      <li><a class="nav-contact" href="#contact">Parlons de ton projet <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></li>
+    </ul>
+  </div>
+</nav>
+<main id="contenu">
+  <section class="hero-v2" aria-labelledby="hero-title"><div class="container">
+    <div class="hero-intro"><p class="eyebrow" id="hero-tag">Montage vidéo · DaVinci Resolve</p>
+      <h1 id="hero-title"><span id="v2-hero-title">Tes vidéos,</span><br><span class="hero-sticker" id="v2-hero-highlight">au bon rythme</span></h1>
+      <p class="hero-sub" id="hero-sub">Je monte tes formats courts et tes vidéos YouTube sur DaVinci Resolve. Découvre mes réalisations et parlons de ton prochain projet.</p>
+      <div class="hero-actions"><a class="button button-primary" href="#contact">Me contacter <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><a class="button button-secondary" href="#portfolio">Voir mes projets <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div>
+    </div>
+    <div class="hero-stage"><div class="stage-top"><span>Dans mes montages</span><span>DaVinci Resolve / Formats courts</span></div><div class="hero-showcase" id="hero-showcase"></div></div>
+    <div class="stats-bar" aria-label="Quelques repères"><div class="stat"><div class="stat-num" id="stat1-num">100 k+</div><div class="stat-label" id="stat1-lbl">vues cumulées</div></div><div class="stat"><div class="stat-num" id="stat2-num">10 k+</div><div class="stat-label" id="stat2-lbl">likes cumulés</div></div><div class="stat"><div class="stat-num" id="stat3-num">2 ans</div><div class="stat-label" id="stat3-lbl">de montage</div></div></div>
+  </div></section>
+  <section class="portfolio-section container" id="portfolio" aria-labelledby="portfolio-title">
+    <div class="section-heading"><div><p class="section-index mono">01 / Réalisations</p><h2 id="portfolio-title">Mes derniers montages</h2></div><p>Du format court à la vidéo YouTube.<br><span class="preview-desktop-note">Survole un aperçu, clique pour regarder.</span><span class="preview-mobile-note">Un aperçu sans son, puis touche pour regarder.</span></p></div>
+    <div class="tabs-bar" role="tablist" aria-label="Format des réalisations">
+      <button class="tab-btn active" id="tab-short" role="tab" aria-selected="true" aria-controls="panel-short" data-tab="short">Formats courts <span class="tab-count mono" id="short-count"></span></button>
+      <button class="tab-btn" id="tab-long" role="tab" aria-selected="false" aria-controls="panel-long" tabindex="-1" data-tab="long">Vidéos YouTube <span class="tab-count mono" id="long-count"></span></button>
+    </div>
+    <div class="tab-panel active" id="panel-short" role="tabpanel" aria-labelledby="tab-short" tabindex="0"><div class="sec-head"><h3>TikTok · Reels · Shorts</h3><p class="mono">9:16</p></div><div class="grid-tiktok" id="grid-short"></div></div>
+    <div class="tab-panel" id="panel-long" role="tabpanel" aria-labelledby="tab-long" tabindex="0" hidden><div class="sec-head"><h3>YouTube · Long format</h3><p class="mono">16:9</p></div><div class="grid-long" id="grid-long"></div></div>
+    <noscript><p class="empty-state">Active JavaScript pour parcourir les réalisations, ou retrouve-les sur <a href="https://www.youtube.com/@Razvannnmn">YouTube</a> et <a href="https://www.tiktok.com/@razvannnmn">TikTok</a>.</p></noscript>
+  </section>
+  <section class="about-section" id="about" aria-labelledby="about-title"><div class="container about-grid"><div><div class="section-index mono">02 / À propos</div><h2 class="section-title" id="about-title">Le montage, au service de ton contenu</h2></div><div><p id="about-text"></p><div class="about-note mono">DaVinci Resolve / Montage · Son · Étalonnage</div></div></div></section>
+  <section class="clients-section" id="clients" aria-labelledby="clients-title"><div class="container clients-inner"><div><p class="section-index mono">03 / Collaboration</p><h2 id="clients-title">Ils me font confiance</h2></div><div class="clients-grid" id="clients-grid"></div></div></section>
+  <section class="faq-section container" id="faq" aria-labelledby="faq-title"><div class="faq-grid"><div><p class="section-index mono">04 / Questions fréquentes</p><h2 class="section-title" id="faq-title">Avant de commencer</h2></div><div id="faq-list">
+    <div class="faq-item"><h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-1" id="faq-q-1">Quels sont tes tarifs ?<span class="faq-arrow" aria-hidden="true">+</span></button></h3><div class="faq-a" id="faq-1" role="region" aria-labelledby="faq-q-1" hidden><p>Short, Reel ou TikTok : <strong>à partir de 7 €</strong><br>Vidéo YouTube de moins de 20 minutes : <strong>à partir de 25 €</strong><br>Vidéo YouTube de plus de 20 minutes : <strong>à partir de 45 €</strong></p></div></div>
+    <div class="faq-item"><h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-2" id="faq-q-2">Sur quel logiciel travailles-tu ?<span class="faq-arrow" aria-hidden="true">+</span></button></h3><div class="faq-a" id="faq-2" role="region" aria-labelledby="faq-q-2" hidden><p>Je travaille sur DaVinci Resolve pour le montage, l’étalonnage et le motion design.</p></div></div>
+    <div class="faq-item"><h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-3" id="faq-q-3">Combien de temps prend un montage ?<span class="faq-arrow" aria-hidden="true">+</span></button></h3><div class="faq-a" id="faq-3" role="region" aria-labelledby="faq-q-3" hidden><p>Le travail de montage prend généralement entre 1 h et 5 h, selon le format et la complexité. Le délai de livraison se précise ensemble en fonction de ton projet.</p></div></div>
+    <div class="faq-item"><h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-4" id="faq-q-4">Tu montes aussi des vidéos longues ?<span class="faq-arrow" aria-hidden="true">+</span></button></h3><div class="faq-a" id="faq-4" role="region" aria-labelledby="faq-q-4" hidden><p>Oui. Je monte des formats courts et des vidéos YouTube. Tu peux découvrir les deux dans les réalisations ci-dessus.</p></div></div>
+  </div></div></section>
+  <section class="contact-section" id="contact" aria-labelledby="contact-title"><div class="container"><div class="contact-grid"><div class="contact-intro"><div class="section-index mono">05 / Ton prochain projet</div><h2 id="contact-title">Parlons de<br>ta vidéo</h2><p>Le format, ton idée, les images que tu as déjà. Raconte-moi ce que tu veux créer, je te réponds sous 24 h.</p><a class="contact-email" id="contact-email" href="mailto:razvanediting@gmail.com">razvanediting@gmail.com <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a><div id="discord-dm-wrap" hidden><p>Tu préfères discuter sur Discord ?</p><a id="discord-dm-btn" href="https://discord.com/users/753292111834644531" target="_blank" rel="noopener noreferrer">M’écrire sur Discord <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6m0-6-9 9M10 4H4v16h16v-6"/></svg></a></div></div>
+    <div><form class="contact-form" id="contact-form"><div class="form-row"><div class="form-field"><label for="cf-nom">Ton prénom</label><input id="cf-nom" name="name" autocomplete="given-name" placeholder="Prénom" required maxlength="100"></div><div class="form-field"><label for="cf-email">Ton email</label><input id="cf-email" name="email" type="email" autocomplete="email" placeholder="toi@exemple.fr" required maxlength="254"></div></div><div class="form-field"><label for="cf-msg">Ton projet</label><textarea id="cf-msg" name="message" placeholder="Une vidéo YouTube, des Reels… Quel format, quel style et pour quand ?" required maxlength="10000" rows="5"></textarea></div><div class="form-bottom"><p class="form-note">Ces informations servent à te répondre au sujet de ton projet.</p><button class="button button-primary" id="cf-btn" type="submit">Envoyer mon projet <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div><p class="form-status" id="form-status" role="status" aria-live="polite"></p></form><div class="contact-success" id="contact-success" hidden></div></div>
+  </div><div class="socials" id="socials" aria-label="Mes réseaux sociaux"></div></div></section>
+</main>
+<footer><div class="container footer-inner"><span id="footer-txt">© Razvan Editing — Monteur vidéo</span><div class="footer-links"><a href="../">Voir la première version</a><button class="admin-entry" id="admin-entry" type="button">Administration</button></div></div><div class="container footer-brand" data-brand-name aria-hidden="true">Razvan Editing.</div></footer>
+<dialog class="video-dialog" id="video-dialog" aria-labelledby="dialog-title"><div class="video-dialog-head"><div><h2 id="dialog-title"></h2><p id="dialog-meta"></p></div><button class="dialog-close" id="dialog-close" aria-label="Fermer la vidéo"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><div class="dialog-media" id="dialog-media"></div><div class="video-dialog-footer"><a id="dialog-source" href="#" target="_blank" rel="noopener noreferrer">Voir la vidéo originale <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6m0-6-9 9M10 4H4v16h16v-6"/></svg></a><a href="#contact" id="dialog-contact">Un projet similaire ? Parlons-en <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="admin-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+  <div class="admin-wrap">
+    <div class="admin-header">
+      <h2 id="admin-title">Administration</h2>
+      <button class="admin-close" id="admin-close-btn" aria-label="Fermer l’administration"></button>
+    </div>
+
+    <!-- Login -->
+    <div id="admin-login">
+      <h3> Connexion</h3>
+      <p>Accès réservé</p>
+      <input class="admin-input" type="password" id="admin-pwd" aria-label="Mot de passe" autocomplete="current-password" placeholder="Mot de passe"/>
+      <div id="login-error"> Mot de passe incorrect</div>
+      <button class="admin-btn" id="login-btn">Entrer</button>
+    </div>
+
+    <!-- Panel -->
+    <div id="admin-panel"><p class="admin-draft-status" id="admin-draft-status" role="status" aria-live="polite"></p>
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-atab="settings"> Paramètres</button>
+        <button class="admin-tab-btn" data-atab="short"> Vidéos courtes</button>
+        <button class="admin-tab-btn" data-atab="long"> Longues vidéos</button>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="admin-sub active" id="asub-settings">
+        <div class="settings-grid">
+
+          <!-- Logo -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>Logo</h4>
+            <div class="logo-preview-wrap">
+              <div class="logo-preview-box"><img id="logo-admin-preview" src="" alt=""/></div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <label class="upload-btn-label" for="logo-file-input"> Choisir une image</label>
+                <input type="file" id="logo-file-input" accept="image/*"/>
+                <button class="remove-logo-btn" id="remove-logo-btn">Supprimer le logo</button>
+              </div>
+            </div>
+            <p style="font-size:12px;color:var(--gray)">Formats : PNG, JPG, SVG, WEBP. Le logo remplace l'icône "R" dans la nav.</p>
+          </div>
+
+          <!-- Stats -->
+          <div class="settings-card">
+            <h4>Statistiques affichées</h4>
+            <div class="field-row"><div class="field-label">Chiffre 1</div><input class="field-input" id="s1-num" placeholder="100 k+"/></div>
+            <div class="field-row"><div class="field-label">Label 1</div><input class="field-input" id="s1-lbl" placeholder="Vues totales"/></div>
+            <div class="field-row"><div class="field-label">Chiffre 2</div><input class="field-input" id="s2-num" placeholder="10 k+"/></div>
+            <div class="field-row"><div class="field-label">Label 2</div><input class="field-input" id="s2-lbl" placeholder="Likes cumulés"/></div>
+            <div class="field-row"><div class="field-label">Chiffre 3</div><input class="field-input" id="s3-num" placeholder="2 ans"/></div>
+            <div class="field-row"><div class="field-label">Label 3</div><input class="field-input" id="s3-lbl" placeholder="D'expérience"/></div>
+          </div>
+          
+          <!-- Infos générales -->
+          <div class="settings-card">
+            <h4>Infos générales</h4>
+            <div class="field-row"><div class="field-label">Nom affiché</div><input class="field-input" id="cfg-nom" placeholder="Razvan"/></div>
+            <div class="field-row"><div class="field-label">Texte d’introduction</div><input class="field-input" id="cfg-tag" placeholder="Montage vidéo · DaVinci Resolve"/></div>
+            <div class="field-row"><div class="field-label">Sous-titre hero</div><input class="field-input" id="cfg-sub" placeholder="Monteur spécialisé DaVinci..."/></div>
+            <div class="field-row"><div class="field-label">Email contact</div><input class="field-input" id="cfg-email" placeholder="tonmail@exemple.com"/></div>
+          </div>
+
+          <div class="settings-card" style="grid-column:1/-1"><h4>Accueil de la version 2</h4><div class="field-row"><label class="field-label" for="cfg-v2-title">Titre de l’accueil — version 2</label><input class="field-input" id="cfg-v2-title" placeholder="Tes vidéos,"></div>
+            <div class="field-row"><label class="field-label" for="cfg-v2-highlight">Texte dans l’encart — version 2</label><input class="field-input" id="cfg-v2-highlight" placeholder="au bon rythme"></div></div>
+          <!-- Réseaux -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>Réseaux sociaux (laisser vide pour masquer)</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field-row"><div class="field-label">TikTok URL</div><input class="field-input" id="cfg-tiktok" placeholder="https://tiktok.com/@toi"/></div>
+              <div class="field-row"><div class="field-label">Instagram URL</div><input class="field-input" id="cfg-insta" placeholder="https://instagram.com/toi"/></div>
+              <div class="field-row"><div class="field-label">YouTube URL</div><input class="field-input" id="cfg-yt" placeholder="https://youtube.com/@toi"/></div>
+              <div class="field-row"><div class="field-label">Twitch URL</div><input class="field-input" id="cfg-twitch" placeholder="https://twitch.tv/toi"/></div>
+              <div class="field-row"><div class="field-label">Discord (lien DM direct)</div><input class="field-input" id="cfg-discord" placeholder="https://discord.com/users/TON_ID_DISCORD"/><div style="font-size:11px;color:var(--gray);margin-top:5px">Ton ID Discord : Paramètres → Avancé → active "Mode développeur" → clic droit sur ton profil → Copier l'identifiant. Puis colle : https://discord.com/users/CET_ID</div></div>
+            </div>
+          </div>
+
+          <!-- Formulaire de contact -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4> Formulaire de contact</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">
+              Pour recevoir un vrai email quand quelqu'un remplit le formulaire "Tu as un projet ?" :
+              va sur <a href="https://formspree.io" target="_blank" rel="noopener" style="color:var(--light)">formspree.io</a>,
+              crée un compte gratuit, crée un formulaire avec ton email <strong>razvanediting@gmail.com</strong>,
+              puis colle ici juste l'identifiant qui apparaît après "formspree.io/f/" dans ton URL de formulaire.
+              <br/>Tant que ce champ est vide, le bouton "Envoyer" utilise l'ancien système (mailto).
+            </p>
+            <div class="field-row"><div class="field-label">Identifiant du formulaire Formspree</div><input class="field-input" id="cfg-formspree" placeholder="Ex: xkgylacb"/></div>
+          </div>
+
+          <!-- À propos du montage -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4> Section "Pourquoi je monte"</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">Ce texte apparaît dans une nouvelle section, entre ton portfolio et le formulaire de contact.</p>
+            <div class="field-row"><div class="field-label">Titre</div><input class="field-input" id="cfg-about-title" placeholder="Pourquoi je fais du montage"/></div>
+            <div class="field-row"><div class="field-label">Texte</div><textarea class="field-input" id="cfg-about-text" rows="6" placeholder="Explique pourquoi tu fais du montage, ta vision, etc."></textarea></div>
+          </div>
+
+          <!-- Clients -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4> Clients (ils m'ont fait confiance)</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:14px">Ajoute une photo et le pseudo de chaque personne qui te fait confiance.</p>
+            <div id="clients-admin-list"></div>
+            <div class="admin-actions" style="margin-top:6px">
+              <button class="add-vid-btn" id="add-client-btn">+ Ajouter un client</button>
+            </div>
+          </div>
+
+          <!-- Mot de passe -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4>Changer le mot de passe admin</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field-row"><div class="field-label">Nouveau mot de passe</div><input class="field-input" type="password" id="new-pwd1" placeholder="Nouveau mot de passe"/></div>
+              <div class="field-row"><div class="field-label">Confirmer</div><input class="field-input" type="password" id="new-pwd2" placeholder="Répète le mot de passe"/></div>
+            </div>
+            <p id="pwd-msg" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
+          </div>
+
+          <!-- Publication GitHub -->
+          <div class="settings-card" style="grid-column:1/-1">
+            <h4> Publication en ligne (GitHub)</h4>
+            <p style="font-size:12px;color:var(--gray);margin-bottom:10px">
+              Le bouton "Sauvegarder" garde tes changements seulement dans ce navigateur.
+              Pour que tout le monde voie les changements sur <strong>razvanediting.github.io</strong>, clique sur "Publier sur GitHub" : ça envoie tes données directement dans ton repo.
+              <br/>Crée un <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener" style="color:var(--light)">token GitHub (fine-grained)</a> limité au repo <strong>RazvanEditing</strong>, permission "Contents : Read and write" uniquement. Le token reste seulement dans cet onglet, il n'est jamais écrit dans le code du site.
+            </p>
+            <div class="field-row"><div class="field-label">Token GitHub</div><input class="field-input" type="password" id="gh-token" placeholder="github_pat_..."/></div>
+            <p id="publish-msg" role="status" aria-live="polite" style="font-size:12px;color:var(--gray);margin-top:6px"></p>
+          </div>
+
+        </div>
+
+        <div class="admin-actions">
+          <button class="save-btn" id="save-settings-btn"> Sauvegarder les paramètres</button>
+          <button class="save-btn" id="publish-btn" > Publier sur GitHub</button>
+          <button class="logout-btn" id="logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <!-- VIDÉOS COURTES -->
+      <div class="admin-sub" id="asub-short">
+        <p style="color:var(--gray);font-size:13px;margin-bottom:20px">Format 9:16 — TikTok, Reels, Shorts</p>
+        <div id="vlist-short"></div>
+        <div class="admin-actions">
+          <button class="add-vid-btn" data-type="short">+ Ajouter une vidéo</button>
+          <button class="save-btn" data-savetype="short"> Sauvegarder</button>
+        </div>
+      </div>
+
+      <!-- LONGUES VIDÉOS -->
+      <div class="admin-sub" id="asub-long">
+        <p style="color:var(--gray);font-size:13px;margin-bottom:20px">Format 16:9 — YouTube, documentaires</p>
+        <div id="vlist-long"></div>
+        <div class="admin-actions">
+          <button class="add-vid-btn" data-type="long">+ Ajouter une vidéo</button>
+          <button class="save-btn" data-savetype="long"> Sauvegarder</button>
+        </div>
+      </div>
+
+    </div><!-- /admin-panel -->
+  </div><!-- /admin-wrap -->
+</div><!-- /admin-overlay -->
+
+
+
+</body>
+</html>

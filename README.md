@@ -2,6 +2,10 @@
 
 Portfolio de montage vidéo pour YouTube, TikTok et Reels en HTML, CSS et JavaScript. GitHub Pages publie la racine du dépôt, sans compilation ni dépendance npm.
 
+La version 1 reste à la racine. La version 2 est disponible dans `v2/` : accueil bleu profond, sections claires, police Satoshi locale, titres réels des vidéos et aperçus animés pour les cinq formats courts. Elle s’inspire de la composition de https://blue-editing.vercel.app/ avec les contenus propres à Razvan Editing.
+
+Les deux versions partagent `app.js`, `data.json`, les médias et le même panel d’administration.
+
 ## Fichiers
 
 - index.html : page, formulaire et administration
@@ -18,11 +22,13 @@ Depuis le dossier du site, lancer `python -m http.server 8765`, puis ouvrir http
 
 ## Administration
 
-L’accès existant est conservé : ajouter `?razvan` à l’URL puis taper `razvan` au clavier. Le mot de passe publié reste valable. Le panel modifie les coordonnées, textes, chiffres, vidéos, logo et collaborations.
+Ajouter `?razvan` à l’URL ouvre directement la connexion, sur les deux versions. La version 2 propose également un bouton Administration dans le pied de page. Le mot de passe publié reste valable. Le panel modifie les coordonnées, textes, chiffres, vidéos, logo et collaborations, ainsi que le titre et l’encart d’accueil de la version 2.
 
-Publier les modifications depuis le panel pour les retrouver après rechargement et sur les autres appareils. Son jeton GitHub est conservé uniquement dans l’onglet et n’est jamais écrit dans les fichiers du site. Il doit être limité à ce dépôt avec l’autorisation Contents: Read and write.
+Les brouillons enregistrés sont restaurés après connexion, même après rechargement. « Publier sur GitHub » prend aussi en compte les modifications de champs en cours et met à jour le contenu des deux versions. Son jeton GitHub est conservé uniquement dans l’onglet et n’est jamais écrit dans les fichiers du site. Il doit être limité à ce dépôt avec l’autorisation Contents: Read and write.
 
-Les miniatures des vidéos actuelles sont locales. Les nouveaux liens YouTube reçoivent automatiquement une miniature. Un nouveau fichier vidéo direct peut aussi avoir une miniature locale via la propriété `poster` dans data.json.
+Les miniatures des vidéos actuelles sont locales. Les nouveaux liens YouTube reçoivent automatiquement une miniature. Le panel propose des champs optionnels pour la miniature (`poster`) et l’aperçu court (`preview`). Si l’aperçu n’est pas renseigné, un fichier vidéo direct sert de source au survol.
+
+Les aperçus de la version 2 durent six secondes, sans son, en H.264 270 × 480. Sur ordinateur, les cartes jouent au survol ou au focus clavier ; sur mobile, un seul aperçu visible joue à la fois. Ils s’arrêtent en dehors de l’écran, dans une page masquée, pendant la lecture complète ou dans l’administration. Le mode de mouvement réduit et l’économie de données empêchent la lecture automatique.
 
 ## Formulaire
 

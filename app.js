@@ -1,5 +1,7 @@
 // Razvan Editing. Unslop by Damir Sokolovsky (@heydamir), CC BY 4.0.
 localStorage.removeItem('razvan_gh_token');
+const CONTENT_ROOT=new URL('./',document.currentScript.src);
+const DRAFT_KEY='razvan_admin_draft';
 
 async function sha256(text){
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
@@ -9,9 +11,9 @@ async function sha256(text){
 /* ═══════════════════════════════════
    DONNÉES PAR DÉFAUT
 ═══════════════════════════════════ */
-const DEF_SHORT = [{"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672262755.mp4", "label": "", "badge": "TikTok", "titre": "Tomodachi Life", "views": "5 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7635216293880253718", "poster": "assets/short-1.jpg", "duration": "00:33"}, {"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672398041.mp4", "label": "", "badge": "TikTok", "titre": "Valorant", "views": "2 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7626327650163854594", "poster": "assets/short-2.jpg", "duration": "00:49"}, {"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672804651%20(1).mp4", "label": "", "badge": "TikTok", "titre": "Vidéo Troll", "views": "2 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7612232110316834070", "poster": "assets/short-3.jpg", "duration": "00:39"}, {"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782673017270.mp4", "label": "", "badge": "TikTok", "titre": "Razvan avec Roan", "views": "10 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7599624101384228118", "poster": "assets/short-4.jpg", "duration": "00:41"}, {"image": "assets/short-5.mp4", "label": "", "badge": "TikTok", "titre": "Razvan Obby", "views": "3 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7673454060430839072", "poster": "assets/short-5.jpg", "duration": "00:46"}];
-const DEF_LONG = [{"image": "https://www.youtube.com/watch?v=sdG8x9jcKOY&t", "label": "", "badge": "YouTube", "titre": "L'entité de M̷̰̌͑̆į̶̯̌͑n̵̥̎̐e̶̞̟̙͂ċ̷̥̰͕͌͒r̶̯͆ã̴̡̻̩̚f̸̮̱̻̊̐t qui veut Voler Ton ÂME !", "views": "1 k+ vues", "lien": "https://www.youtube.com/watch?v=sdG8x9jcKOY&t", "duration": "30:20", "poster": "assets/long-1.jpg"}, {"image": "https://www.youtube.com/watch?v=PCdLGmx03B4&t", "label": "", "badge": "YouTube", "titre": "J’ai POSÉ les PIRES QUESTIONS à VERITY", "views": "10 k+ vues", "lien": "https://www.youtube.com/watch?v=PCdLGmx03B4&t", "duration": "13:42", "poster": "assets/long-2.jpg"}, {"image": "https://www.youtube.com/watch?v=po9ef_FsstE&t", "label": "", "badge": "YouTube", "titre": "Nouvelle vidéo", "views": "35 k+ vues", "lien": "https://www.youtube.com/watch?v=po9ef_FsstE&t", "duration": "15:32", "poster": "assets/long-3.jpg"}, {"image": "https://www.youtube.com/watch?v=plRRBO_Scao", "label": "", "badge": "YouTube", "titre": "Nouvelle vidéo", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=plRRBO_Scao", "duration": "13:48", "poster": "assets/long-4.jpg"}, {"image": "https://www.youtube.com/watch?v=iuHQs71l9rw", "label": "", "badge": "YouTube", "titre": "Je réagis à ma première vidéo Youtube", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=iuHQs71l9rw", "duration": "19:50", "poster": "assets/long-5.jpg"}, {"image": "https://www.youtube.com/watch?v=ffCzHat_KW8", "label": "", "badge": "YouTube", "titre": "", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=ffCzHat_KW8", "duration": "13:29", "poster": "assets/long-6.jpg"}, {"image": "https://www.youtube.com/watch?v=KS8uYyVflVU", "label": "", "badge": "YouTube", "titre": "Nouvelle vidéo", "views": "", "lien": "https://www.youtube.com/watch?v=KS8uYyVflVU", "duration": "14:43", "poster": "assets/long-7.jpg"}, {"image": "https://www.youtube.com/watch?v=z76oC_k-uG0", "label": "", "badge": "YouTube", "titre": "Nouvelle vidéo", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=z76oC_k-uG0", "duration": "25:07", "poster": "assets/long-8.jpg"}];
-const DEF_SETTINGS = {"nom": "Razvan Editing", "tag": "Montage vidéo · DaVinci Resolve", "sub": "Je monte tes formats courts et tes vidéos YouTube sur DaVinci Resolve. Découvre mes réalisations et parlons de ton prochain projet.", "email": "razvanediting@gmail.com", "tiktok": "https://www.tiktok.com/@razvannnmn", "insta": "https://www.instagram.com/razvannn_off/", "yt": "https://www.youtube.com/@Razvannnmn", "twitch": "https://www.twitch.tv/razvannnmn", "discord": "https://discord.com/users/753292111834644531", "formspreeId": "mrewkwbe", "aboutTitle": "Le montage, au service de ton contenu", "aboutText": "Je monte mes propres vidéos et je collabore avec d’autres créateurs. Ce portfolio rassemble ces projets : du contenu gaming, des formats courts et des vidéos YouTube.\n\nSur DaVinci Resolve, je travaille le rythme, les transitions, le son et l’étalonnage pour donner une direction à chaque vidéo. Tu as un projet en tête ? Regardons ensemble le format et le montage qui lui correspondent.", "s1n": "100 k+", "s1l": "vues cumulées", "s2n": "10 k+", "s2l": "likes cumulés", "s3n": "2 ans", "s3l": "de montage", "cntTiktok": 9000, "cntYtShort": 0, "cntInsta": 0, "cntYtLong": 0, "clients": "[{\"name\": \"Anakin\", \"avatar\": \"assets/client-1.png\", \"link\": \"https://www.youtube.com/@AnakinWTR/videos\"}]", "pwdHash": "694c618a2564e84d9ad3249fa263ffe515d785728336e382d1754ac5ce4e0a5a", "logo": "assets/logo.jpg"};
+const DEF_SHORT = [{"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672262755.mp4", "label": "", "badge": "TikTok", "titre": "Tomodachi Life", "views": "5 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7635216293880253718", "poster": "assets/short-1.jpg", "duration": "00:33", "preview": "assets/preview-short-1.mp4"}, {"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672398041.mp4", "label": "", "badge": "TikTok", "titre": "Valorant", "views": "2 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7626327650163854594", "poster": "assets/short-2.jpg", "duration": "00:49", "preview": "assets/preview-short-2.mp4"}, {"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672804651%20(1).mp4", "label": "", "badge": "TikTok", "titre": "Vidéo Troll", "views": "2 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7612232110316834070", "poster": "assets/short-3.jpg", "duration": "00:39", "preview": "assets/preview-short-3.mp4"}, {"image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782673017270.mp4", "label": "", "badge": "TikTok", "titre": "Razvan avec Roan", "views": "10 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7599624101384228118", "poster": "assets/short-4.jpg", "duration": "00:41", "preview": "assets/preview-short-4.mp4"}, {"image": "assets/short-5.mp4", "label": "", "badge": "TikTok", "titre": "Razvan Obby", "views": "3 k+ vues", "lien": "https://www.tiktok.com/@razvannnmn/video/7673454060430839072", "poster": "assets/short-5.jpg", "duration": "00:46", "preview": "assets/preview-short-5.mp4"}];
+const DEF_LONG = [{"image": "https://www.youtube.com/watch?v=sdG8x9jcKOY&t", "label": "", "badge": "YouTube", "titre": "L'entité de M̷̰̌͑̆į̶̯̌͑n̵̥̎̐e̶̞̟̙͂ċ̷̥̰͕͌͒r̶̯͆ã̴̡̻̩̚f̸̮̱̻̊̐t qui veut Voler Ton ÂME !", "views": "1 k+ vues", "lien": "https://www.youtube.com/watch?v=sdG8x9jcKOY&t", "duration": "30:20", "poster": "assets/long-1.jpg"}, {"image": "https://www.youtube.com/watch?v=PCdLGmx03B4&t", "label": "", "badge": "YouTube", "titre": "J’ai POSÉ les PIRES QUESTIONS à VERITY", "views": "10 k+ vues", "lien": "https://www.youtube.com/watch?v=PCdLGmx03B4&t", "duration": "13:42", "poster": "assets/long-2.jpg"}, {"image": "https://www.youtube.com/watch?v=po9ef_FsstE&t", "label": "", "badge": "YouTube", "titre": "J'ai un STALKER ! (à l'aide)", "views": "35 k+ vues", "lien": "https://www.youtube.com/watch?v=po9ef_FsstE&t", "duration": "15:32", "poster": "assets/long-3.jpg"}, {"image": "https://www.youtube.com/watch?v=plRRBO_Scao", "label": "", "badge": "YouTube", "titre": "Un PRO était TOXIQUE alors j'ai MIS FIN à WINSTREAK de 1756", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=plRRBO_Scao", "duration": "13:48", "poster": "assets/long-4.jpg"}, {"image": "https://www.youtube.com/watch?v=iuHQs71l9rw", "label": "", "badge": "YouTube", "titre": "Je réagis à ma première vidéo Youtube", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=iuHQs71l9rw", "duration": "19:50", "poster": "assets/long-5.jpg"}, {"image": "https://www.youtube.com/watch?v=ffCzHat_KW8", "label": "", "badge": "YouTube", "titre": "J’ai TROLLÉ mon AMI avec un COMPTE de HATER", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=ffCzHat_KW8", "duration": "13:29", "poster": "assets/long-6.jpg"}, {"image": "https://www.youtube.com/watch?v=KS8uYyVflVU", "label": "", "badge": "YouTube", "titre": "PETIT VS GÉANT sur Rivals", "views": "", "lien": "https://www.youtube.com/watch?v=KS8uYyVflVU", "duration": "14:43", "poster": "assets/long-7.jpg"}, {"image": "https://www.youtube.com/watch?v=z76oC_k-uG0", "label": "", "badge": "YouTube", "titre": "J'ai AFFRONTÉ un STREAMEUR en 1V1 jusqu'à ce qu'il CASSE son ORDI", "views": "30 k+ vues", "lien": "https://www.youtube.com/watch?v=z76oC_k-uG0", "duration": "25:07", "poster": "assets/long-8.jpg"}];
+const DEF_SETTINGS = {"nom": "Razvan Editing", "tag": "Montage vidéo · DaVinci Resolve", "sub": "Je monte tes formats courts et tes vidéos YouTube sur DaVinci Resolve. Découvre mes réalisations et parlons de ton prochain projet.", "email": "razvanediting@gmail.com", "tiktok": "https://www.tiktok.com/@razvannnmn", "insta": "https://www.instagram.com/razvannn_off/", "yt": "https://www.youtube.com/@Razvannnmn", "twitch": "https://www.twitch.tv/razvannnmn", "discord": "https://discord.com/users/753292111834644531", "formspreeId": "mrewkwbe", "aboutTitle": "Le montage, au service de ton contenu", "aboutText": "Je monte mes propres vidéos et je collabore avec d’autres créateurs. Ce portfolio rassemble ces projets : du contenu gaming, des formats courts et des vidéos YouTube.\n\nSur DaVinci Resolve, je travaille le rythme, les transitions, le son et l’étalonnage pour donner une direction à chaque vidéo. Tu as un projet en tête ? Regardons ensemble le format et le montage qui lui correspondent.", "s1n": "100 k+", "s1l": "vues cumulées", "s2n": "10 k+", "s2l": "likes cumulés", "s3n": "2 ans", "s3l": "de montage", "cntTiktok": 9000, "cntYtShort": 0, "cntInsta": 0, "cntYtLong": 0, "clients": "[{\"name\": \"Anakin\", \"avatar\": \"assets/client-1.png\", \"link\": \"https://www.youtube.com/@AnakinWTR/videos\"}]", "pwdHash": "694c618a2564e84d9ad3249fa263ffe515d785728336e382d1754ac5ce4e0a5a", "logo": "assets/logo.jpg", "v2HeroTitle": "Tes vidéos,", "v2HeroHighlight": "au bon rythme"};
 
 function load(k,d){ try{ return JSON.parse(localStorage.getItem(k))||d; }catch(e){return d;} }
 function en(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -24,6 +26,7 @@ const ICONS={
 function normalizeUrl(value){
   const url=String(value||'').trim();
   if(url.startsWith('www.'))return 'https://'+url;
+  if(url.startsWith('assets/'))return new URL(url,CONTENT_ROOT).href;
   return /^(https?:|data:image\/|assets\/|#)/i.test(url)?url:'';
 }
 function getPoster(video){
@@ -34,6 +37,7 @@ function getPoster(video){
   return '';
 }
 function updateHero(){
+  if(document.body.dataset.version==='2'){buildHeroShowcase();return;}
   const video=vLong.find(v=>getYouTubeId(v.image)==='iuHQs71l9rw')||vLong[0]||vShort[0];
   const button=document.getElementById('hero-video');
   if(!video){button.hidden=true;return;}
@@ -48,6 +52,7 @@ let videoOpener=null;
 function openVideo(video,title){
   const dialog=document.getElementById('video-dialog'),media=document.getElementById('dialog-media');
   videoOpener=document.activeElement;
+  previewElements.forEach(stopPreview);
   document.getElementById('dialog-title').textContent=title;
   document.getElementById('dialog-meta').textContent=[video.badge,video.duration].filter(Boolean).join(' / ');
   const source=document.getElementById('dialog-source');source.href=normalizeUrl(video.lien)||normalizeUrl(video.image)||'#';source.hidden=source.getAttribute('href')==='#';
@@ -55,7 +60,7 @@ function openVideo(video,title){
   const url=normalizeUrl(video.image),type=getMediaType(url);
   if(type==='mp4'){
     const player=document.createElement('video');player.src=url;player.controls=true;player.playsInline=true;player.preload='metadata';
-    if(video.poster)player.poster=video.poster;media.append(player);
+    if(video.poster)player.poster=normalizeUrl(video.poster);media.append(player);
     player.addEventListener('error',()=>{document.getElementById('dialog-meta').textContent='Lecture indisponible ici. Utilise le lien vers la vidéo originale.';});
     player.play().catch(()=>{});
   }else if(['youtube','tiktok','streamable','gdrive'].includes(type)){
@@ -70,6 +75,64 @@ function openVideo(video,title){
 }
 function closeVideo(){document.getElementById('video-dialog').close();}
 
+/* Preview sources are six-second, silent clips. Full media loads on click. */
+const previewElements=new Set();
+const autoPreviewElements=new Set();
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+const touchPreview=matchMedia('(hover: none)');
+function canAutoPreview(){return !reducedMotion.matches&&!navigator.connection?.saveData&&!document.getElementById('admin-overlay').classList.contains('open');}
+function stopPreview(button){
+  button.dataset.previewWanted='false';
+  const player=button.querySelector('video');if(player)player.pause();button.classList.remove('is-previewing');
+}
+async function playPreview(button){
+  const player=button.querySelector('video');if(!player||!canAutoPreview()||document.getElementById('video-dialog').open)return;
+  button.dataset.previewWanted='true';
+  if(!player.src){player.src=player.dataset.preview;player.load();}
+  try{await player.play();if(button.dataset.previewWanted==='true'&&!document.getElementById('video-dialog').open&&!player.paused)button.classList.add('is-previewing');else stopPreview(button);}catch{button.classList.remove('is-previewing');}
+}
+function updateAutoPreviews(){
+  if(!canAutoPreview()||document.hidden||document.getElementById('video-dialog').open){previewElements.forEach(stopPreview);return;}
+  const visible=Array.from(autoPreviewElements).filter(b=>b.isConnected&&b.getBoundingClientRect().width>0);
+  if(touchPreview.matches){
+    const selected=visible.sort((a,b)=>Math.abs((a.getBoundingClientRect().top+a.getBoundingClientRect().bottom)/2-innerHeight/2)-Math.abs((b.getBoundingClientRect().top+b.getBoundingClientRect().bottom)/2-innerHeight/2))[0];
+    previewElements.forEach(b=>{if(b===selected)playPreview(b);else stopPreview(b);});
+  }else visible.filter(b=>b.dataset.feature==='true').forEach(playPreview);
+}
+const previewObserver=new IntersectionObserver(entries=>{
+ entries.forEach(entry=>{if(entry.isIntersecting&&entry.intersectionRatio>=.6)autoPreviewElements.add(entry.target);else{autoPreviewElements.delete(entry.target);stopPreview(entry.target);}});
+ updateAutoPreviews();
+},{threshold:[0,.6,1]});
+function attachPreview(button,video,featured=false){
+  if(document.body.dataset.version!=='2')return;
+  const source=normalizeUrl(video.preview)||(getMediaType(video.image)==='mp4'?normalizeUrl(video.image):'');
+  if(!source)return;
+  const player=document.createElement('video');player.muted=true;player.defaultMuted=true;player.loop=true;player.playsInline=true;player.preload='none';player.dataset.preview=source;player.setAttribute('aria-hidden','true');player.tabIndex=-1;
+  button.append(player);button.insertAdjacentHTML('beforeend','<span class="preview-tag" aria-hidden="true">Aperçu sans son</span>');
+  button.dataset.feature=String(featured);previewElements.add(button);previewObserver.observe(button);
+  button.addEventListener('pointerenter',()=>{if(!touchPreview.matches){previewElements.forEach(b=>{if(b!==button&&b.dataset.feature!=='true')stopPreview(b);});playPreview(button);}});
+  button.addEventListener('pointerleave',()=>{if(!featured)stopPreview(button);});
+  button.addEventListener('focus',()=>playPreview(button));button.addEventListener('blur',()=>{if(!featured)stopPreview(button);});
+  player.addEventListener('error',()=>stopPreview(button));
+}
+function clearRemovedPreviews(){previewElements.forEach(b=>{if(!b.isConnected){stopPreview(b);previewObserver.unobserve(b);previewElements.delete(b);autoPreviewElements.delete(b);}});}
+function buildHeroShowcase(){
+ const stage=document.getElementById('hero-showcase');if(!stage)return;stage.replaceChildren();
+ vShort.slice(0,3).forEach((video,index)=>{
+  const title=video.titre||`Format court ${index+1}`;
+  const article=document.createElement('article');article.className='hero-film';
+  const button=document.createElement('button');button.type='button';button.className='card';button.setAttribute('aria-label',`Regarder : ${title}`);
+  button.innerHTML=`<img src="${en(getPoster(video))}" alt="" width="270" height="480" ${index===0?'fetchpriority="high"':'loading="lazy"'}><span class="play-circle">${ICONS.play}</span>`;
+  button.addEventListener('click',()=>openVideo(video,title));attachPreview(button,video,true);
+  const caption=document.createElement('h2');caption.className='card-title';caption.textContent=title;
+  article.append(button,caption);stage.append(article);
+ });
+ clearRemovedPreviews();
+}
+document.addEventListener('visibilitychange',updateAutoPreviews);
+reducedMotion.addEventListener('change',updateAutoPreviews);
+touchPreview.addEventListener('change',updateAutoPreviews);
+
 let vShort = load('razvan_short', DEF_SHORT);
 let vLong  = load('razvan_long',  DEF_LONG);
 let CFG    = load('razvan_cfg',   DEF_SETTINGS);
@@ -81,18 +144,20 @@ function applySettings(){
   text('nav-name',CFG.nom); text('hero-tag',CFG.tag); text('hero-sub',CFG.sub);
   for(let i=1;i<=3;i++){ text(`stat${i}-num`,CFG[`s${i}n`]); text(`stat${i}-lbl`,CFG[`s${i}l`]); }
   text('footer-txt',`© ${new Date().getFullYear()} ${CFG.nom} — Monteur vidéo`);
+  document.querySelectorAll('[data-brand-name]').forEach(el=>el.textContent=CFG.nom+'.');
+  if(document.getElementById('v2-hero-title')){text('v2-hero-title',CFG.v2HeroTitle||'Tes vidéos,');text('v2-hero-highlight',CFG.v2HeroHighlight||'au bon rythme');}
   text('about-title',CFG.aboutTitle); text('about-text',CFG.aboutText);
   document.getElementById('about').hidden=!(CFG.aboutTitle||CFG.aboutText);
   const logo=document.getElementById('logo-img'), mark=document.getElementById('logo-svg-default');
   logo.style.display=CFG.logo?'block':'none'; mark.style.display=CFG.logo?'none':'block';
-  if(CFG.logo)logo.src=CFG.logo;
+  if(CFG.logo)logo.src=normalizeUrl(CFG.logo);
   let clients=[]; try{clients=JSON.parse(CFG.clients||'[]');}catch{}
   const grid=document.getElementById('clients-grid'); grid.replaceChildren();
   clients.forEach(client=>{
     const card=document.createElement(client.link?'a':'div'); card.className='client-card';
     if(client.link){card.href=normalizeUrl(client.link);card.target='_blank';card.rel='noopener noreferrer';}
     const avatar=document.createElement('div');avatar.className='client-avatar';
-    if(client.avatar){const img=document.createElement('img');img.src=client.avatar;img.alt='';img.loading='lazy';img.onerror=()=>{avatar.textContent=(client.name||'?')[0];};avatar.append(img);}
+    if(client.avatar){const img=document.createElement('img');img.src=normalizeUrl(client.avatar);img.alt='';img.loading='lazy';img.onerror=()=>{avatar.textContent=(client.name||'?')[0];};avatar.append(img);}
     else avatar.textContent=(client.name||'?')[0];
     const info=document.createElement('div');info.innerHTML=`<div class="client-name">${en(client.name)}</div>${client.role?`<div class="client-role">${en(client.role)}</div>`:''}`;
     card.append(avatar,info); if(client.link)card.insertAdjacentHTML('beforeend',ICONS.external);grid.append(card);
@@ -166,12 +231,14 @@ function buildGrid(videos,containerId,cardClass){
     const button=document.createElement('button');button.type='button';button.className=`card ${cardClass}`;button.setAttribute('aria-label',`Lire : ${title}`);
     button.innerHTML=`${poster?`<img src="${en(poster)}" alt="" loading="lazy" width="${isShort?540:1280}" height="${isShort?960:720}">`:''}<span class="play-circle">${ICONS.play}</span>${video.duration?`<span class="duration-badge mono">${en(video.duration)}</span>`:''}`;
     button.addEventListener('click',()=>openVideo(video,title));
+    if(isShort)attachPreview(button,video);
     const info=document.createElement('div');info.innerHTML=`<div class="card-info"><h4 class="card-title">${en(title)}</h4><span class="card-number mono">${String(index+1).padStart(2,'0')}</span></div><div class="card-meta"><span>${en(video.badge|| (isShort?'Format court':'YouTube'))}</span>${video.views?`<span aria-hidden="true">·</span><span>${en(video.views)}</span>`:''}</div>${video.desc?`<p class="card-desc">${en(video.desc)}</p>`:''}`;
     wrap.append(button,info);
     const source=normalizeUrl(video.lien);
     if(source&&source!=='#'){const a=document.createElement('a');a.className='card-source';a.href=source;a.target='_blank';a.rel='noopener noreferrer';a.innerHTML='Voir l’original '+ICONS.external;a.setAttribute('aria-label',`Voir l’original : ${title}`);wrap.append(a);}
     grid.append(wrap);
   });
+  clearRemovedPreviews();
 }
 /* ── Chargement des données publiées sur GitHub (data.json) ──
    Au chargement, on essaie d'abord data.json (la version publiée sur GitHub,
@@ -193,7 +260,7 @@ async function initData(){
     }
   }
   try{
-    const res = await fetch('data.json?v=' + Date.now());
+    const res = await fetch(new URL('data.json?v='+Date.now(),CONTENT_ROOT));
     if(res.ok){
       const d = await res.json();
       // On garde CFG (local, pas encore publié) comme base par-dessus les défauts,
@@ -216,6 +283,7 @@ menuToggle.addEventListener('click',()=>{const open=menuToggle.getAttribute('ari
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',closeMenu));
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){closeMenu();menuToggle.focus();}});
 function selectTab(tab,focus=false){
+  previewElements.forEach(stopPreview);
   document.querySelectorAll('.tab-btn').forEach(button=>{
     const selected=button.dataset.tab===tab;button.classList.toggle('active',selected);button.setAttribute('aria-selected',String(selected));button.tabIndex=selected?0:-1;
     if(selected&&focus)button.focus();
@@ -237,7 +305,7 @@ document.querySelectorAll('.faq-q').forEach(button=>button.addEventListener('cli
 const videoDialog=document.getElementById('video-dialog');
 document.getElementById('dialog-close').addEventListener('click',closeVideo);
 videoDialog.addEventListener('click',e=>{if(e.target===videoDialog){const b=videoDialog.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)closeVideo();}});
-videoDialog.addEventListener('close',()=>{const media=document.getElementById('dialog-media');media.querySelectorAll('video').forEach(v=>v.pause());media.replaceChildren();document.body.classList.remove('modal-open');videoOpener?.focus();});
+videoDialog.addEventListener('close',()=>{const media=document.getElementById('dialog-media');media.querySelectorAll('video').forEach(v=>v.pause());media.replaceChildren();document.body.classList.remove('modal-open');videoOpener?.focus();updateAutoPreviews();});
 document.getElementById('dialog-contact').addEventListener('click',closeVideo);
 
 /* Contact: native validation; an error preserves the visitor's message. */
@@ -282,9 +350,37 @@ document.addEventListener('keydown',e=>{
   if(_k.includes('razvan')&&_urlp){_k='x';openAdmin();}
 });
 
-function openAdmin(){ document.getElementById('admin-overlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeAdmin(){ document.getElementById('admin-overlay').classList.remove('open'); document.body.style.overflow=''; }
-
+function persistAdminDraft(){
+  try{
+    localStorage.setItem(DRAFT_KEY,JSON.stringify({settings:CFG,short:vShort,long:vLong}));
+    document.getElementById('admin-draft-status').textContent='Brouillon enregistré dans ce navigateur. Publie sur GitHub pour mettre à jour les deux versions.';
+  }catch{document.getElementById('admin-draft-status').textContent='Le navigateur manque d’espace. Publie sur GitHub pour conserver tes modifications.';}
+}
+function restoreAdminDraft(){
+  const draft=load(DRAFT_KEY,null);if(!draft)return;
+  if(draft.settings)CFG=Object.assign({},CFG,draft.settings);
+  if(Array.isArray(draft.short))vShort=draft.short;
+  if(Array.isArray(draft.long))vLong=draft.long;
+  applySettings();buildGrid(vShort,'grid-short','card-tiktok');buildGrid(vLong,'grid-long','card-long');
+  document.getElementById('admin-draft-status').textContent='Ton brouillon a été restauré. Il reste à publier sur GitHub pour mettre à jour les deux versions.';
+}
+let adminOpener=null;
+function openAdmin(){
+ previewElements.forEach(stopPreview);
+ adminOpener=document.activeElement;closeMenu();
+ document.getElementById('admin-overlay').classList.add('open');document.body.style.overflow='hidden';
+ document.getElementById('admin-pwd').focus();
+}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');document.body.style.overflow='';adminOpener?.focus();updateAutoPreviews();}
+document.getElementById('admin-entry')?.addEventListener('click',openAdmin);
+document.getElementById('admin-overlay').addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.preventDefault();closeAdmin();return;}
+ if(event.key!=='Tab')return;
+ const focusable=Array.from(event.currentTarget.querySelectorAll('button,input,textarea,a[href]')).filter(el=>!el.disabled&&el.getClientRects().length);
+ const first=focusable[0],last=focusable.at(-1);
+ if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+ else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+});
 document.getElementById('admin-close-btn').addEventListener('click',closeAdmin);
 
 /* Login */
@@ -295,6 +391,7 @@ async function tryLogin(){
   const entered = document.getElementById('admin-pwd').value;
   const enteredHash = await sha256(entered);
   if(enteredHash===CFG.pwdHash){
+    restoreAdminDraft();
     document.getElementById('admin-login').style.display='none';
     document.getElementById('admin-panel').style.display='block';
     loadAdminSettings(); buildAdminList('short'); buildAdminList('long');
@@ -319,6 +416,8 @@ function loadAdminSettings(){
   document.getElementById('cfg-nom').value=CFG.nom||'';
   document.getElementById('cfg-tag').value=CFG.tag||'';
   document.getElementById('cfg-sub').value=CFG.sub||'';
+  document.getElementById('cfg-v2-title').value=CFG.v2HeroTitle||'Tes vidéos,';
+  document.getElementById('cfg-v2-highlight').value=CFG.v2HeroHighlight||'au bon rythme';
   document.getElementById('cfg-email').value=CFG.email||'';
   document.getElementById('cfg-tiktok').value=CFG.tiktok||'';
   document.getElementById('cfg-insta').value=CFG.insta||'';
@@ -342,7 +441,7 @@ function loadAdminSettings(){
   buildClientsAdminList();
   // logo preview
   const prev=document.getElementById('logo-admin-preview');
-  if(CFG.logo){ prev.src=CFG.logo; prev.style.display='block'; }
+  if(CFG.logo){ prev.src=normalizeUrl(CFG.logo); prev.style.display='block'; }
   else prev.style.display='none';
   // token GitHub (gardé seulement dans cet onglet)
   document.getElementById('gh-token').value = sessionStorage.getItem('razvan_gh_token') || '';
@@ -355,7 +454,7 @@ document.getElementById('logo-file-input').addEventListener('change',e=>{
   reader.onload=ev=>{
     CFG.logo=ev.target.result;
     const prev=document.getElementById('logo-admin-preview');
-    prev.src=CFG.logo; prev.style.display='block';
+    prev.src=normalizeUrl(CFG.logo); prev.style.display='block';
     // apply live
     document.getElementById('logo-img').src=CFG.logo;
     document.getElementById('logo-img').style.display='block';
@@ -372,10 +471,12 @@ document.getElementById('remove-logo-btn').addEventListener('click',()=>{
 });
 
 /* ── Save settings ── */
-document.getElementById('save-settings-btn').addEventListener('click', async ()=>{
+async function saveAdminSettings(){
   CFG.nom=document.getElementById('cfg-nom').value||CFG.nom;
   CFG.tag=document.getElementById('cfg-tag').value||CFG.tag;
   CFG.sub=document.getElementById('cfg-sub').value||CFG.sub;
+  CFG.v2HeroTitle=document.getElementById('cfg-v2-title').value.trim()||'Tes vidéos,';
+  CFG.v2HeroHighlight=document.getElementById('cfg-v2-highlight').value.trim()||'au bon rythme';
   CFG.email=document.getElementById('cfg-email').value||CFG.email;
   CFG.tiktok=document.getElementById('cfg-tiktok').value;
   CFG.insta=document.getElementById('cfg-insta').value;
@@ -406,13 +507,16 @@ document.getElementById('save-settings-btn').addEventListener('click', async ()=
       CFG.pwdHash = await sha256(p1);
       pm.style.color='#4ade80'; pm.textContent='Mot de passe changé  — clique "Publier sur GitHub" pour qu\'il soit valable partout.';
     }
-    else{ pm.style.color='#f87171'; pm.textContent=p1!==p2?'Les mots de passe ne correspondent pas.':'Minimum 4 caractères.'; }
+    else{pm.style.color='#f87171';pm.textContent=p1!==p2?'Les mots de passe ne correspondent pas.':'Minimum 4 caractères.';return false;}
     document.getElementById('new-pwd1').value=''; document.getElementById('new-pwd2').value='';
   } else pm.textContent='';
   localStorage.setItem('razvan_cfg',JSON.stringify(CFG));
   applySettings();
-  showToast('Paramètres sauvegardés ');
-});
+  persistAdminDraft();
+  showToast('Paramètres sauvegardés');
+  return true;
+}
+document.getElementById('save-settings-btn').addEventListener('click',()=>saveAdminSettings());
 
 /* ── Publier directement sur GitHub (écrit data.json dans le repo) ──
    Nécessite un token GitHub (fine-grained, permission "Contents: Read and write"
@@ -427,6 +531,8 @@ async function publishToGitHub(){
   const token = tokenInput.value.trim();
 
   if(!token){ msg.style.color='#f87171'; msg.textContent='Colle ton token GitHub d’abord ⤴'; return; }
+  if(!await saveAdminSettings())return;
+  persistAdminDraft();
   sessionStorage.setItem('razvan_gh_token', token); // pratique : reste dans cet onglet seulement
 
   btn.disabled = true; const oldTxt = btn.textContent; btn.textContent = ' Publication...';
@@ -461,7 +567,9 @@ async function publishToGitHub(){
     }
 
     msg.style.color = '#4ade80';
-    msg.textContent = ' Publié ! Le site sera à jour dans 30-60 secondes (recharge la page après).';
+    msg.textContent='Publié. Les deux versions du site vont être mises à jour par GitHub Pages.';
+    localStorage.removeItem(DRAFT_KEY);
+    document.getElementById('admin-draft-status').textContent='Dernières modifications publiées sur GitHub.';
     showToast(' Publié sur GitHub ');
   }catch(err){
     msg.style.color = '#f87171';
@@ -499,6 +607,8 @@ function buildAdminList(type){
             ${v.image ? ({tiktok:' TikTok détecté',youtube:'YouTube détecté',streamable:' Streamable détecté',gdrive:' Google Drive détecté',mp4:' Vidéo MP4 détectée',image:' Image détectée',none:''}[getMediaType(v.image)]||'') : ''}
           </div>
         </div>
+        <div class="field-full"><label class="field-label">Miniature (URL facultative)</label><input class="field-input" data-f="poster" data-idx="${i}" data-type="${type}" value="${en(v.poster||'')}" placeholder="assets/miniature.jpg ou URL"></div>
+        ${!hasLong?`<div class="field-full"><label class="field-label">Aperçu vidéo court (URL facultative)</label><input class="field-input" data-f="preview" data-idx="${i}" data-type="${type}" value="${en(v.preview||'')}" placeholder="Laisse vide pour utiliser la vidéo principale"></div>`:''}
         <div><div class="field-label">Texte sur la vidéo</div><input class="field-input" data-f="label" data-idx="${i}" data-type="${type}" value="${en(v.label||'')}" placeholder="Ex: mis partout"/></div>
         <div><div class="field-label">Badge</div><input class="field-input" data-f="badge" data-idx="${i}" data-type="${type}" value="${en(v.badge||'')}" placeholder="TikTok / YouTube..."/></div>
         <div><div class="field-label">Titre</div><input class="field-input" data-f="titre" data-idx="${i}" data-type="${type}" value="${en(v.titre||'')}" placeholder="Nom du projet"/></div>
@@ -520,6 +630,7 @@ function buildAdminList(type){
       const url = e.target.value.trim();
       (t==='short'?vShort:vLong)[idx].image = url;
       delete (t==='short'?vShort:vLong)[idx].poster;
+      delete (t==='short'?vShort:vLong)[idx].preview;
       const previewBox = document.getElementById(`preview-${t}-${idx}`);
       const typeLabel  = document.getElementById(`preview-type-${t}-${idx}`);
       if(!previewBox) return;
@@ -550,6 +661,7 @@ function buildAdminList(type){
         const dataUrl=ev.target.result;
         (t==='short'?vShort:vLong)[idx].image=dataUrl;
         delete (t==='short'?vShort:vLong)[idx].poster;
+      delete (t==='short'?vShort:vLong)[idx].preview;
         const urlInput=document.querySelector(`.img-url-input[data-idx="${idx}"][data-type="${t}"]`);
         if(urlInput)urlInput.value='';
         buildAdminList(t);
@@ -568,7 +680,7 @@ function buildClientsAdminList(){
   clientsArr.forEach((c,i)=>{
     const div=document.createElement('div'); div.className='client-admin-item';
     div.innerHTML=`
-      <div class="client-admin-avatar">${c.avatar?`<img src="${c.avatar}" alt=""/>`:en((c.name||'?')[0].toUpperCase())}</div>
+      <div class="client-admin-avatar">${c.avatar?`<img src="${en(normalizeUrl(c.avatar))}" alt=""/>`:en((c.name||'?')[0].toUpperCase())}</div>
       <div class="client-admin-fields">
         <input class="field-input" data-idx="${i}" data-f="name" value="${en(c.name||'')}" placeholder="Pseudo du client"/>
         <input class="field-input" data-idx="${i}" data-f="link" value="${en(c.link||'')}" placeholder="Lien YouTube/TikTok (optionnel)"/>
@@ -632,7 +744,8 @@ document.querySelectorAll('.save-btn[data-savetype]').forEach(btn=>{
     localStorage.setItem('razvan_'+type, JSON.stringify(type==='short'?vShort:vLong));
     buildGrid(type==='short'?vShort:vLong, 'grid-'+type, type==='short'?'card-tiktok':'card-long');
     updateHero();
-    showToast('Vidéos sauvegardées ');
+    persistAdminDraft();
+    showToast('Vidéos sauvegardées');
   });
 });
 
@@ -644,3 +757,5 @@ document.getElementById('logout-btn').addEventListener('click',()=>{
   document.getElementById('login-error').style.display='none';
   closeAdmin();
 });
+
+if(new URLSearchParams(location.search).has('razvan'))openAdmin();

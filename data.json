@@ -24,7 +24,9 @@
     "cntYtLong": 0,
     "clients": "[{\"name\": \"Anakin\", \"avatar\": \"assets/client-1.png\", \"link\": \"https://www.youtube.com/@AnakinWTR/videos\"}]",
     "pwdHash": "694c618a2564e84d9ad3249fa263ffe515d785728336e382d1754ac5ce4e0a5a",
-    "logo": "assets/logo.jpg"
+    "logo": "assets/logo.jpg",
+    "v2HeroTitle": "Tes vidéos,",
+    "v2HeroHighlight": "au bon rythme"
   },
   "short": [
     {
@@ -35,7 +37,8 @@
       "views": "5 k+ vues",
       "lien": "https://www.tiktok.com/@razvannnmn/video/7635216293880253718",
       "poster": "assets/short-1.jpg",
-      "duration": "00:33"
+      "duration": "00:33",
+      "preview": "assets/preview-short-1.mp4"
     },
     {
       "image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672398041.mp4",
@@ -45,7 +48,8 @@
       "views": "2 k+ vues",
       "lien": "https://www.tiktok.com/@razvannnmn/video/7626327650163854594",
       "poster": "assets/short-2.jpg",
-      "duration": "00:49"
+      "duration": "00:49",
+      "preview": "assets/preview-short-2.mp4"
     },
     {
       "image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782672804651%20(1).mp4",
@@ -55,7 +59,8 @@
       "views": "2 k+ vues",
       "lien": "https://www.tiktok.com/@razvannnmn/video/7612232110316834070",
       "poster": "assets/short-3.jpg",
-      "duration": "00:39"
+      "duration": "00:39",
+      "preview": "assets/preview-short-3.mp4"
     },
     {
       "image": "https://raw.githubusercontent.com/razvanediting/vid-o1/main/ssstik.io_%40razvannnmn_1782673017270.mp4",
@@ -65,7 +70,8 @@
       "views": "10 k+ vues",
       "lien": "https://www.tiktok.com/@razvannnmn/video/7599624101384228118",
       "poster": "assets/short-4.jpg",
-      "duration": "00:41"
+      "duration": "00:41",
+      "preview": "assets/preview-short-4.mp4"
     },
     {
       "image": "assets/short-5.mp4",
@@ -75,7 +81,8 @@
       "views": "3 k+ vues",
       "lien": "https://www.tiktok.com/@razvannnmn/video/7673454060430839072",
       "poster": "assets/short-5.jpg",
-      "duration": "00:46"
+      "duration": "00:46",
+      "preview": "assets/preview-short-5.mp4"
     }
   ],
   "long": [
@@ -103,7 +110,7 @@
       "image": "https://www.youtube.com/watch?v=po9ef_FsstE&t",
       "label": "",
       "badge": "YouTube",
-      "titre": "Nouvelle vidéo",
+      "titre": "J'ai un STALKER ! (à l'aide)",
       "views": "35 k+ vues",
       "lien": "https://www.youtube.com/watch?v=po9ef_FsstE&t",
       "duration": "15:32",
@@ -113,7 +120,7 @@
       "image": "https://www.youtube.com/watch?v=plRRBO_Scao",
       "label": "",
       "badge": "YouTube",
-      "titre": "Nouvelle vidéo",
+      "titre": "Un PRO était TOXIQUE alors j'ai MIS FIN à WINSTREAK de 1756",
       "views": "30 k+ vues",
       "lien": "https://www.youtube.com/watch?v=plRRBO_Scao",
       "duration": "13:48",
@@ -133,7 +140,7 @@
       "image": "https://www.youtube.com/watch?v=ffCzHat_KW8",
       "label": "",
       "badge": "YouTube",
-      "titre": "",
+      "titre": "J’ai TROLLÉ mon AMI avec un COMPTE de HATER",
       "views": "30 k+ vues",
       "lien": "https://www.youtube.com/watch?v=ffCzHat_KW8",
       "duration": "13:29",
@@ -143,7 +150,7 @@
       "image": "https://www.youtube.com/watch?v=KS8uYyVflVU",
       "label": "",
       "badge": "YouTube",
-      "titre": "Nouvelle vidéo",
+      "titre": "PETIT VS GÉANT sur Rivals",
       "views": "",
       "lien": "https://www.youtube.com/watch?v=KS8uYyVflVU",
       "duration": "14:43",
@@ -153,7 +160,7 @@
       "image": "https://www.youtube.com/watch?v=z76oC_k-uG0",
       "label": "",
       "badge": "YouTube",
-      "titre": "Nouvelle vidéo",
+      "titre": "J'ai AFFRONTÉ un STREAMEUR en 1V1 jusqu'à ce qu'il CASSE son ORDI",
       "views": "30 k+ vues",
       "lien": "https://www.youtube.com/watch?v=z76oC_k-uG0",
       "duration": "25:07",
